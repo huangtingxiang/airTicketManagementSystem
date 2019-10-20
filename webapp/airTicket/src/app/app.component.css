@@ -18,7 +18,7 @@
   padding: 7px;
 }
 
-.app-sidebar-text {
+.app-sidebar a {
   color: #34393a;
   font-size: 16px;
   display: block;
@@ -26,6 +26,5 @@
 
 .content {
   width:100%;
-  background-color: aqua;
   margin-top: 65px;
 }
