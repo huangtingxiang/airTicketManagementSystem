@@ -3,9 +3,9 @@ import {
   MatButtonModule,
   MatCheckboxModule,
   MatFormFieldModule,
-  MatGridListModule,
+  MatGridListModule, MatIconModule,
   MatInputModule,
-  MatListModule, MatPaginatorModule,
+  MatListModule, MatPaginatorModule, MatRadioModule,
   MatTableModule,
   MatToolbarModule
 } from '@angular/material';
@@ -22,7 +22,9 @@ import {
     MatFormFieldModule,
     MatInputModule,
     MatPaginatorModule,
-    MatButtonModule
+    MatButtonModule,
+    MatIconModule,
+    MatRadioModule
   ],
   exports: [
     MatGridListModule,
@@ -33,7 +35,9 @@ import {
     MatFormFieldModule,
     MatInputModule,
     MatPaginatorModule,
-    MatButtonModule
+    MatButtonModule,
+    MatIconModule,
+    MatRadioModule
   ]
 })
 export class ShareModule {

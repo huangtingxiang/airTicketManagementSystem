@@ -1,59 +1,78 @@
 <div class="ui-g ui-g-12">
   <div class="ui-g ui-g-12">
-    <mat-form-field>
-      <input matInput (keyup)="filterByName($event.target.value)" placeholder="城市名">
-    </mat-form-field>
-<!--    <button mat-stroked-button color="primary">Primary</button>-->
+    <div class="ui-g-2">
+      <mat-form-field>
+        <input matInput (keyup)="filterByName($event.target.value)" placeholder="城市名">
+      </mat-form-field>
+    </div>
+    <div class="ui-g-2 ui-g-offset-8">
+      <button mat-stroked-button color="primary" routerLink="/city/add">添加</button>
+    </div>
   </div>
   <div class="ui-g ui-g-12">
     <div class="mat-elevation-z8" style="width: 100%;">
-    <table mat-table [dataSource]="dataSource">
+      <table mat-table [dataSource]="dataSource">
 
-      <!-- Checkbox Column -->
-      <ng-container matColumnDef="select">
-        <th mat-header-cell *matHeaderCellDef>
-          <mat-checkbox (change)="$event ? masterToggle() : null"
-                        [checked]="selection.hasValue() && isAllSelected()"
-                        [indeterminate]="selection.hasValue() && !isAllSelected()">
-          </mat-checkbox>
-        </th>
-        <td mat-cell *matCellDef="let row">
-          <mat-checkbox (click)="$event.stopPropagation()"
-                        (change)="$event ? selection.toggle(row) : null"
-                        [checked]="selection.isSelected(row)">
-          </mat-checkbox>
-        </td>
-      </ng-container>
+        <!-- 单选框 -->
+        <ng-container matColumnDef="select">
+          <th mat-header-cell *matHeaderCellDef>
+            <mat-checkbox (change)="$event ? masterToggle() : null"
+                          [checked]="selection.hasValue() && isAllSelected()"
+                          [indeterminate]="selection.hasValue() && !isAllSelected()">
+            </mat-checkbox>
+          </th>
+          <td mat-cell *matCellDef="let row">
+            <mat-checkbox (click)="$event.stopPropagation()"
+                          (change)="$event ? selection.toggle(row) : null"
+                          [checked]="selection.isSelected(row)">
+            </mat-checkbox>
+          </td>
+        </ng-container>
 
-      <ng-container matColumnDef="id">
-        <th mat-header-cell *matHeaderCellDef> id.</th>
-        <td mat-cell *matCellDef="let element"> {{element.id}} </td>
-      </ng-container>
+        <ng-container matColumnDef="id">
+          <th mat-header-cell *matHeaderCellDef> 序号</th>
+          <td mat-cell *matCellDef="let i = index;let row" (click)="selection.toggle(row)"> {{i + 1}}</td>
+        </ng-container>
 
-      <!-- Name Column -->
-      <ng-container matColumnDef="name">
-        <th mat-header-cell *matHeaderCellDef> 城市名称</th>
-        <td mat-cell *matCellDef="let element"> {{element.name}} </td>
-      </ng-container>
+        <!-- 姓名栏-->
+        <ng-container matColumnDef="name">
+          <th mat-header-cell *matHeaderCellDef> 城市名称</th>
+          <td mat-cell *matCellDef="let element;let row;" (click)="selection.toggle(row)"> {{element.name}} </td>
+        </ng-container>
 
-      <!-- Weight Column -->
-      <ng-container matColumnDef="pinyin">
-        <th mat-header-cell *matHeaderCellDef> 拼音</th>
-        <td mat-cell *matCellDef="let element"> {{element.pinyin}} </td>
-      </ng-container>
+        <!-- 拼音栏 -->
+        <ng-container matColumnDef="pinyin">
+          <th mat-header-cell *matHeaderCellDef>拼音</th>
+          <td mat-cell *matCellDef="let element;let row" (click)="selection.toggle(row)"> {{element.pinyin}} </td>
+        </ng-container>
 
-      <!-- Symbol Column -->
-      <ng-container matColumnDef="primary">
-        <th mat-header-cell *matHeaderCellDef> 是否为热门城市</th>
-        <td mat-cell *matCellDef="let element"> {{element.primary}} </td>
-      </ng-container>
+        <!-- 热门城市栏 -->
+        <ng-container matColumnDef="primary">
+          <th mat-header-cell *matHeaderCellDef> 是否为热门城市</th>
+          <td mat-cell *matCellDef="let element">
+            <button *ngIf="element.primary" mat-icon-button color="primary" title="取消热门城市">
+              <mat-icon>favorite</mat-icon>
+            </button>
+            <button mat-icon-button aria-label="Example icon-button with a heart icon" title="设为热门城市">
+              <mat-icon>favorite</mat-icon>
+            </button>
+          </td>
+        </ng-container>
 
-      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-      <tr mat-row *matRowDef="let row; columns: displayedColumns;"
-          (click)="selection.toggle(row)">
-      </tr>
-    </table>
-    <mat-paginator [pageSizeOptions]="[5, 10, 20]" itemsPerPageLabel="每页大小" showFirstLastButtons></mat-paginator>
+        <!-- 操作栏-->
+        <ng-container matColumnDef="operation">
+          <th mat-header-cell *matHeaderCellDef> 操作</th>
+          <td mat-cell *matCellDef="let element" class="operation">
+            <button mat-raised-button color="primary" routerLink="/city/edit">编辑</button>
+            <button mat-raised-button color="warn">删除</button>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;let i = index;">
+        </tr>
+      </table>
+      <mat-paginator [pageSizeOptions]="[5, 10, 20]" itemsPerPageLabel="每页大小" showFirstLastButtons></mat-paginator>
     </div>
   </div>
 </div>

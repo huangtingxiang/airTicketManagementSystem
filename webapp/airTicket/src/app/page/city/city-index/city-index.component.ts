@@ -10,18 +10,24 @@ import {SelectionModel} from '@angular/cdk/collections';
   styleUrls: ['./city-index.component.css']
 })
 export class CityIndexComponent implements OnInit {
-  displayedColumns: string[] = ['select', 'id', 'name', 'pinyin', 'primary'];
 
+  // 显示的列
+  displayedColumns: string[] = ['select', 'id', 'name', 'pinyin', 'primary', 'operation'];
+
+  // 数据源
   dataSource: MatTableDataSource<City>;
 
+  // 选中列
   selection: SelectionModel<City>;
 
+  // 分页dom
   @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
 
   constructor(private cityService: CityService) {
   }
 
   ngOnInit() {
+    // 获取所有的城市
     this.cityService.getAll()
       .subscribe((cities: City[]) => {
         this.dataSource = new MatTableDataSource<City>(cities);
@@ -33,18 +39,21 @@ export class CityIndexComponent implements OnInit {
     };
   }
 
+  // 是否全部选中
   isAllSelected() {
     const numSelected = this.selection.selected.length;
     const numRows = this.dataSource.data.length;
     return numSelected === numRows;
   }
 
+  // 主选击框点中
   masterToggle() {
     this.isAllSelected() ?
       this.selection.clear() :
       this.dataSource.data.forEach(row => this.selection.select(row));
   }
 
+  // 依照城市名过滤
   filterByName(filterValue: string) {
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
