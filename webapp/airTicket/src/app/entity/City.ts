@@ -12,4 +12,11 @@ export class City {
   primary: boolean; // 是否热门城市
 
   airPorts: Array<AirPort>; // 机场集合
+
+  constructor(id: number, name: string, pinyin: string, primary: boolean) {
+    this.id = id;
+    this.name = name;
+    this.pinyin = pinyin;
+    this.primary = primary;
+  }
 }

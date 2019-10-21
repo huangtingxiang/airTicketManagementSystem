@@ -1,0 +1,38 @@
+<div class="ui-g">
+  <form class="ui-g-8 ui-g-offset-2">
+    <div class="ui-g ui-g-12 form-control">
+      <mat-form-field class="full-width">
+        <input matInput placeholder="城市名称">
+      </mat-form-field>
+    </div>
+
+    <div class="ui-g ui-g-12 form-control">
+      <mat-form-field class="full-width">
+        <input matInput placeholder="拼音">
+      </mat-form-field>
+    </div>
+
+    <div class="ui-g ui-g-12 form-control">
+      <label id="radio-group-label">热门城市:</label>
+      <mat-radio-group
+        aria-labelledby="radio-group-label"
+        class="radio-group">
+        <mat-radio-button class="radio-button" [value]="true">
+          是
+        </mat-radio-button>
+        <mat-radio-button class="radio-button" [value]="false">
+          否
+        </mat-radio-button>
+      </mat-radio-group>
+    </div>
+
+    <div class="ui-g ui-g-12 form-control">
+      <div class="ui-g-2 ui-g-offset-3">
+        <button mat-stroked-button style="width: 100%;" routerLink="/city">取消</button>
+      </div>
+      <div class="ui-g-2 ui-g-offset-1">
+        <button mat-stroked-button color="primary" style="width: 100%;" routerLink="/city">新增</button>
+      </div>
+    </div>
+  </form>
+</div>
