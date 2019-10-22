@@ -1,5 +1,6 @@
 import {NgModule} from '@angular/core';
 import {
+  MatAutocompleteModule,
   MatButtonModule,
   MatCheckboxModule,
   MatFormFieldModule,
@@ -24,7 +25,8 @@ import {
     MatPaginatorModule,
     MatButtonModule,
     MatIconModule,
-    MatRadioModule
+    MatRadioModule,
+    MatAutocompleteModule
   ],
   exports: [
     MatGridListModule,
@@ -37,7 +39,8 @@ import {
     MatPaginatorModule,
     MatButtonModule,
     MatIconModule,
-    MatRadioModule
+    MatRadioModule,
+    MatAutocompleteModule
   ]
 })
 export class ShareModule {

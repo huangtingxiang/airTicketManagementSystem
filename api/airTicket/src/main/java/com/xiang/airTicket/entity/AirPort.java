@@ -12,6 +12,8 @@ public class AirPort {
 
     private String icon; // 图标
 
+    private String name;
+
     @ManyToOne
     private City city; // 所属城市
 
@@ -37,5 +39,13 @@ public class AirPort {
 
     public void setCity(City city) {
         this.city = city;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }
