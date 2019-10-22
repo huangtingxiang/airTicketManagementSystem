@@ -1,4 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
+import {MatTableDataSource, PageEvent} from '@angular/material';
+import {Pageable} from '../../../entity/norm/pageable';
+import {PAGEABLE} from '../../../config/PageInfo';
+import {AirPort} from '../../../entity/AirPort';
+import {AirPortService} from '../../../core/service/air-port.service';
+import {Page} from '../../../entity/norm/page';
 
 @Component({
   selector: 'app-air-port-index',
@@ -7,9 +13,36 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AirPortIndexComponent implements OnInit {
 
-  constructor() { }
+  // 显示的列
+  displayedColumns: string[] = ['index', 'name', 'city', 'operation'];
+
+  pageable: Pageable = PAGEABLE;
+
+  dataSource: MatTableDataSource<AirPort>;
+
+  totalElements: number;
+
+  constructor(private airPortService: AirPortService) {
+  }
 
   ngOnInit() {
+    this.reload();
+  }
+
+  reload() {
+    this.airPortService.getAllByPage(this.pageable)
+      .subscribe((pageData: Page<AirPort>) => {
+        this.dataSource = new MatTableDataSource<AirPort>(pageData.content);
+        this.totalElements = pageData.totalElements;
+        console.log(this.totalElements, pageData);
+      });
+  }
+
+  pageChange(event: PageEvent) {
+    console.log(event);
+    this.pageable.page = event.pageIndex;
+    this.pageable.size = event.pageSize;
+    this.reload();
   }
 
 }

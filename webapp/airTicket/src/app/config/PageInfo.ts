@@ -1,5 +1,6 @@
 import {Subject} from 'rxjs';
 import {MatPaginatorIntl} from '@angular/material';
+import {Pageable} from '../entity/norm/pageable';
 
 // 覆盖默认的分页label
 export class PageMessage extends MatPaginatorIntl {
@@ -15,3 +16,5 @@ export class PageMessage extends MatPaginatorIntl {
 
   changes = new Subject<void>();
 }
+
+export const PAGEABLE = new Pageable(5, 0);
