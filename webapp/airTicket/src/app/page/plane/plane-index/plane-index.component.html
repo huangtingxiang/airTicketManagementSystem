@@ -1,1 +1,12 @@
-<p>plane-index works!</p>
+<div class="ui-g ui-g-12">
+  <div class="ui-g ui-g-12">
+    <div class="ui-g-2">
+      <mat-form-field>
+        <input matInput (keyup)="filterByName($event.target.value)" placeholder="飞机名称">
+      </mat-form-field>
+    </div>
+    <div class="ui-g-2 ui-g-offset-8">
+      <button mat-stroked-button color="primary" routerLink="add">添加</button>
+    </div>
+  </div>
+</div>

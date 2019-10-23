@@ -2,14 +2,15 @@ import {NgModule} from '@angular/core';
 import {
   MatAutocompleteModule,
   MatButtonModule,
-  MatCheckboxModule,
+  MatCheckboxModule, MatChipsModule,
   MatFormFieldModule,
   MatGridListModule, MatIconModule,
   MatInputModule,
-  MatListModule, MatPaginatorModule, MatRadioModule,
+  MatListModule, MatPaginatorModule, MatRadioModule, MatSelectModule,
   MatTableModule,
   MatToolbarModule
 } from '@angular/material';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 
 
 @NgModule({
@@ -26,7 +27,11 @@ import {
     MatButtonModule,
     MatIconModule,
     MatRadioModule,
-    MatAutocompleteModule
+    MatAutocompleteModule,
+    MatSelectModule,
+    FormsModule,
+    ReactiveFormsModule,
+    MatChipsModule
   ],
   exports: [
     MatGridListModule,
@@ -40,7 +45,11 @@ import {
     MatButtonModule,
     MatIconModule,
     MatRadioModule,
-    MatAutocompleteModule
+    MatAutocompleteModule,
+    MatSelectModule,
+    FormsModule,
+    ReactiveFormsModule,
+    MatChipsModule
   ]
 })
 export class ShareModule {

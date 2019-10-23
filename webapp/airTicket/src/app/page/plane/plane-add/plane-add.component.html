@@ -1,0 +1,87 @@
+<div class="ui-g">
+  <form class="ui-g-6">
+    <div class="ui-g ui-g-12 form-control">
+      <mat-form-field class="full-width">
+        <input matInput placeholder="飞机名称">
+      </mat-form-field>
+    </div>
+
+    <div class="ui-g ui-g-12 form-control">
+      <mat-form-field class="full-width">
+        <mat-label>选择机型</mat-label>
+        <mat-select>
+          <mat-option *ngFor="let type of planeType" [value]="type.value">
+            {{type.label}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <div class="ui-g ui-g-12 form-control">
+      <mat-form-field class="full-width">
+        <input matInput placeholder="选择航空公司" aria-label="company" [matAutocomplete]="auto" [formControl]="stateCtrl">
+        <mat-autocomplete #auto="matAutocomplete">
+          <mat-option *ngFor="let state of filteredStates | async" [value]="state.name">
+            <img class="option-img" aria-hidden [src]="state.flag" height="25">
+            <span>{{state.name}}</span> |
+            <small>Population: {{state.population}}</small>
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+    </div>
+
+    <div class="ui-g ui-g-12 form-control">
+      <div class="ui-g-6">
+        <mat-form-field class="full-width">
+          <input matInput placeholder="描述"  #described>
+        </mat-form-field>
+      </div>
+
+      <div class="ui-g-6">
+        <mat-form-field class="full-width" >
+          <input matInput type="number" placeholder="票价" min="0" #price>
+          <!--        <mat-error *ngIf="options.get('fontSize')?.invalid">Min size: 10px</mat-error>-->
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="ui-g ui-g-12 form-control">
+      <div class="ui-g-8">
+        <label id="radio-group-label">是否为主舱位:</label>
+        <mat-radio-group aria-label="Select an option" [formControl]="primaryCtrl">
+          <mat-radio-button class="radio-button" [value]="true">是</mat-radio-button>
+          <mat-radio-button class="radio-button" [value]="false">否</mat-radio-button>
+        </mat-radio-group>
+      </div>
+
+      <div class="ui-g-4">
+        <button mat-stroked-button color="primary" (click)="openSnackBar(described.value, price.value)">添加舱位</button>
+      </div>
+    </div>
+
+    <div class="ui-g ui-g-12 form-control">
+      <mat-form-field class="full-width">
+        <mat-chip-list #chipList class="full-width">
+          <mat-chip
+            color="primary"
+            [selected]="shipSpace.primary"
+            *ngFor="let shipSpace of shipSpaces"
+            [selectable]="false"
+            [removable]="true"
+            (removed)="remove(shipSpace)">
+            {{shipSpace.described}}
+            <mat-icon matChipRemove>cancel</mat-icon>
+          </mat-chip>
+          <input
+            style="max-width: 1px;"
+            matInput
+            [readonly]="true"
+            [matChipInputFor]="chipList"
+            placeholder="已选舱位">
+        </mat-chip-list>
+      </mat-form-field>
+    </div>
+
+
+  </form>
+  <div class="ui-g-6"></div>
+</div>
