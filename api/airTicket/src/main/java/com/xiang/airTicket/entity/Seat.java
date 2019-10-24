@@ -14,6 +14,10 @@ public class Seat {
 
     private String number; // 编号
 
+    private Integer row; // 行数
+
+    private Integer column; // 列数
+
     public Long getId() {
         return id;
     }
@@ -28,5 +32,21 @@ public class Seat {
 
     public void setNumber(String number) {
         this.number = number;
+    }
+
+    public Integer getRow() {
+        return row;
+    }
+
+    public void setRow(Integer row) {
+        this.row = row;
+    }
+
+    public Integer getColumn() {
+        return column;
+    }
+
+    public void setColumn(Integer column) {
+        this.column = column;
     }
 }

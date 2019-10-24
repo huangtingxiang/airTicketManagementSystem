@@ -152,15 +152,16 @@ export class PlaneAddComponent implements OnInit {
     }
     for (let i = 1; i <= this.seatCol; i++) {
       const data = [];
-      this.totalSign.forEach((sign: string) => {
+      this.totalSign.forEach((sign: string, index: number) => {
         const disSeat = {
-          value: new Seat(0, i + sign),
+          value: new Seat(0, i + sign, i, index + 1),
           color: '#e2e2e2'
         };
         data.push(disSeat);
       });
       seatData.push(data);
     }
+    console.log(seatData);
     this.seatDataSource = new MatTableDataSource<any>(seatData);
   }
 
