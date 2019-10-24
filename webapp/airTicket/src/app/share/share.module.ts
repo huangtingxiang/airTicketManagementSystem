@@ -11,10 +11,12 @@ import {
   MatToolbarModule
 } from '@angular/material';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import { SvgIconComponent } from './component/svg-icon/svg-icon.component';
+import {CommonModule} from '@angular/common';
 
 
 @NgModule({
-  declarations: [],
+  declarations: [SvgIconComponent],
   imports: [
     MatGridListModule,
     MatListModule,
@@ -31,7 +33,8 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
     MatSelectModule,
     FormsModule,
     ReactiveFormsModule,
-    MatChipsModule
+    MatChipsModule,
+    CommonModule
   ],
   exports: [
     MatGridListModule,
@@ -49,7 +52,8 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
     MatSelectModule,
     FormsModule,
     ReactiveFormsModule,
-    MatChipsModule
+    MatChipsModule,
+    SvgIconComponent
   ]
 })
 export class ShareModule {

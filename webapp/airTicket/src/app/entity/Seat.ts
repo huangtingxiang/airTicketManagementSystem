@@ -4,5 +4,10 @@ export class Seat {
 
   id: number;
 
-  number: number; // 编号
+  number: string; // 编号
+
+  constructor(id: number, number1: string) {
+    this.id = id;
+    this.number = number1;
+  }
 }
