@@ -11,9 +11,22 @@ export class Plane {
 
   icon: string; // 图标
 
-  planeType: number; // 飞机机型
+  planeType: PlaneType; // 飞机机型
 
   airlineCompany: AirlineCompany; // 所属公司
 
   shipSpaces: Array<ShipSpace>; // 舱位集合
+
+  constructor(id: number, name: string, icon: string, planeType: PlaneType, airlineCompany: AirlineCompany, shipSpaces: Array<ShipSpace>) {
+    this.id = id;
+    this.name = name;
+    this.icon = icon;
+    this.planeType = planeType;
+    this.airlineCompany = airlineCompany;
+    this.shipSpaces = shipSpaces;
+  }
+}
+
+export enum PlaneType {
+  LARGE, MEDIUM, SMALL
 }

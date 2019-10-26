@@ -13,10 +13,11 @@ import {
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { SvgIconComponent } from './component/svg-icon/svg-icon.component';
 import {CommonModule} from '@angular/common';
+import { PlaneTypePipe } from './pipe/plane-type.pipe';
 
 
 @NgModule({
-  declarations: [SvgIconComponent],
+  declarations: [SvgIconComponent, PlaneTypePipe],
   imports: [
     MatGridListModule,
     MatListModule,
@@ -53,7 +54,8 @@ import {CommonModule} from '@angular/common';
     FormsModule,
     ReactiveFormsModule,
     MatChipsModule,
-    SvgIconComponent
+    SvgIconComponent,
+    PlaneTypePipe
   ]
 })
 export class ShareModule {
