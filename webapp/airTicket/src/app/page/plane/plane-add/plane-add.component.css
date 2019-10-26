@@ -1,0 +1,71 @@
+.full-width {
+  width: 100%;
+}
+
+.form-control {
+  margin: 20px 0px;
+}
+
+.option-img {
+  vertical-align: middle;
+  margin-right: 8px;
+}
+
+.radio-button {
+  margin: 5px 10px;
+}
+
+#radio-group-label {
+  margin: 5px 10px 5px 0px;
+}
+.red-icon svg {
+  fill: #d81e06;
+}
+
+.yellow-icon svg {
+  fill: #f4ea2a;
+}
+
+.green-icon svg {
+  fill: #1afa29;
+}
+
+.blue-icon svg {
+  fill: #1296db;
+}
+.dark-blue-icon svg {
+  fill: #13227a;
+}
+
+.pink-icon svg {
+  fill: #d4237a;
+}
+
+
+.seat-container {
+  position: relative;
+}
+
+.seat-container span {
+  position: absolute;
+  bottom: 0px;
+  left: 12px;
+}
+
+.seat-container button {
+  padding-top: 6px;
+  margin-bottom: 12px;
+}
+
+.seat-sample {
+  display: flex;
+}
+
+.seat-sample button {
+  padding-top: 5px;
+}
+
+.seat-sample span {
+  margin: 0px 5px 0px 20px;
+  padding-top: 8px;
+}

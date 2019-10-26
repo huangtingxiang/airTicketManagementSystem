@@ -16,7 +16,7 @@ export class AirPortIndexComponent implements OnInit {
   // 显示的列
   displayedColumns: string[] = ['index', 'name', 'city', 'operation'];
 
-  pageable: Pageable = PAGEABLE;
+  pageable: Pageable = new Pageable(PAGEABLE.size, PAGEABLE.page);
 
   dataSource: MatTableDataSource<AirPort>;
 
@@ -39,7 +39,6 @@ export class AirPortIndexComponent implements OnInit {
   }
 
   pageChange(event: PageEvent) {
-    console.log(event);
     this.pageable.page = event.pageIndex;
     this.pageable.size = event.pageSize;
     this.reload();
