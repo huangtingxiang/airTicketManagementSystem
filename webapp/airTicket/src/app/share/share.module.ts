@@ -11,14 +11,16 @@ import {
   MatToolbarModule
 } from '@angular/material';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import { SvgIconComponent } from './component/svg-icon/svg-icon.component';
+import {SvgIconComponent} from './component/svg-icon/svg-icon.component';
 import {CommonModule} from '@angular/common';
-import { PlaneTypePipe } from './pipe/plane-type.pipe';
-import { CitySelectComponent } from './component/city-select/city-select.component';
+import {PlaneTypePipe} from './pipe/plane-type.pipe';
+import {CitySelectComponent} from './component/city-select/city-select.component';
+import {ErrorDialogComponent} from './component/error-dialog/error-dialog.component';
+import {MatDialogModule} from '@angular/material/dialog';
 
 
 @NgModule({
-  declarations: [SvgIconComponent, PlaneTypePipe, CitySelectComponent],
+  declarations: [SvgIconComponent, PlaneTypePipe, CitySelectComponent, ErrorDialogComponent],
   imports: [
     MatGridListModule,
     MatListModule,
@@ -36,7 +38,8 @@ import { CitySelectComponent } from './component/city-select/city-select.compone
     FormsModule,
     ReactiveFormsModule,
     MatChipsModule,
-    CommonModule
+    CommonModule,
+    MatDialogModule
   ],
   exports: [
     MatGridListModule,
@@ -57,8 +60,10 @@ import { CitySelectComponent } from './component/city-select/city-select.compone
     MatChipsModule,
     SvgIconComponent,
     PlaneTypePipe,
-    CitySelectComponent
-  ]
+    CitySelectComponent,
+    MatDialogModule
+  ],
+  entryComponents: [ErrorDialogComponent]
 })
 export class ShareModule {
 }

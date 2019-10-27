@@ -8,7 +8,7 @@ import {AirPortEditComponent} from './air-port-edit/air-port-edit.component';
 const routes: Routes = [
   {path: '', component: AirPortIndexComponent},
   {path: 'add', component: AirPortAddComponent},
-  {path: 'edit', component: AirPortEditComponent}
+  {path: 'edit/:id', component: AirPortEditComponent}
 ];
 
 @NgModule({
