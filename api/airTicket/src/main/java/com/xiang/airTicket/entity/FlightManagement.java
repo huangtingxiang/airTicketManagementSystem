@@ -29,7 +29,7 @@ public class FlightManagement {
     private Plane plane; // 飞机
 
     @OneToMany
-    private List<Order> orders = new ArrayList<>(); // 订单集合
+    private List<TicketOrder> ticketOrders = new ArrayList<>(); // 订单集合
 
     public Long getId() {
         return id;
@@ -87,11 +87,11 @@ public class FlightManagement {
         this.plane = plane;
     }
 
-    public List<Order> getOrders() {
-        return orders;
+    public List<TicketOrder> getOrders() {
+        return ticketOrders;
     }
 
-    public void setOrders(List<Order> orders) {
-        this.orders = orders;
+    public void setOrders(List<TicketOrder> orders) {
+        this.ticketOrders = orders;
     }
 }

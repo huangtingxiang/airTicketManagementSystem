@@ -9,14 +9,14 @@ export class City {
 
   pinyin: string; // 拼音
 
-  primary: boolean; // 是否热门城市
+  primaried: boolean; // 是否热门城市
 
   airPorts: Array<AirPort>; // 机场集合
 
-  constructor(id: number, name: string, pinyin: string, primary: boolean) {
+  constructor(id: number, name: string, pinyin: string, primaried: boolean) {
     this.id = id;
     this.name = name;
     this.pinyin = pinyin;
-    this.primary = primary;
+    this.primaried = primaried;
   }
 }

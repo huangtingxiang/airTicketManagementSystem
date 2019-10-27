@@ -16,7 +16,7 @@ public class ShipSpace {
 
     private Float price; // 票价
 
-    private Boolean primary; // 是否为主舱位
+    private Boolean primaried; // 是否为主舱位
 
     @OneToMany
     private List<Seat>  seats = new ArrayList<>(); // 座位集合
@@ -45,12 +45,12 @@ public class ShipSpace {
         this.price = price;
     }
 
-    public Boolean getPrimary() {
-        return primary;
+    public Boolean getPrimaried() {
+        return primaried;
     }
 
-    public void setPrimary(Boolean primary) {
-        this.primary = primary;
+    public void setPrimaried(Boolean primaried) {
+        this.primaried = primaried;
     }
 
     public List<Seat> getSeats() {

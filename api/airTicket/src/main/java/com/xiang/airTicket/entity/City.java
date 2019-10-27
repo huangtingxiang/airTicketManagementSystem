@@ -1,5 +1,7 @@
 package com.xiang.airTicket.entity;
 
+import com.fasterxml.jackson.annotation.JsonView;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,9 +18,10 @@ public class City {
 
     private String pinyin; // 拼音
 
-    private Boolean primary; // 是否热门城市
+    private Boolean primaried; // 是否热门城市
 
     @OneToMany
+    @JsonView(AirPortsJsonView.class)
     private List<AirPort> airPorts = new ArrayList<>(); // 机场集合
 
     public Long getId() {
@@ -45,12 +48,12 @@ public class City {
         this.pinyin = pinyin;
     }
 
-    public Boolean getPrimary() {
-        return primary;
+    public Boolean getPrimaried() {
+        return primaried;
     }
 
-    public void setPrimary(Boolean primary) {
-        this.primary = primary;
+    public void setPrimaried(Boolean primaried) {
+        this.primaried = primaried;
     }
 
     public List<AirPort> getAirPorts() {
@@ -59,5 +62,8 @@ public class City {
 
     public void setAirPorts(List<AirPort> airPorts) {
         this.airPorts = airPorts;
+    }
+
+    public interface AirPortsJsonView {
     }
 }

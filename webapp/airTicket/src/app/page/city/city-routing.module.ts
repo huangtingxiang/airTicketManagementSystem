@@ -8,7 +8,7 @@ import {CityEditComponent} from './city-edit/city-edit.component';
 const routes: Routes = [
   {path: '', component: CityIndexComponent},
   {path: 'add', component: CityAddComponent},
-  {path: 'edit', component: CityEditComponent}
+  {path: 'edit/:id', component: CityEditComponent}
 ];
 
 @NgModule({
