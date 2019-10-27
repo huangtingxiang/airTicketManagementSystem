@@ -1,5 +1,5 @@
 <div class="ui-g">
-  <form class="ui-g-8 ui-g-offset-2">
+  <form class="ui-g-8 ui-g-offset-2" (ngSubmit)="save()">
     <div class="ui-g ui-g-12 form-control">
       <mat-form-field class="full-width">
         <input matInput placeholder="机场名称">
@@ -7,16 +7,7 @@
     </div>
 
     <div class="ui-g ui-g-12 form-control">
-      <mat-form-field class="full-width">
-        <input type="text" matInput placeholder="选择城市" required [matAutocomplete]="autoGroup">
-        <mat-autocomplete #autoGroup="matAutocomplete">
-          <mat-optgroup *ngFor="let group of stateGroupOptions | async" [label]="group.letter">
-            <mat-option *ngFor="let name of group.names" [value]="name">
-              {{name}}
-            </mat-option>
-          </mat-optgroup>
-        </mat-autocomplete>
-      </mat-form-field>
+      <app-city-select [cityCtr]="test" class="full-width"></app-city-select>
     </div>
 
     <div class="ui-g ui-g-12 form-control full-width">
@@ -29,7 +20,7 @@
         <button mat-stroked-button style="width: 100%;" routerLink="/air-port">取消</button>
       </div>
       <div class="ui-g-2 ui-g-offset-1">
-        <button mat-stroked-button color="primary" style="width: 100%;" routerLink="/air-port">新增</button>
+        <button mat-stroked-button color="primary" style="width: 100%;" type="submit">新增</button>
       </div>
     </div>
   </form>
