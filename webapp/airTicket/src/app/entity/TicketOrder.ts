@@ -3,7 +3,7 @@
 import {FlightManagement} from './FlightManagement';
 import {Visitor} from './Visitor';
 
-export class Order {
+export class TicketOrder {
 
   id: number; // id
 

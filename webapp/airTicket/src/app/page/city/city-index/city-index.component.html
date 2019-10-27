@@ -2,11 +2,15 @@
   <div class="ui-g ui-g-12">
     <div class="ui-g-2">
       <mat-form-field>
-        <input matInput (keyup)="filterByName($event.target.value)" placeholder="城市名">
+        <input matInput (keyup)="filterByName($event.target.value)" placeholder="城市名/拼音">
       </mat-form-field>
     </div>
-    <div class="ui-g-2 ui-g-offset-8">
-      <button mat-stroked-button color="primary" routerLink="/city/add">添加</button>
+    <div class="ui-g-6 ui-g-offset-4" style="margin-top: 15px;">
+      <div style="float: right;">
+        <button mat-stroked-button color="primary" style="margin-right: 15px;"  (click)="setAllToNotPrimaried()">选中项设为热门城市</button>
+        <button mat-stroked-button color="primary" style="margin-right: 15px;"  (click)="setAllToPrimaried()">选中项取消热门城市</button>
+        <button mat-stroked-button color="primary" routerLink="/city/add">添加</button>
+      </div>
     </div>
   </div>
   <div class="ui-g ui-g-12">
@@ -50,10 +54,10 @@
         <ng-container matColumnDef="primary">
           <th mat-header-cell *matHeaderCellDef style="width: 10% !important;"> 是否为热门城市</th>
           <td mat-cell *matCellDef="let element">
-            <button *ngIf="element.primary" mat-icon-button color="primary" title="取消热门城市">
+            <button *ngIf="element.primaried" mat-icon-button color="accent" title="取消热门城市" (click)="setNotToPrimaried(element)">
               <mat-icon>favorite</mat-icon>
             </button>
-            <button mat-icon-button aria-label="Example icon-button with a heart icon" title="设为热门城市">
+            <button mat-icon-button *ngIf="!element.primaried" title="设为热门城市" (click)="setToPrimaried(element)">
               <mat-icon>favorite</mat-icon>
             </button>
           </td>
@@ -63,8 +67,8 @@
         <ng-container matColumnDef="operation">
           <th mat-header-cell *matHeaderCellDef style="width: 20% !important;"> 操作</th>
           <td mat-cell *matCellDef="let element" class="operation">
-            <button mat-raised-button color="primary" routerLink="/city/edit">编辑</button>
-            <button mat-raised-button color="warn">删除</button>
+            <button mat-raised-button color="primary" routerLink="/city/edit/{{element.id}}">编辑</button>
+            <button mat-raised-button color="warn" (click)="delete(element.id)">删除</button>
           </td>
         </ng-container>
 
@@ -72,7 +76,7 @@
         <tr mat-row *matRowDef="let row; columns: displayedColumns;let i = index;">
         </tr>
       </table>
-      <mat-paginator [pageSizeOptions]="[5, 10, 20]" itemsPerPageLabel="每页大小" showFirstLastButtons></mat-paginator>
+      <mat-paginator [pageSizeOptions]="[5, 10, 20]" itemsPerPageLabel="每页大小" showFirstLastButtons [pageSize]="pageable.size"></mat-paginator>
     </div>
   </div>
 </div>

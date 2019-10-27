@@ -7,7 +7,7 @@ import java.util.Date;
 
 // 订单实体
 @Entity
-public class Order {
+public class TicketOrder {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id; // id

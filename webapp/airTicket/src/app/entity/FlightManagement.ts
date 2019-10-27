@@ -3,7 +3,7 @@
 import {City} from './City';
 import {AirPort} from './AirPort';
 import {Plane} from './Plane';
-import {Order} from './Order';
+import {TicketOrder} from './TicketOrder';
 
 export class FlightManagement {
 
@@ -21,5 +21,5 @@ export class FlightManagement {
 
   plane: Plane; // 飞机
 
-  orders: Array<Order>; // 订单集合
+  orders: Array<TicketOrder>; // 订单集合
 }

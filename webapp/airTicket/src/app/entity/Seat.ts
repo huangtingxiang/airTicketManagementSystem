@@ -6,14 +6,14 @@ export class Seat {
 
   number: string; // 编号
 
-  row: number; // 行数
+  line: number; // 行数
 
   column: number; // 列数
 
   constructor(id: number, number1: string, row: number, column: number) {
     this.id = id;
     this.number = number1;
-    this.row = row;
+    this.line = row;
     this.column = column;
   }
 }

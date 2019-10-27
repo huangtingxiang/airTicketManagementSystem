@@ -18,7 +18,7 @@ public class Visitor {
     private String phoneNumber; // 手机号
 
     @OneToMany
-    List<Order> orders = new ArrayList<>(); // 订单号
+    List<TicketOrder> ticketOrders = new ArrayList<>(); // 订单号
 
     public Long getId() {
         return id;
@@ -52,11 +52,11 @@ public class Visitor {
         this.phoneNumber = phoneNumber;
     }
 
-    public List<Order> getOrders() {
-        return orders;
+    public List<TicketOrder> getOrders() {
+        return ticketOrders;
     }
 
-    public void setOrders(List<Order> orders) {
-        this.orders = orders;
+    public void setOrders(List<TicketOrder> orders) {
+        this.ticketOrders = orders;
     }
 }

@@ -1,21 +1,24 @@
 <div class="ui-g">
-  <form class="ui-g-8 ui-g-offset-2">
+  <form class="ui-g-8 ui-g-offset-2" [formGroup]="cityFormGroup" (ngSubmit)="update()">
     <div class="ui-g ui-g-12 form-control">
       <mat-form-field class="full-width">
-        <input matInput placeholder="城市名称">
+        <input matInput placeholder="城市名称" formControlName="name">
       </mat-form-field>
+      <mat-error *ngIf="cityFormGroup.get('name').errors?.required && cityFormGroup.get('name').touched">请输入城市名称</mat-error>
     </div>
 
     <div class="ui-g ui-g-12 form-control">
       <mat-form-field class="full-width">
-        <input matInput placeholder="拼音">
+        <input matInput placeholder="拼音" formControlName="pinyin">
       </mat-form-field>
+      <mat-error *ngIf="cityFormGroup.get('pinyin').errors?.required && cityFormGroup.get('pinyin').touched">请输入城市拼音</mat-error>
     </div>
 
     <div class="ui-g ui-g-12 form-control">
       <label id="radio-group-label">热门城市:</label>
       <mat-radio-group
         aria-labelledby="radio-group-label"
+        formControlName="primaried"
         class="radio-group">
         <mat-radio-button class="radio-button" [value]="true">
           是
@@ -28,10 +31,10 @@
 
     <div class="ui-g ui-g-12 form-control">
       <div class="ui-g-2 ui-g-offset-3">
-        <button mat-stroked-button style="width: 100%;" routerLink="/city">取消</button>
+        <button mat-stroked-button style="width: 100%;" routerLink="/city" type="button">取消</button>
       </div>
       <div class="ui-g-2 ui-g-offset-1">
-        <button mat-stroked-button color="primary" style="width: 100%;" routerLink="/city">新增</button>
+        <button mat-stroked-button color="primary" style="width: 100%;"  type="submit" [disabled]="!cityFormGroup.valid">新增</button>
       </div>
     </div>
   </form>

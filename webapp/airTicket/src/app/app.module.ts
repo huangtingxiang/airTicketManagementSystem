@@ -8,6 +8,8 @@ import {AppRoutingModule} from './app-routing.module';
 import {CoreModule} from './core/core.module';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {MatSnackBarModule} from '@angular/material';
+import {HTTP_INTERCEPTORS} from '@angular/common/http';
+import {BaseInterceptor} from './config/interceptor/base-interceptor';
 
 @NgModule({
   declarations: [
@@ -23,7 +25,9 @@ import {MatSnackBarModule} from '@angular/material';
     ReactiveFormsModule,
     MatSnackBarModule
   ],
-  providers: [],
+  providers: [
+    {provide: HTTP_INTERCEPTORS, useClass: BaseInterceptor, multi: true},
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {

@@ -1,5 +1,5 @@
 // 乘客实体
-import {Order} from './Order';
+import {TicketOrder} from './TicketOrder';
 
 export class Visitor {
 
@@ -11,5 +11,5 @@ export class Visitor {
 
   phoneNumber: string; // 手机号
 
-  orders: Array<Order>; // 订单号
+  orders: Array<TicketOrder>; // 订单号
 }

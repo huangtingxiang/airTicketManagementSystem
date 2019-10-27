@@ -17,4 +17,4 @@ export class PageMessage extends MatPaginatorIntl {
   changes = new Subject<void>();
 }
 
-export const PAGEABLE = new Pageable(5, 0);
+export const PAGEABLE = new Pageable(10, 0);

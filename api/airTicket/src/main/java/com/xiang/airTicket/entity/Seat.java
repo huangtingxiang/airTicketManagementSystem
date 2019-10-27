@@ -14,7 +14,7 @@ public class Seat {
 
     private String number; // 编号
 
-    private Integer row; // 行数
+    private Integer line; // 行数
 
     private Integer column; // 列数
 
@@ -34,12 +34,13 @@ public class Seat {
         this.number = number;
     }
 
-    public Integer getRow() {
-        return row;
+
+    public Integer getLine() {
+        return line;
     }
 
-    public void setRow(Integer row) {
-        this.row = row;
+    public void setLine(Integer line) {
+        this.line = line;
     }
 
     public Integer getColumn() {
