@@ -8,7 +8,7 @@
 
     <div class="ui-g ui-g-12 form-control">
       <mat-form-field class="full-width">
-        <input type="text" matInput placeholder="选择城市" formControlName="stateGroup" required [matAutocomplete]="autoGroup">
+        <input type="text" matInput placeholder="选择城市" required [matAutocomplete]="autoGroup">
         <mat-autocomplete #autoGroup="matAutocomplete">
           <mat-optgroup *ngFor="let group of stateGroupOptions | async" [label]="group.letter">
             <mat-option *ngFor="let name of group.names" [value]="name">
