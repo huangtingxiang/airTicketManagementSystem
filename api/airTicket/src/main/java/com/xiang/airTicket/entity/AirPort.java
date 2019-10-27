@@ -1,5 +1,7 @@
 package com.xiang.airTicket.entity;
 
+import com.fasterxml.jackson.annotation.JsonView;
+
 import javax.persistence.*;
 
 // 机场表
@@ -15,6 +17,7 @@ public class AirPort {
     private String name;
 
     @ManyToOne
+    @JsonView(CityJsonView.class)
     private City city; // 所属城市
 
     public Long getId() {
@@ -47,5 +50,8 @@ public class AirPort {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public interface CityJsonView {
     }
 }

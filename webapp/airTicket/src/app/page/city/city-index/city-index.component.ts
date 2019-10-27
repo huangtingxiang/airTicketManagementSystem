@@ -1,9 +1,11 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {CityService} from '../../../core/service/city.service';
 import {City} from '../../../entity/City';
-import {MatPaginator, MatTableDataSource} from '@angular/material';
+import {MatDialog, MatPaginator, MatTableDataSource} from '@angular/material';
 import {SelectionModel} from '@angular/cdk/collections';
 import {PAGEABLE} from '../../../config/PageInfo';
+import {HttpErrorResponse} from '@angular/common/http';
+import {ErrorDialogComponent} from '../../../share/component/error-dialog/error-dialog.component';
 
 @Component({
   selector: 'app-city-index',
@@ -29,7 +31,8 @@ export class CityIndexComponent implements OnInit {
     size: PAGEABLE.size
   };
 
-  constructor(private cityService: CityService) {
+  constructor(private cityService: CityService,
+              private dialog: MatDialog) {
   }
 
   ngOnInit() {
@@ -100,6 +103,18 @@ export class CityIndexComponent implements OnInit {
     this.cityService.delete(id)
       .subscribe(() => {
         this.dataSource.data = this.dataSource.data.filter((city => city.id !== id));
+      }, (response: HttpErrorResponse) => {
+        const title = '删除失败';
+        let content;
+        if (response.status === 409) {
+          content = '存在约束关系，不可删除';
+        } else {
+          content = '服务器错误';
+        }
+        const dialogRef = this.dialog.open(ErrorDialogComponent, {
+          width: '500px',
+          data: {title, content}
+        });
       });
   }
 }

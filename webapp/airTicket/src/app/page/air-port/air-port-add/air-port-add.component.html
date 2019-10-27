@@ -1,13 +1,15 @@
 <div class="ui-g">
-  <form class="ui-g-8 ui-g-offset-2" (ngSubmit)="save()">
+  <form class="ui-g-8 ui-g-offset-2" (ngSubmit)="save()" [formGroup]="airPortForm">
     <div class="ui-g ui-g-12 form-control">
       <mat-form-field class="full-width">
-        <input matInput placeholder="机场名称">
+        <input matInput placeholder="机场名称" formControlName="name">
       </mat-form-field>
+      <mat-error *ngIf="airPortForm.get('name').errors?.required && airPortForm.get('name').touched">请输入机场名称</mat-error>
     </div>
 
     <div class="ui-g ui-g-12 form-control">
-      <app-city-select [cityCtr]="test" class="full-width"></app-city-select>
+      <app-city-select [cityCtr]="airPortForm.get('city')" class="full-width"></app-city-select>
+      <mat-error *ngIf="airPortForm.get('city').errors?.required && airPortForm.get('city').touched">请选择城市</mat-error>
     </div>
 
     <div class="ui-g ui-g-12 form-control full-width">
@@ -17,10 +19,10 @@
 
     <div class="ui-g ui-g-12 form-control">
       <div class="ui-g-2 ui-g-offset-3">
-        <button mat-stroked-button style="width: 100%;" routerLink="/air-port">取消</button>
+        <button mat-stroked-button style="width: 100%;" routerLink="/air-port" type="button">取消</button>
       </div>
       <div class="ui-g-2 ui-g-offset-1">
-        <button mat-stroked-button color="primary" style="width: 100%;" type="submit">新增</button>
+        <button mat-stroked-button color="primary" style="width: 100%;" type="submit" [disabled]="airPortForm.invalid">新增</button>
       </div>
     </div>
   </form>
