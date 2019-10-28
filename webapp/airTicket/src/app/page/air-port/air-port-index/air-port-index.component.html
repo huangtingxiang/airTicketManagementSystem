@@ -51,6 +51,7 @@
       <mat-paginator [pageSizeOptions]="[5, 10, 20]"
                      [length]="totalElements"
                      [pageIndex]="pageable.page"
+                     [pageSize]="pageable.size"
                      (page)="pageChange($event)"
                      [showFirstLastButtons]="true"></mat-paginator>
     </div>

@@ -1,18 +1,10 @@
 import {Component, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup} from '@angular/forms';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Observable} from 'rxjs';
 import {map, startWith} from 'rxjs/operators';
-
-export interface StateGroup {
-  letter: string;
-  names: string[];
-}
-
-export const filter = (opt: string[], value: string): string[] => {
-  const filterValue = value.toLowerCase();
-
-  return opt.filter(item => item.toLowerCase().indexOf(filterValue) === 0);
-};
+import {ActivatedRoute, ParamMap, Router} from '@angular/router';
+import {AirlineCompanyService} from '../../../core/service/airline-company.service';
+import {AirlineCompany} from '../../../entity/AirlineCompany';
 
 @Component({
   selector: 'app-airline-company-edit',
@@ -20,91 +12,36 @@ export const filter = (opt: string[], value: string): string[] => {
   styleUrls: ['./airline-company-edit.component.css']
 })
 export class AirlineCompanyEditComponent implements OnInit {
-  stateForm: FormGroup = this.formBuilder.group({
-    stateGroup: '',
-  });
 
-  stateGroups: StateGroup[] = [{
-    letter: 'A',
-    names: ['Alabama', 'Alaska', 'Arizona', 'Arkansas']
-  }, {
-    letter: 'C',
-    names: ['California', 'Colorado', 'Connecticut']
-  }, {
-    letter: 'D',
-    names: ['Delaware']
-  }, {
-    letter: 'F',
-    names: ['Florida']
-  }, {
-    letter: 'G',
-    names: ['Georgia']
-  }, {
-    letter: 'H',
-    names: ['Hawaii']
-  }, {
-    letter: 'I',
-    names: ['Idaho', 'Illinois', 'Indiana', 'Iowa']
-  }, {
-    letter: 'K',
-    names: ['Kansas', 'Kentucky']
-  }, {
-    letter: 'L',
-    names: ['Louisiana']
-  }, {
-    letter: 'M',
-    names: ['Maine', 'Maryland', 'Massachusetts', 'Michigan',
-      'Minnesota', 'Mississippi', 'Missouri', 'Montana']
-  }, {
-    letter: 'N',
-    names: ['Nebraska', 'Nevada', 'New Hampshire', 'New Jersey',
-      'New Mexico', 'New York', 'North Carolina', 'North Dakota']
-  }, {
-    letter: 'O',
-    names: ['Ohio', 'Oklahoma', 'Oregon']
-  }, {
-    letter: 'P',
-    names: ['Pennsylvania']
-  }, {
-    letter: 'R',
-    names: ['Rhode Island']
-  }, {
-    letter: 'S',
-    names: ['South Carolina', 'South Dakota']
-  }, {
-    letter: 'T',
-    names: ['Tennessee', 'Texas']
-  }, {
-    letter: 'U',
-    names: ['Utah']
-  }, {
-    letter: 'V',
-    names: ['Vermont', 'Virginia']
-  }, {
-    letter: 'W',
-    names: ['Washington', 'West Virginia', 'Wisconsin', 'Wyoming']
-  }];
+  airlineCompanyForm: FormGroup;
 
-  stateGroupOptions: Observable<StateGroup[]>;
+  id: number;
 
-  constructor(private formBuilder: FormBuilder) {
+  constructor(private fb: FormBuilder,
+              private router: Router,
+              private airlineCompanyService: AirlineCompanyService,
+              private activatedRoute: ActivatedRoute) {
   }
 
   ngOnInit() {
-    this.stateGroupOptions = this.stateForm.get('stateGroup')!.valueChanges
-      .pipe(
-        startWith(''),
-        map(value => this._filterGroup(value))
-      );
+    this.airlineCompanyForm = this.fb.group({
+      name: ['', Validators.required],
+      city: [null, Validators.required]
+    });
+    this.activatedRoute.paramMap.subscribe((params: ParamMap) => {
+      this.id = +params.get('id');
+      this.airlineCompanyService.getById(this.id)
+        .subscribe((airlineCompany: AirlineCompany) => {
+          this.airlineCompanyForm.patchValue(airlineCompany);
+        });
+    });
   }
 
-  private _filterGroup(value: string): StateGroup[] {
-    if (value) {
-      return this.stateGroups
-        .map(group => ({letter: group.letter, names: filter(group.names, value)}))
-        .filter(group => group.names.length > 0);
-    }
-
-    return this.stateGroups;
+  update() {
+    this.airlineCompanyService.update(this.id, this.airlineCompanyForm.value)
+      .subscribe(() => {
+        this.router.navigateByUrl('/airline-company');
+      });
   }
+
 }
