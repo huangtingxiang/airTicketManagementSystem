@@ -1,6 +1,4 @@
 import {Component} from '@angular/core';
-import {MatIconRegistry} from '@angular/material';
-import {DomSanitizer} from '@angular/platform-browser';
 
 @Component({
   selector: 'app-root',
@@ -8,11 +6,7 @@ import {DomSanitizer} from '@angular/platform-browser';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  items = [{label: 'f'}, {label: 'f'}];
 
-  constructor(iconRegistry: MatIconRegistry, sanitizer: DomSanitizer) {
-    iconRegistry.addSvgIcon(
-      'seat',
-      sanitizer.bypassSecurityTrustResourceUrl('assets/icon/seat.svg'));
+  constructor() {
   }
 }

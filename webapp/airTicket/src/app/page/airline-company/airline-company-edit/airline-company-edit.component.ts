@@ -26,7 +26,8 @@ export class AirlineCompanyEditComponent implements OnInit {
   ngOnInit() {
     this.airlineCompanyForm = this.fb.group({
       name: ['', Validators.required],
-      city: [null, Validators.required]
+      city: [null, Validators.required],
+      icon: [null]
     });
     this.activatedRoute.paramMap.subscribe((params: ParamMap) => {
       this.id = +params.get('id');

@@ -1,7 +1,7 @@
 import {NgModule} from '@angular/core';
 import {
   MatAutocompleteModule,
-  MatButtonModule,
+  MatButtonModule, MatCardModule,
   MatCheckboxModule, MatChipsModule,
   MatFormFieldModule,
   MatGridListModule, MatIconModule,
@@ -17,10 +17,11 @@ import {PlaneTypePipe} from './pipe/plane-type.pipe';
 import {CitySelectComponent} from './component/city-select/city-select.component';
 import {ErrorDialogComponent} from './component/error-dialog/error-dialog.component';
 import {MatDialogModule} from '@angular/material/dialog';
+import { UploadImageComponent } from './component/upload-image/upload-image.component';
 
 
 @NgModule({
-  declarations: [SvgIconComponent, PlaneTypePipe, CitySelectComponent, ErrorDialogComponent],
+  declarations: [SvgIconComponent, PlaneTypePipe, CitySelectComponent, ErrorDialogComponent, UploadImageComponent],
   imports: [
     MatGridListModule,
     MatListModule,
@@ -39,7 +40,8 @@ import {MatDialogModule} from '@angular/material/dialog';
     ReactiveFormsModule,
     MatChipsModule,
     CommonModule,
-    MatDialogModule
+    MatDialogModule,
+    MatCardModule
   ],
   exports: [
     MatGridListModule,
@@ -61,7 +63,8 @@ import {MatDialogModule} from '@angular/material/dialog';
     SvgIconComponent,
     PlaneTypePipe,
     CitySelectComponent,
-    MatDialogModule
+    MatDialogModule,
+    UploadImageComponent
   ],
   entryComponents: [ErrorDialogComponent]
 })

@@ -12,7 +12,7 @@ import {HttpClient} from '@angular/common/http';
 })
 export class AirPortService {
 
-  baseUrl = 'airPort';
+  baseUrl = 'api/airPort';
 
   constructor(private httpClient: HttpClient) {
   }

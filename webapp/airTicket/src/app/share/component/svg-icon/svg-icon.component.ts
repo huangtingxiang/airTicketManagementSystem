@@ -1,4 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
+import {MatIconRegistry} from '@angular/material';
+import {DomSanitizer} from '@angular/platform-browser';
 
 @Component({
   selector: 'app-svg-icon',
@@ -13,10 +15,12 @@ export class SvgIconComponent implements OnInit {
   @Input()
   color: string;
 
-  constructor() {
+  constructor(iconRegistry: MatIconRegistry, sanitizer: DomSanitizer) {
+    iconRegistry.addSvgIcon(
+      'seat',
+      sanitizer.bypassSecurityTrustResourceUrl('assets/icon/seat.svg'));
   }
 
   ngOnInit() {
-
   }
 }

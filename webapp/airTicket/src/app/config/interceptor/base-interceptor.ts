@@ -7,9 +7,9 @@ export class BaseInterceptor implements HttpInterceptor {
 
   intercept(req: HttpRequest<any>, next: HttpHandler):
     Observable<HttpEvent<any>> {
-    const secureReq = req.clone({
-      url: 'http://localhost:8080/' + req.url
-    });
-    return next.handle(secureReq);
+    // const secureReq = req.clone({
+    //   url: 'api/' + req.url
+    // });
+    return next.handle(req);
   }
 }

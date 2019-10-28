@@ -7,9 +7,10 @@ import {Pageable} from '../../entity/norm/pageable';
 import {Plane, PlaneType} from '../../entity/Plane';
 import {AirlineCompany} from '../../entity/AirlineCompany';
 import {ShipSpace} from '../../entity/ShipSpace';
+import {CoreModule} from '../core.module';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: CoreModule
 })
 export class PlaneService {
 

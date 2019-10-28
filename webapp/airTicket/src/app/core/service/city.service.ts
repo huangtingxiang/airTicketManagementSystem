@@ -9,7 +9,7 @@ import {HttpClient} from '@angular/common/http';
 })
 export class CityService {
 
-  baseUrl = 'city';
+  baseUrl = 'api/city';
 
   constructor(private httpClient: HttpClient) {
   }
