@@ -8,7 +8,7 @@ import {AirlineCompanyEditComponent} from './airline-company-edit/airline-compan
 const routes: Routes = [
   {path: '', component: AirlineCompanyIndexComponent},
   {path: 'add', component: AirlineCompanyAddComponent},
-  {path: 'edit', component: AirlineCompanyEditComponent}
+  {path: 'edit/:id', component: AirlineCompanyEditComponent}
 ];
 
 @NgModule({

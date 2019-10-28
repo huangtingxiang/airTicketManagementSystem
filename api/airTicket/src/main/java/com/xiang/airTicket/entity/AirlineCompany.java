@@ -1,5 +1,7 @@
 package com.xiang.airTicket.entity;
 
+import com.fasterxml.jackson.annotation.JsonView;
+
 import javax.persistence.*;
 
 // 航空公司
@@ -15,6 +17,7 @@ public class AirlineCompany {
     private String icon; // 图标
 
     @ManyToOne
+    @JsonView(CityJsonView.class)
     private City city; // 所属城市
 
 
@@ -48,5 +51,8 @@ public class AirlineCompany {
 
     public void setCity(City city) {
         this.city = city;
+    }
+
+    public interface CityJsonView {
     }
 }
