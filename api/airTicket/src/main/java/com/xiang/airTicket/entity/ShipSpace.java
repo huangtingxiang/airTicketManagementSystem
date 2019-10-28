@@ -18,8 +18,8 @@ public class ShipSpace {
 
     private Boolean primaried; // 是否为主舱位
 
-    @OneToMany
-    private List<Seat>  seats = new ArrayList<>(); // 座位集合
+    @OneToMany(cascade = CascadeType.ALL)
+    private List<Seat> seats = new ArrayList<>(); // 座位集合
 
     public Long getId() {
         return id;
@@ -59,5 +59,8 @@ public class ShipSpace {
 
     public void setSeats(List<Seat> seats) {
         this.seats = seats;
+    }
+
+    public interface SeatJsonView {
     }
 }

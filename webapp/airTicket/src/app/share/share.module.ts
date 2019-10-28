@@ -18,10 +18,11 @@ import {CitySelectComponent} from './component/city-select/city-select.component
 import {ErrorDialogComponent} from './component/error-dialog/error-dialog.component';
 import {MatDialogModule} from '@angular/material/dialog';
 import { UploadImageComponent } from './component/upload-image/upload-image.component';
+import { AirlineCompanySelectComponent } from './component/airline-company-select/airline-company-select.component';
 
 
 @NgModule({
-  declarations: [SvgIconComponent, PlaneTypePipe, CitySelectComponent, ErrorDialogComponent, UploadImageComponent],
+  declarations: [SvgIconComponent, PlaneTypePipe, CitySelectComponent, ErrorDialogComponent, UploadImageComponent, AirlineCompanySelectComponent],
   imports: [
     MatGridListModule,
     MatListModule,
@@ -64,7 +65,8 @@ import { UploadImageComponent } from './component/upload-image/upload-image.comp
     PlaneTypePipe,
     CitySelectComponent,
     MatDialogModule,
-    UploadImageComponent
+    UploadImageComponent,
+    AirlineCompanySelectComponent
   ],
   entryComponents: [ErrorDialogComponent]
 })

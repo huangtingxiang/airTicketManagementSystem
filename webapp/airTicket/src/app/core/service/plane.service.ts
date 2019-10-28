@@ -8,13 +8,16 @@ import {Plane, PlaneType} from '../../entity/Plane';
 import {AirlineCompany} from '../../entity/AirlineCompany';
 import {ShipSpace} from '../../entity/ShipSpace';
 import {CoreModule} from '../core.module';
+import {HttpClient} from '@angular/common/http';
 
 @Injectable({
   providedIn: CoreModule
 })
 export class PlaneService {
 
-  constructor() {
+  baseUrl = 'api/plane';
+
+  constructor(private httpClient: HttpClient) {
   }
 
   getAllByPage(pageable: Pageable): Observable<Page<Plane>> {
@@ -29,5 +32,10 @@ export class PlaneService {
     pageData.totalElements = 50;
     pageData.content = planes;
     return of<Page<Plane>>(pageData);
+  }
+
+  // 保存
+  save(plane: Plane): Observable<Plane> {
+    return this.httpClient.post<Plane>(this.baseUrl, plane);
   }
 }
