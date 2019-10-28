@@ -69,10 +69,10 @@ export class PlaneAddComponent implements OnInit {
       name: ['', Validators.required],
       icon: [null],
       planeType: [PlaneType.SMALL],
-      totalRow: [0, Validators.required],
-      totalCol: [0, Validators.required],
+      totalRow: [null, Validators.required],
+      totalCol: [null, Validators.required],
       airlineCompany: [null, Validators.required],
-      shipSpaces: [null, Validators.required]
+      shipSpaces: [null]
     });
     // 初始化舱位数据
     this.planeForm.get('shipSpaces').setValue([
