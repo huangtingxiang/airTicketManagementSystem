@@ -1,6 +1,9 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {CommonService} from '../../../core/service/common.service';
 import {FormControl} from '@angular/forms';
+import {ErrorDialogComponent} from '../error-dialog/error-dialog.component';
+import {MatDialog} from '@angular/material';
+import {HttpErrorResponse} from '@angular/common/http';
 
 @Component({
   selector: 'app-upload-image',
@@ -22,7 +25,8 @@ export class UploadImageComponent implements OnInit {
 
   isUploadActon = false;
 
-  constructor(private commonService: CommonService) {
+  constructor(private commonService: CommonService,
+              private dialog: MatDialog) {
   }
 
   ngOnInit() {
@@ -47,6 +51,19 @@ export class UploadImageComponent implements OnInit {
       .subscribe((path) => {
         this.isUploadActon = true;
         this.imageCtrl.setValue(path);
+        const title = '上传成功';
+        const content = '成功上传图片';
+        this.dialog.open(ErrorDialogComponent, {
+          width: '500px',
+          data: {title, content}
+        });
+      }, (response: HttpErrorResponse) => {
+        const title = '上传失败';
+        const content = '服务器错误:' + response.message;
+        this.dialog.open(ErrorDialogComponent, {
+          width: '500px',
+          data: {title, content}
+        });
       });
   }
 

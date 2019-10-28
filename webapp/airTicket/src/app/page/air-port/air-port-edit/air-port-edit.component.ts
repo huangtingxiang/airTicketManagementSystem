@@ -31,7 +31,8 @@ export class AirPortEditComponent implements OnInit {
     });
     this.airPortForm = this.fb.group({
       name: ['', Validators.required],
-      city: [null, Validators.required]
+      city: [null, Validators.required],
+      icon: [null]
     });
   }
 
