@@ -1,0 +1,19 @@
+<mat-card style="width: 100%;">
+  <mat-card-header>
+    <button mat-stroked-button type="button" (click)="file.click()">{{label}}</button>
+    <button mat-stroked-button type="button" (click)="upload()" *ngIf="previewUrl" style="margin-left: 30px;">确认上传</button>
+    <input type="file" [hidden]="true" (change)="selectFile($event)" accept="image/*" #file>
+  </mat-card-header>
+  <mat-card-content>
+    <div class="ui-g">
+      <div class="ui-g-6" *ngIf="originUrl">
+        <p>原先图片</p>
+        <img *ngIf="originUrl" style="max-width: 150px;max-height: 120px" [src]="originUrl" width="100%">
+      </div>
+      <div class="ui-g-6" *ngIf="previewUrl">
+        <p>图片预览</p>
+        <img *ngIf="previewUrl" style="max-width: 150px;max-height: 120px" [src]="previewUrl" width="100%">
+      </div>
+    </div>
+  </mat-card-content>
+</mat-card>

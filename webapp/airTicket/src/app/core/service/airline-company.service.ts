@@ -12,7 +12,7 @@ import {HttpClient} from '@angular/common/http';
 })
 export class AirlineCompanyService {
 
-  baseUrl = 'airlineCompany';
+  baseUrl = 'api/airlineCompany';
 
   constructor(private httpClient: HttpClient) {
   }

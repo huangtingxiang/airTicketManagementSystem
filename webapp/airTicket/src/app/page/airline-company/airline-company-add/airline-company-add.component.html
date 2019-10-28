@@ -13,8 +13,7 @@
     </div>
 
     <div class="ui-g ui-g-12 form-control full-width">
-      <button mat-stroked-button type="button" (click)="file.click()">选择图标</button>
-      <input type="file" [hidden]="true" #file>
+      <app-upload-image label="请选择图标" class="full-width" [imageCtrl]="airlineCompanyForm.get('icon')"></app-upload-image>
     </div>
 
     <div class="ui-g ui-g-12 form-control">

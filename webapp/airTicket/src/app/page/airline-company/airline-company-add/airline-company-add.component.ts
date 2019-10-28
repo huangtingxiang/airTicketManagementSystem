@@ -21,7 +21,8 @@ export class AirlineCompanyAddComponent implements OnInit {
   ngOnInit() {
     this.airlineCompanyForm = this.fb.group({
       name: ['', Validators.required],
-      city: [null, Validators.required]
+      city: [null, Validators.required],
+      icon: [null]
     });
   }
 
