@@ -4,6 +4,7 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
 // 航班安排
 @Entity
 public class FlightManagement {
@@ -27,6 +28,9 @@ public class FlightManagement {
 
     @ManyToOne
     private Plane plane; // 飞机
+
+    @OneToMany
+    List<TicketPrice> ticketPrices; // 订单价钱
 
     @OneToMany
     private List<TicketOrder> ticketOrders = new ArrayList<>(); // 订单集合

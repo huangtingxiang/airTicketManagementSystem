@@ -4,6 +4,7 @@ import {City} from './City';
 import {AirPort} from './AirPort';
 import {Plane} from './Plane';
 import {TicketOrder} from './TicketOrder';
+import {TicketPrice} from './TicketPrice';
 
 export class FlightManagement {
 
@@ -22,4 +23,6 @@ export class FlightManagement {
   plane: Plane; // 飞机
 
   orders: Array<TicketOrder>; // 订单集合
+
+  ticketPrices: Array<TicketPrice>;
 }
