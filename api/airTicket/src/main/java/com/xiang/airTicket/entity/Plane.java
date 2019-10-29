@@ -20,10 +20,16 @@ public class Plane {
 
     private PlaneType planeType = PlaneType.SMALL; // 飞机机型
 
+    // 总列数
+    private Integer totalCol;
+
+    // 总行数
+    private Integer totalRow;
+
     @ManyToOne
     private AirlineCompany airlineCompany; // 所属公司
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     private List<ShipSpace> shipSpaces = new ArrayList<>(); // 舱位集合
 
     public Long getId() {
@@ -72,5 +78,25 @@ public class Plane {
 
     public void setShipSpaces(List<ShipSpace> shipSpaces) {
         this.shipSpaces = shipSpaces;
+    }
+
+    public interface AirlineCompanyJsonView {}
+
+    public interface ShipSpaceJsonView {}
+
+    public Integer getTotalCol() {
+        return totalCol;
+    }
+
+    public void setTotalCol(Integer totalCol) {
+        this.totalCol = totalCol;
+    }
+
+    public Integer getTotalRow() {
+        return totalRow;
+    }
+
+    public void setTotalRow(Integer totalRow) {
+        this.totalRow = totalRow;
     }
 }

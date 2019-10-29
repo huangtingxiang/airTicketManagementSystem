@@ -1,5 +1,5 @@
 <div class="ui-g">
-  <form class="ui-g-12" [formGroup]="planeForm" (ngSubmit)="save()">
+  <form class="ui-g-12" [formGroup]="planeForm" (ngSubmit)="update()">
     <div class="ui-g-6">
       <!--      名称-->
       <div class="ui-g ui-g-12 form-control">
@@ -125,7 +125,7 @@
           <div class="seat-sample">
             <span>未选择</span>
             <button mat-icon-button [disabled]="true" type="button">
-              <app-svg-icon iconName="seat"></app-svg-icon>
+              <app-svg-icon iconName="seat" color="#e2e2e2"></app-svg-icon>
             </button>
           </div>
         </div>
@@ -173,7 +173,7 @@
         <button mat-stroked-button style="width: 100%;" routerLink="/plane" type="button">取消</button>
       </div>
       <div class="ui-g-2 ui-g-offset-1">
-        <button mat-stroked-button color="primary" style="width: 100%;" type="submit" [disabled]="planeForm.invalid">新增</button>
+        <button mat-stroked-button color="primary" style="width: 100%;" type="submit" [disabled]="planeForm.invalid">更新</button>
       </div>
     </div>
   </form>

@@ -1,5 +1,7 @@
 // 座位实体
 
+import {ShipSpace} from './ShipSpace';
+
 export class Seat {
 
   id: number;
@@ -9,6 +11,8 @@ export class Seat {
   line: number; // 行数
 
   column: number; // 列数
+
+  shipSpace: ShipSpace;
 
   constructor(id: number, number1: string, row: number, column: number) {
     this.id = id;

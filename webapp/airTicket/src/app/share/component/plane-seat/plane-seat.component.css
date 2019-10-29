@@ -1,0 +1,12 @@
+.t {
+  padding: 0px !important;
+}
+
+.mat-dialog-container{
+  padding: 0px !important;
+}
+
+.seat-sample {
+  display: flex;
+  margin: 10px;
+}

@@ -1,0 +1,9 @@
+<mat-form-field style="width: 100%;">
+  <input matInput placeholder="选择航空公司" aria-label="company" [matAutocomplete]="auto" [formControl]="searchCtrl">
+  <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+    <mat-option *ngFor="let airlineCompany of airlineCompanies" [value]="airlineCompany" >
+      <img class="option-img" aria-hidden [src]="airlineCompany.icon" style="max-height: 120px;max-width: 150px;vertical-align: middle;margin-right: 5px;">
+      <span>{{airlineCompany.name}}</span>
+    </mat-option>
+  </mat-autocomplete>
+</mat-form-field>

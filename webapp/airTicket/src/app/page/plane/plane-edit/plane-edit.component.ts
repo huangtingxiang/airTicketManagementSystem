@@ -1,51 +1,42 @@
 import {Component, OnInit} from '@angular/core';
-import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
-import {Observable} from 'rxjs';
-import {map, startWith} from 'rxjs/operators';
-import {MatIconRegistry, MatSnackBar, MatTableDataSource} from '@angular/material';
-import {ShipSpace} from '../../../entity/ShipSpace';
-import {DomSanitizer} from '@angular/platform-browser';
-import {Seat} from '../../../entity/Seat';
-import {PlaneType} from '../../../entity/Plane';
+import {ActivatedRoute, ParamMap, Router} from '@angular/router';
 import {PlaneService} from '../../../core/service/plane.service';
-import {Router} from '@angular/router';
+import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import {PlaneType} from '../../../entity/Plane';
+import {ShipSpace} from '../../../entity/ShipSpace';
+import {MatSnackBar, MatTableDataSource} from '@angular/material';
 import {SeatConfig} from '../../../config/SeatConfig';
-
-export interface State {
-  flag: string;
-  name: string;
-  population: string;
-}
-
+import {Seat} from '../../../entity/Seat';
 
 @Component({
-  selector: 'app-plane-add',
-  templateUrl: './plane-add.component.html',
-  styleUrls: ['./plane-add.component.css']
+  selector: 'app-plane-edit',
+  templateUrl: './plane-edit.component.html',
+  styleUrls: ['./plane-edit.component.css']
 })
-export class PlaneAddComponent implements OnInit {
-
-  // 表单组
-  planeForm: FormGroup;
-
-  // 座位表显示的行数
-  seatDisplayedColumns = ['index'];
-
-  // 颜色集合
-  colors = SeatConfig.allColors;
-
+export class PlaneEditComponent implements OnInit {
   selectColor = SeatConfig.notSelectColor;
 
   // 当前选中舱位
   selectShipSpace: ShipSpace;
 
-  // 座位表显示总行数
-  totalSign = [];
+
+  planeForm: FormGroup;
+
+  primaryCtrl = new FormControl(false);
 
   // 座位表数据源
   seatDataSource: MatTableDataSource<[][]> = new MatTableDataSource<any>();
 
-  primaryCtrl = new FormControl(false);
+  // 颜色集合
+  colors = SeatConfig.allColors;
+
+  id: number;
+
+  // 座位表显示总行数
+  totalSign = [];
+
+  // 座位表显示的行数
+  seatDisplayedColumns = ['index'];
 
   planeType = [
     {value: 0, label: '大机型'},
@@ -53,10 +44,11 @@ export class PlaneAddComponent implements OnInit {
     {value: 2, label: '小机型'}
   ];
 
-  constructor(private snackBar: MatSnackBar,
-              private planeService: PlaneService,
+  constructor(private activatedRoute: ActivatedRoute,
+              private snackBar: MatSnackBar,
+              private fb: FormBuilder,
               private router: Router,
-              private fb: FormBuilder) {
+              private planeService: PlaneService) {
   }
 
   ngOnInit() {
@@ -70,11 +62,14 @@ export class PlaneAddComponent implements OnInit {
       airlineCompany: [null, Validators.required],
       shipSpaces: [null]
     });
-    // 初始化舱位数据
-    this.planeForm.get('shipSpaces').setValue([
-      new ShipSpace('经济舱', 860, true),
-      new ShipSpace('头等舱', 900, false)
-    ]);
+    // 获取数据
+    this.activatedRoute.paramMap.subscribe((params: ParamMap) => {
+      this.id = +params.get('id');
+      this.planeService.getById(this.id)
+        .subscribe((plane) => {
+          this.planeForm.patchValue(plane);
+        });
+    });
   }
 
   // 点击舱位按钮时
@@ -125,7 +120,7 @@ export class PlaneAddComponent implements OnInit {
       this.totalSign.forEach((sign: string, index: number) => {
         const disSeat = {
           value: new Seat(null, i + sign, i, index + 1),
-          color: SeatConfig.notSelectColor
+          color: '#e2e2e2'
         };
         data.push(disSeat);
       });
@@ -160,7 +155,7 @@ export class PlaneAddComponent implements OnInit {
     });
   }
 
-  save() {
+  update() {
     // 将所有座位保存至舱位中
     this.seatDataSource.data.forEach((seatData: any) => {
       seatData.forEach((seatDisplay) => {
@@ -173,8 +168,8 @@ export class PlaneAddComponent implements OnInit {
         }
       });
     });
-    this.planeService.save(this.planeForm.value)
-      .subscribe((plane) => {
+    this.planeService.update(this.id, this.planeForm.value)
+      .subscribe(() => {
         this.router.navigateByUrl('/plane');
       });
   }

@@ -17,11 +17,13 @@ import {PlaneTypePipe} from './pipe/plane-type.pipe';
 import {CitySelectComponent} from './component/city-select/city-select.component';
 import {ErrorDialogComponent} from './component/error-dialog/error-dialog.component';
 import {MatDialogModule} from '@angular/material/dialog';
-import { UploadImageComponent } from './component/upload-image/upload-image.component';
+import {UploadImageComponent} from './component/upload-image/upload-image.component';
+import {AirlineCompanySelectComponent} from './component/airline-company-select/airline-company-select.component';
+import {PlaneSeatComponent} from './component/plane-seat/plane-seat.component';
 
 
 @NgModule({
-  declarations: [SvgIconComponent, PlaneTypePipe, CitySelectComponent, ErrorDialogComponent, UploadImageComponent],
+  declarations: [SvgIconComponent, PlaneTypePipe, CitySelectComponent, ErrorDialogComponent, UploadImageComponent, AirlineCompanySelectComponent, PlaneSeatComponent],
   imports: [
     MatGridListModule,
     MatListModule,
@@ -64,9 +66,10 @@ import { UploadImageComponent } from './component/upload-image/upload-image.comp
     PlaneTypePipe,
     CitySelectComponent,
     MatDialogModule,
-    UploadImageComponent
+    UploadImageComponent,
+    AirlineCompanySelectComponent
   ],
-  entryComponents: [ErrorDialogComponent]
+  entryComponents: [ErrorDialogComponent, PlaneSeatComponent]
 })
 export class ShareModule {
 }
