@@ -72,23 +72,23 @@ export class PlaneAddComponent implements OnInit {
     });
     // 初始化舱位数据
     this.planeForm.get('shipSpaces').setValue([
-      new ShipSpace('经济舱', 860, true),
-      new ShipSpace('头等舱', 900, false)
+      new ShipSpace('经济舱', true),
+      new ShipSpace('头等舱', false)
     ]);
   }
 
   // 点击舱位按钮时
-  openSnackBar(described: string, price: number) {
+  openSnackBar(described: string) {
     let message;
     if (this.primaryCtrl.value) {
-      message = '成功添加主舱位:' + described + ',价格:' + price + '!';
+      message = '成功添加主舱位:' + described + '!';
     } else {
-      message = '成功添加舱位:' + described + ',价格:' + price + '！';
+      message = '成功添加舱位:' + described + '！';
     }
     this.snackBar.open(message, '确认', {
       duration: 2000,
     });
-    this.add(described, price, this.primaryCtrl.value);
+    this.add(described, this.primaryCtrl.value);
   }
 
   // 删除舱位
@@ -100,8 +100,8 @@ export class PlaneAddComponent implements OnInit {
   }
 
   // 添加舱位
-  add(described: string, price: number, primary: boolean) {
-    this.planeForm.get('shipSpaces').value.push(new ShipSpace(described, price, primary));
+  add(described: string, primary: boolean) {
+    this.planeForm.get('shipSpaces').value.push(new ShipSpace(described, primary));
   }
 
   // 生成座位表

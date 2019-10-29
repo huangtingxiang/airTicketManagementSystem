@@ -39,12 +39,6 @@
                 <input matInput placeholder="描述" #described>
               </mat-form-field>
             </div>
-
-            <div class="ui-g-6">
-              <mat-form-field class="full-width">
-                <input matInput type="number" placeholder="票价" min="0" #price>
-              </mat-form-field>
-            </div>
           </div>
         </div>
         <div class="ui-g-12 form-control">
@@ -58,8 +52,8 @@
             </div>
 
             <div class="ui-g-4">
-              <button mat-stroked-button color="primary" [disabled]="!(described.value && price.value)"
-                      (click)="openSnackBar(described.value, +price.value)" type="button">添加舱位
+              <button mat-stroked-button color="primary" [disabled]="!(described.value)"
+                      (click)="openSnackBar(described.value)" type="button">添加舱位
               </button>
             </div>
           </div>
@@ -77,7 +71,7 @@
               [selectable]="false"
               [removable]="true"
               (removed)="remove(shipSpace)">
-              {{shipSpace.described}}(价格:{{shipSpace.price}})
+              {{shipSpace.described}}
               <mat-icon class="white-icon" matChipRemove>cancel</mat-icon>
             </mat-chip>
             <input
@@ -99,13 +93,15 @@
           <mat-form-field>
             <input matInput type="number" placeholder="座位行数" min="1" formControlName="totalRow">
           </mat-form-field>
-          <mat-error *ngIf="planeForm.get('totalRow').errors?.required && planeForm.get('totalRow').touched">请输入座位行数</mat-error>
+          <mat-error *ngIf="planeForm.get('totalRow').errors?.required && planeForm.get('totalRow').touched">请输入座位行数
+          </mat-error>
         </div>
         <div class="ui-g-5">
           <mat-form-field>
             <input matInput type="number" placeholder="座位列数" min="1" formControlName="totalCol">
           </mat-form-field>
-          <mat-error *ngIf="planeForm.get('totalCol').errors?.required && planeForm.get('totalCol').touched">请输入座位列数</mat-error>
+          <mat-error *ngIf="planeForm.get('totalCol').errors?.required && planeForm.get('totalCol').touched">请输入座位列数
+          </mat-error>
         </div>
         <div class="ui-g-2">
           <button mat-stroked-button color="primary" style="margin-top: 15px;" (click)="createSeat()" type="button">
@@ -173,7 +169,9 @@
         <button mat-stroked-button style="width: 100%;" routerLink="/plane" type="button">取消</button>
       </div>
       <div class="ui-g-2 ui-g-offset-1">
-        <button mat-stroked-button color="primary" style="width: 100%;" type="submit" [disabled]="planeForm.invalid">更新</button>
+        <button mat-stroked-button color="primary" style="width: 100%;" type="submit" [disabled]="planeForm.invalid">
+          更新
+        </button>
       </div>
     </div>
   </form>

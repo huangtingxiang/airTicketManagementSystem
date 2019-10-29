@@ -14,8 +14,6 @@ public class ShipSpace {
 
     private String described; // 描述
 
-    private Float price; // 票价
-
     private Boolean primaried; // 是否为主舱位
 
     @OneToMany(cascade = CascadeType.ALL)
@@ -35,14 +33,6 @@ public class ShipSpace {
 
     public void setDescribed(String described) {
         this.described = described;
-    }
-
-    public Float getPrice() {
-        return price;
-    }
-
-    public void setPrice(Float price) {
-        this.price = price;
     }
 
     public Boolean getPrimaried() {

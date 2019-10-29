@@ -48,7 +48,7 @@
           <td mat-cell *matCellDef="let element;">
             <ng-container *ngFor="let shipSpace of element.shipSpaces;">
               <p>
-                {{shipSpace.described}}<span *ngIf="shipSpace.primaried">、主舱位</span>(票价:{{shipSpace.price}})
+                {{shipSpace.described}}<span *ngIf="shipSpace.primaried">、主舱位</span>
               </p>
             </ng-container>
           </td>
