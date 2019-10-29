@@ -5,3 +5,7 @@ table {
 .operation button{
   margin:  5px 0px;
 }
+
+.test {
+  padding: 0px !important;
+}

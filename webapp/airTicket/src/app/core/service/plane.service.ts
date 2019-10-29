@@ -20,22 +20,33 @@ export class PlaneService {
   constructor(private httpClient: HttpClient) {
   }
 
-  getAllByPage(pageable: Pageable): Observable<Page<Plane>> {
-    let planes: any[];
-    planes = [];
-    for (let i = 0; i < 50 / pageable.size; i++) {
-      planes.push(new Plane(i, 'palneName' + i, 'NULL', PlaneType.SMALL,
-        new AirlineCompany(i, 'AirlineCompany' + i, 'NULL', new City(i, 'city' + i, 'pinyin', false))
-        , [new ShipSpace('ShipSpace' + i, 1000, false), new ShipSpace('ShipSpace' + i, 1000, false)]));
-    }
-    const pageData = new Page<Plane>();
-    pageData.totalElements = 50;
-    pageData.content = planes;
-    return of<Page<Plane>>(pageData);
+  // 更新
+  update(id: number, plane: Plane): Observable<Plane> {
+    return this.httpClient.put<Plane>(this.baseUrl + '/' + id, plane);
+  }
+
+  // 通过名称分页
+  pageByName(name: string, pageable: Pageable): Observable<Page<Plane>> {
+    const params = {
+      page: pageable.page.toString(),
+      size: pageable.size.toString(),
+      name
+    };
+    return this.httpClient.get<Page<Plane>>(this.baseUrl + '/pageByName', {params});
   }
 
   // 保存
   save(plane: Plane): Observable<Plane> {
     return this.httpClient.post<Plane>(this.baseUrl, plane);
+  }
+
+  // 通过id获取
+  getById(id: number): Observable<Plane> {
+    return this.httpClient.get<Plane>(this.baseUrl + '/' + id);
+  }
+
+  // 删除
+  delete(id: number): Observable<any> {
+    return this.httpClient.delete(this.baseUrl + '/' + id);
   }
 }

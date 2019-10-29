@@ -6,10 +6,11 @@ import { PlaneIndexComponent } from './plane-index/plane-index.component';
 import { PlaneAddComponent } from './plane-add/plane-add.component';
 import {ShareModule} from '../../share/share.module';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import { PlaneEditComponent } from './plane-edit/plane-edit.component';
 
 
 @NgModule({
-  declarations: [PlaneIndexComponent, PlaneAddComponent],
+  declarations: [PlaneIndexComponent, PlaneAddComponent, PlaneEditComponent],
   imports: [
     CommonModule,
     PlaneRoutingModule,

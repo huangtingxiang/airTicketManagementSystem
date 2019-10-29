@@ -1,0 +1,180 @@
+<div class="ui-g">
+  <form class="ui-g-12" [formGroup]="planeForm" (ngSubmit)="update()">
+    <div class="ui-g-6">
+      <!--      名称-->
+      <div class="ui-g ui-g-12 form-control">
+        <mat-form-field class="full-width">
+          <input matInput placeholder="飞机名称" formControlName="name">
+        </mat-form-field>
+        <mat-error *ngIf="planeForm.get('name').errors?.required && planeForm.get('name').touched">请输入飞机名称</mat-error>
+      </div>
+
+      <!--      选择机型-->
+      <div class="ui-g ui-g-12 form-control">
+        <mat-form-field class="full-width">
+          <mat-label>选择机型</mat-label>
+          <mat-select formControlName="planeType">
+            <mat-option *ngFor="let type of planeType" [value]="type.value">
+              {{type.label}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <!--      选择所属公司-->
+      <div class="ui-g ui-g-12 form-control">
+        <app-airline-company-select class="full-width"
+                                    [formCtrl]="planeForm.get('airlineCompany')"></app-airline-company-select>
+        <mat-error *ngIf="planeForm.get('airlineCompany').errors?.required && planeForm.get('airlineCompany').touched">
+          请选择航空公司
+        </mat-error>
+      </div>
+
+      <div style="border: 1px solid currentColor;border-color: rgba(0,0,0,.12);border-radius: 4px;" class="ui-g">
+        <!--      添加舱位-->
+        <div class="ui-g-12 form-control">
+          <div class="ui-g">
+            <div class="ui-g-6">
+              <mat-form-field class="full-width">
+                <input matInput placeholder="描述" #described>
+              </mat-form-field>
+            </div>
+
+            <div class="ui-g-6">
+              <mat-form-field class="full-width">
+                <input matInput type="number" placeholder="票价" min="0" #price>
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+        <div class="ui-g-12 form-control">
+          <div class="ui-g">
+            <div class="ui-g-8">
+              <label id="radio-group-label">是否为主舱位:</label>
+              <mat-radio-group aria-label="Select an option" [formControl]="primaryCtrl">
+                <mat-radio-button class="radio-button" [value]="true">是</mat-radio-button>
+                <mat-radio-button class="radio-button" [value]="false">否</mat-radio-button>
+              </mat-radio-group>
+            </div>
+
+            <div class="ui-g-4">
+              <button mat-stroked-button color="primary" [disabled]="!(described.value && price.value)"
+                      (click)="openSnackBar(described.value, +price.value)" type="button">添加舱位
+              </button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="ui-g ui-g-12 form-control">
+        <mat-form-field class="full-width">
+          <mat-chip-list #chipList class="full-width">
+            <mat-chip
+              color="primary"
+              [selected]="shipSpace.primaried"
+              *ngFor="let shipSpace of planeForm.get('shipSpaces').value"
+              [selectable]="false"
+              [removable]="true"
+              (removed)="remove(shipSpace)">
+              {{shipSpace.described}}(价格:{{shipSpace.price}})
+              <mat-icon class="white-icon" matChipRemove>cancel</mat-icon>
+            </mat-chip>
+            <input
+              style="max-width: 1px;"
+              matInput
+              [readonly]="true"
+              [matChipInputFor]="chipList"
+              placeholder="已选舱位">
+          </mat-chip-list>
+        </mat-form-field>
+      </div>
+
+    </div>
+
+    <!--      生成座位表-->
+    <div class="ui-g-6">
+      <div class="ui-g form-control">
+        <div class="ui-g-5">
+          <mat-form-field>
+            <input matInput type="number" placeholder="座位行数" min="1" formControlName="totalRow">
+          </mat-form-field>
+          <mat-error *ngIf="planeForm.get('totalRow').errors?.required && planeForm.get('totalRow').touched">请输入座位行数</mat-error>
+        </div>
+        <div class="ui-g-5">
+          <mat-form-field>
+            <input matInput type="number" placeholder="座位列数" min="1" formControlName="totalCol">
+          </mat-form-field>
+          <mat-error *ngIf="planeForm.get('totalCol').errors?.required && planeForm.get('totalCol').touched">请输入座位列数</mat-error>
+        </div>
+        <div class="ui-g-2">
+          <button mat-stroked-button color="primary" style="margin-top: 15px;" (click)="createSeat()" type="button">
+            生成座位表
+          </button>
+        </div>
+      </div>
+      <ng-container class="form-control" *ngIf="seatDataSource.data.length > 0">
+        <div class="ui-g">
+          <div class="seat-sample" *ngFor="let shipSpace of planeForm.get('shipSpaces').value;let i = index;">
+            <span>{{shipSpace.described}}</span>
+            <button mat-icon-button type="button">
+              <app-svg-icon iconName="seat" [color]="colors[i]"
+                            (click)="setSelectShipSpace(shipSpace, colors[i])"></app-svg-icon>
+            </button>
+          </div>
+          <div class="seat-sample">
+            <span>未选择</span>
+            <button mat-icon-button [disabled]="true" type="button">
+              <app-svg-icon iconName="seat" color="#e2e2e2"></app-svg-icon>
+            </button>
+          </div>
+        </div>
+        <div class="ui-g" *ngIf="seatDataSource.data.length > 0">
+          <div class="ui-g-12">
+            <table mat-table [dataSource]="seatDataSource" class="mat-elevation-z8" style="width: 100%;">
+
+              <ng-container matColumnDef="index">
+                <th mat-header-cell *matHeaderCellDef>
+                  <app-svg-icon iconName="seat" [color]="selectColor"></app-svg-icon>
+                </th>
+                <td mat-cell *matCellDef="let i = index;">
+                  <button mat-icon-button type="button" (click)="selectAllRow(i)">
+                    <mat-icon color="primary">select_all</mat-icon>
+                  </button>
+                  {{i + 1}}
+                </td>
+              </ng-container>
+
+              <ng-container *ngFor="let sign of totalSign;let i = index;" [matColumnDef]="sign">
+                <th mat-header-cell *matHeaderCellDef>
+                  <button mat-icon-button type="button" (click)="selectAllCol(i)">
+                    <mat-icon color="primary">select_all</mat-icon>
+                  </button>
+                  {{sign}}
+                </th>
+                <td mat-cell *matCellDef="let element" class="seat-container">
+                  <button mat-icon-button (click)="setShipSpaceToSeat(element[i])" type="button">
+                    <app-svg-icon iconName="seat" [color]="element[i].color"></app-svg-icon>
+                  </button>
+                  <span>{{element[i].value.number}}</span>
+                </td>
+              </ng-container>
+
+              <tr mat-header-row *matHeaderRowDef="seatDisplayedColumns"></tr>
+              <tr mat-row *matRowDef="let row; columns: seatDisplayedColumns;">
+              </tr>
+            </table>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+    <div class="ui-g ui-g-12 form-control">
+      <div class="ui-g-2 ui-g-offset-3">
+        <button mat-stroked-button style="width: 100%;" routerLink="/plane" type="button">取消</button>
+      </div>
+      <div class="ui-g-2 ui-g-offset-1">
+        <button mat-stroked-button color="primary" style="width: 100%;" type="submit" [disabled]="planeForm.invalid">更新</button>
+      </div>
+    </div>
+  </form>
+</div>
