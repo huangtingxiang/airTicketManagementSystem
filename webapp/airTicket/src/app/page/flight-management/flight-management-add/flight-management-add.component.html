@@ -1,0 +1,125 @@
+<div class="ui-g">
+  <form class="ui-g-10 ui-g-offset-1" [formGroup]="flightManagementForm" (ngSubmit)="save()">
+    <div class="ui-g-6 form-control">
+      <mat-form-field class="full-width">
+        <input matInput [matDatepicker]="start" [min]="nowDate" placeholder="始发时间" formControlName="startTime">
+        <mat-datepicker-toggle matSuffix [for]="start"></mat-datepicker-toggle>
+        <mat-datepicker #start></mat-datepicker>
+      </mat-form-field>
+
+      <mat-error
+        *ngIf="flightManagementForm.get('startTime').errors?.required && flightManagementForm.get('startTime').touched">
+        请选择开始时间
+      </mat-error>
+    </div>
+
+    <div class="ui-g-6 form-control">
+      <mat-form-field class="full-width">
+        <input matInput [matDatepicker]="arrival" [min]="flightManagementForm.get('startTime').value" placeholder="到达时间"
+               formControlName="arrivalTime">
+        <mat-datepicker-toggle matSuffix [for]="arrival"></mat-datepicker-toggle>
+        <mat-datepicker #arrival></mat-datepicker>
+      </mat-form-field>
+
+      <mat-error
+        *ngIf="flightManagementForm.get('arrivalTime').errors?.required && flightManagementForm.get('arrivalTime').touched">
+        请选择到达时间
+      </mat-error>
+    </div>
+
+    <div class="ui-g-6 form-control">
+      <app-city-select class="full-width" [cityCtr]="flightManagementForm.get('startingPlace')"
+                       label="始发地"></app-city-select>
+      <mat-error
+        *ngIf="flightManagementForm.get('startingPlace').errors?.required && flightManagementForm.get('startingPlace').touched">
+        请选择始发地
+      </mat-error>
+    </div>
+
+    <div class="ui-g-6 form-control">
+      <mat-form-field class="full-width">
+        <mat-label>始发机场</mat-label>
+        <mat-select formControlName="startingAirPort">
+          <mat-option value="option1">机场 1</mat-option>
+          <mat-option value="option2">机场 2</mat-option>
+          <mat-option value="option3">机场 3</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-error
+        *ngIf="flightManagementForm.get('startingAirPort').errors?.required && flightManagementForm.get('startingAirPort').touched">
+        请选择始发机场
+      </mat-error>
+    </div>
+
+    <div class="ui-g-6 form-control">
+      <app-city-select class="full-width" [cityCtr]="flightManagementForm.get('destination')"
+                       label="目的地"></app-city-select>
+      <mat-error
+        *ngIf="flightManagementForm.get('destination').errors?.required && flightManagementForm.get('destination').touched">
+        请选择目的地
+      </mat-error>
+    </div>
+
+    <div class="ui-g-6 form-control">
+      <mat-form-field class="full-width">
+        <mat-label>目的机场</mat-label>
+        <mat-select formControlName="destinationAirPort">
+          <mat-option value="option1">机场 1</mat-option>
+          <mat-option value="option2">机场 2</mat-option>
+          <mat-option value="option3">机场 3</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-error
+        *ngIf="flightManagementForm.get('destinationAirPort').errors?.required && flightManagementForm.get('destinationAirPort').touched">
+        请选择目的机场
+      </mat-error>
+    </div>
+
+    <div class="ui-g-6 form-control">
+      <mat-form-field class="full-width">
+        <input type="text" placeholder="选择航空公司" matInput [matAutocomplete]="auto">
+        <mat-autocomplete #auto="matAutocomplete">
+          <mat-option *ngFor="let option of ['One', 'Two', 'Three']" [value]="option">
+            {{option}}
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+    </div>
+
+    <div class="ui-g-6 form-control">
+      <mat-form-field class="full-width">
+        <mat-label>选择飞机</mat-label>
+        <mat-select formControlName="plane">
+          <mat-option value="option1">飞机 1</mat-option>
+          <mat-option value="option2">飞机 2</mat-option>
+          <mat-option value="option3">飞机 3</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-error
+        *ngIf="flightManagementForm.get('plane').errors?.required && flightManagementForm.get('plane').touched">
+        请选择飞机
+      </mat-error>
+    </div>
+
+    <div class="ui-g-6 form-control" *ngFor="let index of [1,2,3]">
+      <mat-form-field floatLabel="always" class="full-width">
+        <input matInput type="number" placeholder="舱位{{index}}价钱" min="0">
+      </mat-form-field>
+    </div>
+
+
+    <div class="ui-g-12 form-control">
+      <div class="ui-g-2 ui-g-offset-3">
+        <button mat-stroked-button style="width: 100%;" routerLink="/flight-management" type="button">取消</button>
+      </div>
+      <div class="ui-g-2 ui-g-offset-1">
+        <button mat-stroked-button color="primary" style="width: 100%;" type="submit"
+                [disabled]="flightManagementForm.invalid">新增
+        </button>
+      </div>
+    </div>
+  </form>
+</div>

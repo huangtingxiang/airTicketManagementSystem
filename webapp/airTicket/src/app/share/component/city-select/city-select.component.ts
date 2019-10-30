@@ -12,6 +12,9 @@ import {FormControl} from '@angular/forms';
 })
 export class CitySelectComponent implements OnInit {
 
+  @Input()
+  required = true;
+
   data = {
     A: [],
     B: [],
@@ -44,6 +47,9 @@ export class CitySelectComponent implements OnInit {
   // 表单控件 用于监听输入框变化
   @Input()
   cityCtr: FormControl;
+
+  @Input()
+  label = '请选择城市 ';
 
   // 城市数组数据
   cityGroup: CityGroup[] = [];

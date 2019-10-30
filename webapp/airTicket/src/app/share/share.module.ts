@@ -2,11 +2,11 @@ import {NgModule} from '@angular/core';
 import {
   MatAutocompleteModule,
   MatButtonModule, MatCardModule,
-  MatCheckboxModule, MatChipsModule,
+  MatCheckboxModule, MatChipsModule, MatDatepickerModule, MatExpansionModule,
   MatFormFieldModule,
   MatGridListModule, MatIconModule,
   MatInputModule,
-  MatListModule, MatPaginatorModule, MatRadioModule, MatSelectModule,
+  MatListModule, MatNativeDateModule, MatPaginatorModule, MatRadioModule, MatSelectModule,
   MatTableModule,
   MatToolbarModule
 } from '@angular/material';
@@ -23,7 +23,8 @@ import {PlaneSeatComponent} from './component/plane-seat/plane-seat.component';
 
 
 @NgModule({
-  declarations: [SvgIconComponent, PlaneTypePipe, CitySelectComponent, ErrorDialogComponent, UploadImageComponent, AirlineCompanySelectComponent, PlaneSeatComponent],
+  declarations: [SvgIconComponent, PlaneTypePipe, CitySelectComponent, ErrorDialogComponent,
+    UploadImageComponent, AirlineCompanySelectComponent, PlaneSeatComponent],
   imports: [
     MatGridListModule,
     MatListModule,
@@ -43,7 +44,10 @@ import {PlaneSeatComponent} from './component/plane-seat/plane-seat.component';
     MatChipsModule,
     CommonModule,
     MatDialogModule,
-    MatCardModule
+    MatCardModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatExpansionModule
   ],
   exports: [
     MatGridListModule,
@@ -67,7 +71,10 @@ import {PlaneSeatComponent} from './component/plane-seat/plane-seat.component';
     CitySelectComponent,
     MatDialogModule,
     UploadImageComponent,
-    AirlineCompanySelectComponent
+    AirlineCompanySelectComponent,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatExpansionModule
   ],
   entryComponents: [ErrorDialogComponent, PlaneSeatComponent]
 })

@@ -16,7 +16,7 @@ public class Seat {
 
     private Integer line; // 行数
 
-    private Integer column; // 列数
+    private Integer col; // 列数
 
     public Long getId() {
         return id;
@@ -43,11 +43,11 @@ public class Seat {
         this.line = line;
     }
 
-    public Integer getColumn() {
-        return column;
+    public Integer getCol() {
+        return col;
     }
 
-    public void setColumn(Integer column) {
-        this.column = column;
+    public void setCol(Integer col) {
+        this.col = col;
     }
 }
