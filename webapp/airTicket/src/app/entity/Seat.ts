@@ -10,7 +10,7 @@ export class Seat {
 
   line: number; // 行数
 
-  column: number; // 列数
+  col: number; // 列数
 
   shipSpace: ShipSpace;
 
@@ -18,6 +18,6 @@ export class Seat {
     this.id = id;
     this.number = number1;
     this.line = row;
-    this.column = column;
+    this.col = column;
   }
 }

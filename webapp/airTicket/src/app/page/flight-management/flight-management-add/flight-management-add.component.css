@@ -1,0 +1,15 @@
+.full-width {
+  width: 100%;
+}
+
+.radio-button {
+  margin: 5px 10px;
+}
+
+#radio-group-label {
+  margin: 5px 10px 5px 0px;
+}
+
+.form-control {
+  margin: 20px 0px;
+}

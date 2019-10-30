@@ -18,11 +18,13 @@ export class FlightManagement {
 
   destination: City; // 目的地
 
-  airPort: AirPort;  // 机场
+  startingAirPort: AirPort;  // 起始机场
+
+  destinationAirPort: AirPort; // 到达机场
 
   plane: Plane; // 飞机
 
   orders: Array<TicketOrder>; // 订单集合
 
-  ticketPrices: Array<TicketPrice>;
+  ticketPrices: Array<TicketPrice>; // 订单价钱
 }

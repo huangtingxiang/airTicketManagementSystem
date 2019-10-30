@@ -47,7 +47,7 @@ export class PlaneSeatComponent implements OnInit {
         shipSpace
       });
       shipSpace.seats.forEach((seat: Seat) => {
-        seatData[seat.line - 1][seat.column - 1] = {
+        seatData[seat.line - 1][seat.col - 1] = {
           color: SeatConfig.allColors[index],
           value: seat
         };

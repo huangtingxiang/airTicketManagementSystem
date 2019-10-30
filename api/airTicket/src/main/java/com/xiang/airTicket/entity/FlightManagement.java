@@ -24,7 +24,10 @@ public class FlightManagement {
     private City destination; // 目的地
 
     @ManyToOne
-    private AirPort airPort;  // 机场
+    private AirPort startingAirPort;  // 起始机场
+
+    @ManyToOne
+    private AirPort destinationAirPort; // 到达机场
 
     @ManyToOne
     private Plane plane; // 飞机
@@ -75,12 +78,12 @@ public class FlightManagement {
         this.destination = destination;
     }
 
-    public AirPort getAirPort() {
-        return airPort;
+    public AirPort getStartingAirPort() {
+        return startingAirPort;
     }
 
-    public void setAirPort(AirPort airPort) {
-        this.airPort = airPort;
+    public void setStartingAirPort(AirPort startingAirPort) {
+        this.startingAirPort = startingAirPort;
     }
 
     public Plane getPlane() {
@@ -97,5 +100,29 @@ public class FlightManagement {
 
     public void setOrders(List<TicketOrder> orders) {
         this.ticketOrders = orders;
+    }
+
+    public AirPort getDestinationAirPort() {
+        return destinationAirPort;
+    }
+
+    public void setDestinationAirPort(AirPort destinationAirPort) {
+        this.destinationAirPort = destinationAirPort;
+    }
+
+    public List<TicketPrice> getTicketPrices() {
+        return ticketPrices;
+    }
+
+    public void setTicketPrices(List<TicketPrice> ticketPrices) {
+        this.ticketPrices = ticketPrices;
+    }
+
+    public List<TicketOrder> getTicketOrders() {
+        return ticketOrders;
+    }
+
+    public void setTicketOrders(List<TicketOrder> ticketOrders) {
+        this.ticketOrders = ticketOrders;
     }
 }
