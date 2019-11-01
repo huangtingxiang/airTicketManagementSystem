@@ -1,5 +1,7 @@
 package com.xiang.airTicket.entity;
 
+import com.fasterxml.jackson.annotation.JsonView;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Date;
@@ -18,24 +20,31 @@ public class FlightManagement {
     private Date arrivalTime; // 到达时间
 
     @ManyToOne
+    @JsonView(StartingPlaceJsonView.class)
     private City startingPlace; // 起始地
 
     @ManyToOne
+    @JsonView(DestinationJsonView.class)
     private City destination; // 目的地
 
     @ManyToOne
+    @JsonView(StartingAirPortJsonView.class)
     private AirPort startingAirPort;  // 起始机场
 
     @ManyToOne
+    @JsonView(DestinationAirPortJsonView.class)
     private AirPort destinationAirPort; // 到达机场
 
     @ManyToOne
+    @JsonView(PlaneJsonView.class)
     private Plane plane; // 飞机
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
+    @JsonView(TicketPricesJsonView.class)
     List<TicketPrice> ticketPrices; // 订单价钱
 
     @OneToMany
+    @JsonView(TicketOrdersJsonView.class)
     private List<TicketOrder> ticketOrders = new ArrayList<>(); // 订单集合
 
     public Long getId() {
@@ -125,4 +134,19 @@ public class FlightManagement {
     public void setTicketOrders(List<TicketOrder> ticketOrders) {
         this.ticketOrders = ticketOrders;
     }
+
+    public interface StartingPlaceJsonView {
+    }
+
+    public interface DestinationJsonView{}
+
+    public interface StartingAirPortJsonView{}
+
+    public interface DestinationAirPortJsonView{}
+
+    public interface PlaneJsonView{}
+
+    public interface TicketPricesJsonView{}
+
+    public interface TicketOrdersJsonView{}
 }

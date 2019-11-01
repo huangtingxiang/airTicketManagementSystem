@@ -1,11 +1,14 @@
 package com.xiang.airTicket.service;
 
+import com.xiang.airTicket.entity.AirlineCompany;
 import com.xiang.airTicket.entity.Plane;
 import com.xiang.airTicket.repository.PlaneRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class PlaneServiceImpl implements PlaneService {
@@ -44,5 +47,12 @@ public class PlaneServiceImpl implements PlaneService {
     @Override
     public Plane getById(Long id) {
         return planeRepository.findById(id).get();
+    }
+
+    @Override
+    public List<Plane> getByAirlineCompany(Long id) {
+        AirlineCompany airlineCompany = new AirlineCompany();
+        airlineCompany.setId(id);
+        return planeRepository.findAllByAirlineCompany(airlineCompany);
     }
 }

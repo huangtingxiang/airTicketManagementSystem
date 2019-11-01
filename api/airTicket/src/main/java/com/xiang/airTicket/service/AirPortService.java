@@ -5,6 +5,8 @@ import com.xiang.airTicket.entity.AirPort;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.util.List;
+
 public interface AirPortService {
 
     // 保存
@@ -21,4 +23,6 @@ public interface AirPortService {
 
     // 删除
     void delete(Long id);
+
+    List<AirPort> findByCity(Long cityId);
 }

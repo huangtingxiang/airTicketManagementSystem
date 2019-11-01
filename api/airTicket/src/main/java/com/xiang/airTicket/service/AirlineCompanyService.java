@@ -4,6 +4,8 @@ import com.xiang.airTicket.entity.AirlineCompany;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.util.List;
+
 public interface AirlineCompanyService {
 
     // 保存
@@ -20,4 +22,7 @@ public interface AirlineCompanyService {
 
     // 通过id获取
     AirlineCompany getById(Long id);
+
+    // 获取全部
+    List<AirlineCompany> getAll();
 }
