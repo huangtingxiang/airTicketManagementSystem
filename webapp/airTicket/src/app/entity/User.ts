@@ -9,5 +9,7 @@ export class User {
 
   passWord: string; // 密码
 
+  role: number;
+
   visitor: Visitor; // 旅客信息
 }

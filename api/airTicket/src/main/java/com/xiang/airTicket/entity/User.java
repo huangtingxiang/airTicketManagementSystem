@@ -1,5 +1,7 @@
 package com.xiang.airTicket.entity;
 
+import com.xiang.airTicket.enumeration.Role;
+
 import javax.persistence.*;
 
 // 用户表
@@ -13,6 +15,8 @@ public class User {
     private String userName;
 
     private String passWord;
+
+    private Role role;
 
     @OneToOne
     private Visitor visitor; // 旅客信息
@@ -47,5 +51,13 @@ public class User {
 
     public void setVisitor(Visitor visitor) {
         this.visitor = visitor;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
     }
 }
