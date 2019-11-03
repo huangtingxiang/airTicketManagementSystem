@@ -49,4 +49,9 @@ export class PlaneService {
   delete(id: number): Observable<any> {
     return this.httpClient.delete(this.baseUrl + '/' + id);
   }
+
+  // 通过航空公司获取
+  getByAirlineCompany(id: number): Observable<Plane[]> {
+    return this.httpClient.get<Plane[]>(`${this.baseUrl}/getByAirlineCompany/${id}`);
+  }
 }

@@ -7,6 +7,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class AirlineCompanyServiceImpl implements AirlineCompanyService {
 
@@ -40,5 +42,10 @@ public class AirlineCompanyServiceImpl implements AirlineCompanyService {
     @Override
     public AirlineCompany getById(Long id) {
         return airlineCompanyRepository.findById(id).get();
+    }
+
+    @Override
+    public List<AirlineCompany> getAll() {
+        return (List<AirlineCompany>) airlineCompanyRepository.findAll();
     }
 }

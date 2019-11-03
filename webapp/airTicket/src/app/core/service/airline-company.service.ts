@@ -17,17 +17,9 @@ export class AirlineCompanyService {
   constructor(private httpClient: HttpClient) {
   }
 
-  // 获取所有的分页
-  getAllByPage(pageable: Pageable): Observable<Page<AirlineCompany>> {
-    const airlineCompanies = [];
-    for (let i = 1; i <= pageable.size; i++) {
-      airlineCompanies.push(new AirlineCompany(i, 'company' + i, null, new City(i, 'city' + i, 'pinyin' + i, false)));
-    }
-    const pageData = new Page<AirlineCompany>();
-    pageData.totalElements = 50;
-    console.log(airlineCompanies);
-    pageData.content = airlineCompanies;
-    return of<Page<AirlineCompany>>(pageData);
+  // 获取全部
+  getAll(): Observable<AirlineCompany[]> {
+    return this.httpClient.get<AirlineCompany[]>(`${this.baseUrl}`);
   }
 
   // 通过名称获取分页

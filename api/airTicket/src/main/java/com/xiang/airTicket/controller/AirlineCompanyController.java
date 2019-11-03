@@ -10,6 +10,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("airlineCompany")
 public class AirlineCompanyController {
@@ -50,6 +52,13 @@ public class AirlineCompanyController {
     public Page<AirlineCompany> pageByName(@RequestParam(required = false, name = "name") String name,
                                            @PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
         return airlineCompanyService.pageByName(name, pageable);
+    }
+
+    // 获取全部
+    @GetMapping
+    @JsonView(BaseJsonView.class)
+    public List<AirlineCompany> getAll() {
+        return airlineCompanyService.getAll();
     }
 
     private interface BaseJsonView extends AirlineCompany.CityJsonView {

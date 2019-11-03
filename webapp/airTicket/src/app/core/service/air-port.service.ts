@@ -46,4 +46,9 @@ export class AirPortService {
   delete(id: number): Observable<any> {
     return this.httpClient.delete(this.baseUrl + '/' + id);
   }
+
+  // 通过城市获取
+  getByCity(id: number): Observable<Array<AirPort>> {
+    return this.httpClient.get<AirPort[]>(`${this.baseUrl}/getByCity/${id}`);
+  }
 }

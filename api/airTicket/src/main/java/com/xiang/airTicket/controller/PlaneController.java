@@ -11,6 +11,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("plane")
 public class PlaneController {
@@ -51,6 +53,13 @@ public class PlaneController {
     @DeleteMapping("/{id}")
     public void delete(@PathVariable Long id) {
         planeService.delete(id);
+    }
+
+    // 通过航空公司获取
+    @GetMapping("/getByAirlineCompany/{id}")
+    @JsonView(BaseJsonView.class)
+    public List<Plane> getByAirlineCompany(@PathVariable Long id) {
+        return planeService.getByAirlineCompany(id);
     }
 
     private interface BaseJsonView extends Plane.AirlineCompanyJsonView, Plane.ShipSpaceJsonView, ShipSpace.SeatJsonView {

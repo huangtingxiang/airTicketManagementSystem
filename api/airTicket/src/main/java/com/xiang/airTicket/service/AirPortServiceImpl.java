@@ -1,11 +1,14 @@
 package com.xiang.airTicket.service;
 
 import com.xiang.airTicket.entity.AirPort;
+import com.xiang.airTicket.entity.City;
 import com.xiang.airTicket.repository.AirPortRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 
 @Service
@@ -41,5 +44,12 @@ public class AirPortServiceImpl implements AirPortService {
     @Override
     public void delete(Long id) {
         airPortRepository.deleteById(id);
+    }
+
+    @Override
+    public List<AirPort> findByCity(Long cityId) {
+        City city = new City();
+        city.setId(cityId);
+        return airPortRepository.findAllByCity(city);
     }
 }
