@@ -20,4 +20,19 @@ export class CommonService {
 
     return this.httpClient.post<string>(this.baseUrl + '/upload', formData);
   }
+
+  // 查找实体是否存在数组 存在则 返回true
+  findEntityInArray(array: Entity[], e: Entity): boolean {
+    if (array.length === 0) {
+      return false;
+    } else {
+      return array.find((entity) => {
+        return entity.id === e.id;
+      }) ? true : false;
+    }
+  }
+}
+
+export interface Entity {
+  id: number;
 }

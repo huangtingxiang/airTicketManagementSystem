@@ -1,24 +1,24 @@
 import {Component, OnInit} from '@angular/core';
 import {FormArray, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
-import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from '@angular/material';
-import {AirPortService} from '../../../core/service/air-port.service';
-import {City} from '../../../entity/City';
 import {AirPort} from '../../../entity/AirPort';
-import {AirlineCompanyService} from '../../../core/service/airline-company.service';
 import {AirlineCompany} from '../../../entity/AirlineCompany';
-import {PlaneService} from '../../../core/service/plane.service';
-import {Pageable} from '../../../entity/norm/pageable';
 import {Plane} from '../../../entity/Plane';
+import {AirPortService} from '../../../core/service/air-port.service';
+import {PlaneService} from '../../../core/service/plane.service';
+import {ActivatedRoute, ParamMap, Router} from '@angular/router';
 import {FlightManagementService} from '../../../core/service/flight-management.service';
-import {Router} from '@angular/router';
-
+import {AirlineCompanyService} from '../../../core/service/airline-company.service';
+import {DateAdapter} from '@angular/material';
+import {City} from '../../../entity/City';
+import {Pageable} from '../../../entity/norm/pageable';
 
 @Component({
-  selector: 'app-flight-management-add',
-  templateUrl: './flight-management-add.component.html',
-  styleUrls: ['./flight-management-add.component.css']
+  selector: 'app-flight-management-edit',
+  templateUrl: './flight-management-edit.component.html',
+  styleUrls: ['./flight-management-edit.component.css']
 })
-export class FlightManagementAddComponent implements OnInit {
+export class FlightManagementEditComponent implements OnInit {
+
 
   flightManagementForm: FormGroup; // 航班表单
 
@@ -48,10 +48,13 @@ export class FlightManagementAddComponent implements OnInit {
 
   ticketPrices: FormArray; // 舱位价钱
 
+  id: number;
+
   constructor(private fb: FormBuilder,
               private airPortService: AirPortService,
               private planeService: PlaneService,
               private router: Router,
+              private activatedRoute: ActivatedRoute,
               private flightManagementService: FlightManagementService,
               private airlineCompanyService: AirlineCompanyService,
               private adapter: DateAdapter<any>) {
@@ -68,6 +71,37 @@ export class FlightManagementAddComponent implements OnInit {
     this.registerValueChange();
     // 初始化数据
     this.initData();
+    // 更新表单数据
+    this.updateForm();
+  }
+
+  updateForm() {
+    this.activatedRoute.paramMap.subscribe((param: ParamMap) => {
+      this.id = +param.get('id');
+      this.flightManagementService.getById(this.id)
+        .subscribe((management) => {
+          management.startTime = new Date(management.startTime);
+          management.arrivalTime = new Date(management.arrivalTime);
+          const startTime = {
+            hour: management.startTime.getHours(),
+            minute: management.startTime.getMinutes(),
+            second: management.startTime.getSeconds()
+          };
+          const arrivalTime = {
+            hour: management.arrivalTime.getHours(),
+            minute: management.arrivalTime.getMinutes(),
+            second: management.arrivalTime.getSeconds()
+          };
+          this.startTime.patchValue(startTime);
+          this.arrivalTime.patchValue(arrivalTime);
+          this.flightManagementForm.patchValue(management);
+          this.ticketPrices.clear();
+          management.ticketPrices.forEach((ticket) => {
+            this.ticketPrices.push(this.fb.group(ticket));
+          });
+        });
+    });
+
   }
 
   //  初始化表单
@@ -180,9 +214,17 @@ export class FlightManagementAddComponent implements OnInit {
     flightManagement.startTime = startDate;
     flightManagement.arrivalTime = arrivalDate;
     flightManagement.ticketPrices = this.ticketPrices.value;
-    this.flightManagementService.save(flightManagement)
+    this.flightManagementService.update(this.id, flightManagement)
       .subscribe(() => {
         this.router.navigateByUrl('/flight-management');
       });
   }
+
+  compareEntity(a: any, b: any) {
+    if (a && a.id && b && b.id) {
+      return a.id === b.id;
+    }
+    return false;
+  }
+
 }

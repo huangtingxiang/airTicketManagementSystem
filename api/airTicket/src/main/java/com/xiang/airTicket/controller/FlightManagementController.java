@@ -23,7 +23,7 @@ public class FlightManagementController {
     // 保存
     @JsonView(BaseJsonView.class)
     @PostMapping
-    public FlightManagement save(FlightManagement flightManagement) {
+    public FlightManagement save(@RequestBody FlightManagement flightManagement) {
         return flightManagementService.save(flightManagement);
     }
 
@@ -37,7 +37,7 @@ public class FlightManagementController {
     // 更新
     @PutMapping("/{id}")
     @JsonView(BaseJsonView.class)
-    public FlightManagement update(@PathVariable Long id, FlightManagement flightManagement) {
+    public FlightManagement update(@PathVariable Long id,@RequestBody FlightManagement flightManagement) {
         return flightManagementService.update(id, flightManagement);
     }
 
@@ -45,9 +45,10 @@ public class FlightManagementController {
     @JsonView(BaseJsonView.class)
     public Page<FlightManagement> page(@RequestParam Long startingPlaceId,
                                        @RequestParam Long destinationId,
-                                       @RequestParam Date startTime,
+                                       @RequestParam Long startTime,
                                        @PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
-        return flightManagementService.pageByStartingPlaceAndDestinationStartTime(startingPlaceId, destinationId, startTime, pageable);
+        Date date = new Date(startTime);
+        return flightManagementService.pageByStartingPlaceAndDestinationStartTime(startingPlaceId, destinationId, date, pageable);
     }
 
     @DeleteMapping("/{id}")
@@ -61,6 +62,7 @@ public class FlightManagementController {
             FlightManagement.DestinationAirPortJsonView,
             FlightManagement.PlaneJsonView,
             Plane.AirlineCompanyJsonView,
+            FlightManagement.StartingPlaceJsonView,
             FlightManagement.TicketPricesJsonView,
             FlightManagement.TicketOrdersJsonView {
     }

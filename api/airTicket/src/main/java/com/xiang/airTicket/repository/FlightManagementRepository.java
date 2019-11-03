@@ -11,6 +11,11 @@ import java.util.Date;
 public interface FlightManagementRepository extends PagingAndSortingRepository<FlightManagement, Long> {
 
     // 通过起始地 目的地 startDate< < endDate
-    Page<FlightManagement> findAllByStartingPlaceAndDestinationAndStartTimeBetween(City startPlace, City destination, Date startDate, Date endDate, Pageable pageable);
+    Page<FlightManagement> findAllByStartingPlaceAndDestinationAndStartTimeGreaterThanEqualAndStartTimeLessThanEqual(
+            City startPlace,
+            City destination,
+            Date startDate,
+            Date endDate,
+            Pageable pageable);
 
 }

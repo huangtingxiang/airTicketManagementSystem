@@ -23,7 +23,7 @@ public class FlightManagementServiceImpl implements FlightManagementService {
         return flightManagementRepository.save(flightManagement);
     }
 
-    private  Date getStartTime(Date date) {
+    private Date getStartTime(Date date) {
         Calendar todayStart = Calendar.getInstance();
         todayStart.setTime(date);
         todayStart.set(Calendar.HOUR_OF_DAY, 0);
@@ -32,7 +32,7 @@ public class FlightManagementServiceImpl implements FlightManagementService {
         return todayStart.getTime();
     }
 
-    private  Date getEndTime(Date date) {
+    private Date getEndTime(Date date) {
         Calendar todayEnd = Calendar.getInstance();
         todayEnd.setTime(date);
         todayEnd.set(Calendar.HOUR_OF_DAY, 23);
@@ -42,12 +42,12 @@ public class FlightManagementServiceImpl implements FlightManagementService {
     }
 
     @Override
-    public Page<FlightManagement> pageByStartingPlaceAndDestinationStartTime(Long  startingPlaceId, Long destinationId, Date startTime, Pageable pageable) {
+    public Page<FlightManagement> pageByStartingPlaceAndDestinationStartTime(Long startingPlaceId, Long destinationId, Date startTime, Pageable pageable) {
         City startingPlace = new City();
         startingPlace.setId(startingPlaceId);
         City destination = new City();
         destination.setId(destinationId);
-        return flightManagementRepository.findAllByStartingPlaceAndDestinationAndStartTimeBetween(
+        return flightManagementRepository.findAllByStartingPlaceAndDestinationAndStartTimeGreaterThanEqualAndStartTimeLessThanEqual(
                 startingPlace,
                 destination,
                 getStartTime(startTime),

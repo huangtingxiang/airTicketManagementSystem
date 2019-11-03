@@ -115,7 +115,7 @@
       <div class="ui-g-6 form-control">
         <mat-form-field class="full-width">
           <mat-label>始发机场</mat-label>
-          <mat-select formControlName="startingAirPort">
+          <mat-select formControlName="startingAirPort" [compareWith]="compareEntity">
             <mat-option [value]="airPort" *ngFor="let airPort of startingAirPorts">{{airPort.name}}</mat-option>
           </mat-select>
         </mat-form-field>
@@ -140,7 +140,7 @@
       <div class="ui-g-6 form-control">
         <mat-form-field class="full-width">
           <mat-label>目的机场</mat-label>
-          <mat-select formControlName="destinationAirPort">
+          <mat-select formControlName="destinationAirPort" [compareWith]="compareEntity">
             <mat-option [value]="airPort" *ngFor="let airPort of destinationAirPorts">{{airPort.name}}</mat-option>
           </mat-select>
         </mat-form-field>
@@ -156,7 +156,7 @@
       <div class="ui-g-6 form-control">
         <mat-form-field class="full-width">
           <mat-label>航空公司</mat-label>
-          <mat-select [formControl]="airlineCompanySearch">
+          <mat-select [formControl]="airlineCompanySearch" [compareWith]="compareEntity">
             <mat-option [value]="airlineCompany"
                         *ngFor="let  airlineCompany of airlineCompanies">{{airlineCompany.name}}</mat-option>
           </mat-select>
@@ -166,7 +166,7 @@
       <div class="ui-g-6 form-control">
         <mat-form-field class="full-width">
           <mat-label>选择飞机</mat-label>
-          <mat-select formControlName="plane">
+          <mat-select formControlName="plane" [compareWith]="compareEntity">
             <mat-option [value]="plane" *ngFor="let plane of planes">{{plane.name}}</mat-option>
           </mat-select>
         </mat-form-field>
@@ -181,7 +181,8 @@
     <ng-container>
       <div class="ui-g-6 form-control" *ngFor="let form of ticketPrices.controls" [formGroup]="form">
         <mat-form-field floatLabel="always" class="full-width">
-          <input matInput type="number" formControlName="price" placeholder="{{form.get('shipSpace').value.described}}价钱" min="0">
+          <input matInput type="number" formControlName="price"
+                 placeholder="{{form.get('shipSpace').value.described}}价钱" min="0">
         </mat-form-field>
       </div>
     </ng-container>
@@ -192,8 +193,7 @@
         <button mat-stroked-button style="width: 100%;" routerLink="/flight-management" type="button">取消</button>
       </div>
       <div class="ui-g-2 ui-g-offset-1">
-        <button mat-stroked-button color="primary" style="width: 100%;" type="submit"
-               [disabled]="flightManagementForm.invalid" >新增
+        <button mat-stroked-button color="primary" style="width: 100%;" type="submit">更新
         </button>
       </div>
     </div>
