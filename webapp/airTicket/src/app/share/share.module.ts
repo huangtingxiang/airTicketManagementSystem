@@ -6,7 +6,7 @@ import {
   MatFormFieldModule,
   MatGridListModule, MatIconModule,
   MatInputModule,
-  MatListModule, MatNativeDateModule, MatPaginatorModule, MatRadioModule, MatSelectModule,
+  MatListModule, MatMenuModule, MatNativeDateModule, MatPaginatorModule, MatRadioModule, MatSelectModule,
   MatTableModule,
   MatToolbarModule
 } from '@angular/material';
@@ -47,7 +47,8 @@ import {PlaneSeatComponent} from './component/plane-seat/plane-seat.component';
     MatCardModule,
     MatDatepickerModule,
     MatNativeDateModule,
-    MatExpansionModule
+    MatExpansionModule,
+    MatMenuModule
   ],
   exports: [
     MatGridListModule,
@@ -75,7 +76,8 @@ import {PlaneSeatComponent} from './component/plane-seat/plane-seat.component';
     MatDatepickerModule,
     MatNativeDateModule,
     MatExpansionModule,
-    MatCardModule
+    MatCardModule,
+    MatMenuModule
   ],
   entryComponents: [ErrorDialogComponent, PlaneSeatComponent]
 })

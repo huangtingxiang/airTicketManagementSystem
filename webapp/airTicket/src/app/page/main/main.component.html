@@ -2,6 +2,21 @@
   <mat-toolbar class="" color="primary">
     <mat-toolbar-row>
       <span>航班管理系统</span>
+      <span class="example-spacer"></span>
+      <button mat-button class="example-icon">关于</button>
+      <button mat-icon-button [matMenuTriggerFor]="menu">
+        <mat-icon>more_vert</mat-icon>
+      </button>
+      <mat-menu #menu="matMenu">
+        <button mat-menu-item>
+          <mat-icon>person</mat-icon>
+          <span>个人信息</span>
+        </button>
+        <button mat-menu-item (click)="logout()">
+          <mat-icon>undo</mat-icon>
+          <span>注销</span>
+        </button>
+      </mat-menu>
     </mat-toolbar-row>
   </mat-toolbar>
 </div>

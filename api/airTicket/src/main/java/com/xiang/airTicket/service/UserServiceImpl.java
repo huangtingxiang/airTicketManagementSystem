@@ -18,7 +18,7 @@ public class UserServiceImpl implements UserService {
     HttpSession httpSession;
 
     @Override
-    public void login(String userName, String password) {
+    public User login(String userName, String password) {
         User user = userRepository.findAllByUserName(userName);
         if (user != null && user.getPassWord().equals(password)) {
             httpSession.setAttribute("userId", user.getId());
@@ -26,6 +26,7 @@ public class UserServiceImpl implements UserService {
             NotAuthenticationException exception = new NotAuthenticationException("用户名或密码错误");
             throw exception;
         }
+        return user;
     }
 
     @Override
@@ -35,5 +36,10 @@ public class UserServiceImpl implements UserService {
             throw new NotAuthenticationException("请先登陆");
         }
         return this.userRepository.findById(userId).get();
+    }
+
+    @Override
+    public void logout() {
+        httpSession.setAttribute("userId", null);
     }
 }

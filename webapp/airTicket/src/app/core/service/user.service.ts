@@ -14,7 +14,13 @@ export class UserService {
   constructor(private httClient: HttpClient) {
   }
 
-  login(user: User): Observable<any> {
-    return this.httClient.post(this.baseUrl + '/login', user);
+  // 登陆
+  login(user: User): Observable<User> {
+    return this.httClient.post<User>(this.baseUrl + '/login', user);
+  }
+
+  // 注销
+  logout(): Observable<any> {
+    return this.httClient.put(this.baseUrl + '/logout', {});
   }
 }

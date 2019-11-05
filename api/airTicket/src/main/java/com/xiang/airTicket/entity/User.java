@@ -1,5 +1,6 @@
 package com.xiang.airTicket.entity;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import com.xiang.airTicket.enumeration.Role;
 
 import javax.persistence.*;
@@ -19,6 +20,7 @@ public class User {
     private Role role;
 
     @OneToOne
+    @JsonView(VisitorJsonView.class)
     private Visitor visitor; // 旅客信息
 
     public Long getId() {
@@ -59,5 +61,8 @@ public class User {
 
     public void setRole(Role role) {
         this.role = role;
+    }
+
+    public interface VisitorJsonView {
     }
 }

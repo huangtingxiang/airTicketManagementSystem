@@ -1,13 +1,11 @@
 package com.xiang.airTicket.controller;
 
 
+import com.fasterxml.jackson.annotation.JsonView;
 import com.xiang.airTicket.entity.User;
 import com.xiang.airTicket.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("user")
@@ -17,8 +15,17 @@ public class UserController {
     UserService userService;
 
     @PostMapping("/login")
-    public void login(@RequestBody User user) {
-        userService.login(user.getUserName(), user.getPassWord());
+    @JsonView(BaseJsonView.class)
+    public User login(@RequestBody User user) {
+        return userService.login(user.getUserName(), user.getPassWord());
+    }
+
+    @PutMapping("/logout")
+    public void logout() {
+        this.userService.logout();
+    }
+
+    private interface BaseJsonView extends User.VisitorJsonView {
     }
 
 }
