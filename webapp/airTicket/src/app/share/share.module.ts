@@ -74,7 +74,8 @@ import {PlaneSeatComponent} from './component/plane-seat/plane-seat.component';
     AirlineCompanySelectComponent,
     MatDatepickerModule,
     MatNativeDateModule,
-    MatExpansionModule
+    MatExpansionModule,
+    MatCardModule
   ],
   entryComponents: [ErrorDialogComponent, PlaneSeatComponent]
 })

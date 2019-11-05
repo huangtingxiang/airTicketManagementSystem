@@ -10,10 +10,12 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {MatDatepickerModule, MatSnackBarModule} from '@angular/material';
 import {HTTP_INTERCEPTORS} from '@angular/common/http';
 import {BaseInterceptor} from './config/interceptor/base-interceptor';
+import { MainComponent } from './page/main/main.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    MainComponent
   ],
   imports: [
     BrowserModule,

@@ -1,7 +1,6 @@
 package com.xiang.airTicket.service;
 
 import com.xiang.airTicket.entity.User;
-import com.xiang.airTicket.enumeration.Role;
 import com.xiang.airTicket.exception.NotAuthenticationException;
 import com.xiang.airTicket.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,8 +18,8 @@ public class UserServiceImpl implements UserService {
     HttpSession httpSession;
 
     @Override
-    public void login(String userName, String password, Role role) {
-        User user = userRepository.findAllByUserNameAndRole(userName, role);
+    public void login(String userName, String password) {
+        User user = userRepository.findAllByUserName(userName);
         if (user != null && user.getPassWord().equals(password)) {
             httpSession.setAttribute("userId", user.getId());
         } else {
@@ -31,10 +30,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getCurrentUser() {
-        Long id = (Long) httpSession.getAttribute("userId");
-        if (id == null) {
+        Long userId = (Long) httpSession.getAttribute("userId");
+        if (userId == null) {
             throw new NotAuthenticationException("请先登陆");
         }
-        return userRepository.findById(id).get();
+        return this.userRepository.findById(userId).get();
     }
 }

@@ -12,4 +12,9 @@ export class User {
   role: number;
 
   visitor: Visitor; // 旅客信息
+
+  constructor(userName: string, passWord: string) {
+    this.userName = userName;
+    this.passWord = passWord;
+  }
 }
