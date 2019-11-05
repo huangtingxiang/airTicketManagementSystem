@@ -1,6 +1,7 @@
 import {NgModule} from '@angular/core';
 import {Routes, RouterModule} from '@angular/router';
 import {MainComponent} from './page/main/main.component';
+import {MainIndexComponent} from './page/main-index/main-index.component';
 
 
 const routes: Routes = [
@@ -8,6 +9,10 @@ const routes: Routes = [
     path: '',
     component: MainComponent,
     children: [
+      {
+        path: '',
+        component: MainIndexComponent,
+      },
       {
         path: 'air-port',
         loadChildren: () => import('./page/air-port/air-port.module').then(mod => mod.AirPortModule)

@@ -1,4 +1,5 @@
 import {NgModule} from '@angular/core';
+import {ChartModule} from 'primeng/chart';
 import {
   MatAutocompleteModule,
   MatButtonModule, MatCardModule,
@@ -48,7 +49,8 @@ import {PlaneSeatComponent} from './component/plane-seat/plane-seat.component';
     MatDatepickerModule,
     MatNativeDateModule,
     MatExpansionModule,
-    MatMenuModule
+    MatMenuModule,
+    ChartModule
   ],
   exports: [
     MatGridListModule,
@@ -77,7 +79,8 @@ import {PlaneSeatComponent} from './component/plane-seat/plane-seat.component';
     MatNativeDateModule,
     MatExpansionModule,
     MatCardModule,
-    MatMenuModule
+    MatMenuModule,
+    ChartModule
   ],
   entryComponents: [ErrorDialogComponent, PlaneSeatComponent]
 })

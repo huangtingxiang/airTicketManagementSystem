@@ -11,11 +11,13 @@ import {MatDatepickerModule, MatSnackBarModule} from '@angular/material';
 import {HTTP_INTERCEPTORS} from '@angular/common/http';
 import {BaseInterceptor} from './config/interceptor/base-interceptor';
 import { MainComponent } from './page/main/main.component';
+import { MainIndexComponent } from './page/main-index/main-index.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    MainComponent
+    MainComponent,
+    MainIndexComponent
   ],
   imports: [
     BrowserModule,
