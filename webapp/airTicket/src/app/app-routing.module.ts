@@ -32,6 +32,10 @@ const routes: Routes = [
       {
         path: 'plane',
         loadChildren: () => import('./page/plane/plane.module').then(mod => mod.PlaneModule)
+      },
+      {
+        path: 'user-management',
+        loadChildren: () => import('./page/user/user.module').then(mod => mod.UserModule)
       }
     ]
   },
