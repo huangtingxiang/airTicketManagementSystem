@@ -13,6 +13,8 @@ export class User {
 
   visitor: Visitor; // 旅客信息
 
+  status: boolean;
+
   constructor(userName: string, passWord: string) {
     this.userName = userName;
     this.passWord = passWord;

@@ -13,11 +13,14 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(unique = true)
     private String userName;
 
     private String passWord;
 
     private Role role;
+
+    private boolean status = true;
 
     @OneToOne
     @JsonView(VisitorJsonView.class)
@@ -61,6 +64,14 @@ public class User {
 
     public void setRole(Role role) {
         this.role = role;
+    }
+
+    public boolean isStatus() {
+        return status;
+    }
+
+    public void setStatus(boolean status) {
+        this.status = status;
     }
 
     public interface VisitorJsonView {

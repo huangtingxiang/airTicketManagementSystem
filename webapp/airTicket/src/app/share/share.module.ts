@@ -21,11 +21,12 @@ import {MatDialogModule} from '@angular/material/dialog';
 import {UploadImageComponent} from './component/upload-image/upload-image.component';
 import {AirlineCompanySelectComponent} from './component/airline-company-select/airline-company-select.component';
 import {PlaneSeatComponent} from './component/plane-seat/plane-seat.component';
+import {SuperRootOnlyPipe} from './pipe/super-root-only.pipe';
 
 
 @NgModule({
   declarations: [SvgIconComponent, PlaneTypePipe, CitySelectComponent, ErrorDialogComponent,
-    UploadImageComponent, AirlineCompanySelectComponent, PlaneSeatComponent],
+    UploadImageComponent, AirlineCompanySelectComponent, PlaneSeatComponent, SuperRootOnlyPipe],
   imports: [
     MatGridListModule,
     MatListModule,
@@ -80,7 +81,8 @@ import {PlaneSeatComponent} from './component/plane-seat/plane-seat.component';
     MatExpansionModule,
     MatCardModule,
     MatMenuModule,
-    ChartModule
+    ChartModule,
+    SuperRootOnlyPipe
   ],
   entryComponents: [ErrorDialogComponent, PlaneSeatComponent]
 })
