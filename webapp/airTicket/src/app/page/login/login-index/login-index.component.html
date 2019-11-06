@@ -1,0 +1,35 @@
+<body
+  style="position: relative;background: url(//res.wx.qq.com/a/wx_fed/webwx/res/static/img/2zrdI1g.jpg) no-repeat 50%;background-size: cover;">
+<form [formGroup]="userForm" class="login-form" (ngSubmit)="login()">
+  <mat-card class="example-card">
+    <mat-card-header>
+      <mat-card-title>登陆</mat-card-title>
+      <mat-card-subtitle>航班管理系统</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <div class="ui-g">
+        <div class="ui-g-10 ui-g-offset-1">
+          <mat-form-field style="width: 100%;" class="form-control">
+            <input matInput placeholder="用户名" formControlName="userName">
+            <mat-error *ngIf="userForm.get('userName').errors?.required && userForm.get('userName').touched">请输入用户名</mat-error>
+          </mat-form-field>
+
+          <mat-form-field style="width: 100%;" class="form-control">
+            <input matInput placeholder="密码" type="password" formControlName="passWord">
+            <mat-error *ngIf="userForm.get('passWord').errors?.required && userForm.get('passWord').touched">请输入密码</mat-error>
+          </mat-form-field>
+
+        </div>
+      </div>
+    </mat-card-content>
+    <div class="ui-g">
+      <div class="ui-g-10 ui-g-offset-1">
+        <mat-card-actions style="width: 100%;">
+          <button mat-button style="width: 100%;" type="submit">登陆</button>
+        </mat-card-actions>
+      </div>
+    </div>
+  </mat-card>
+</form>
+
+</body>

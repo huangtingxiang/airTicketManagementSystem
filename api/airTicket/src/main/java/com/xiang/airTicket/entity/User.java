@@ -1,5 +1,8 @@
 package com.xiang.airTicket.entity;
 
+import com.fasterxml.jackson.annotation.JsonView;
+import com.xiang.airTicket.enumeration.Role;
+
 import javax.persistence.*;
 
 // 用户表
@@ -10,11 +13,17 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(unique = true)
     private String userName;
 
     private String passWord;
 
+    private Role role;
+
+    private boolean status = true;
+
     @OneToOne
+    @JsonView(VisitorJsonView.class)
     private Visitor visitor; // 旅客信息
 
     public Long getId() {
@@ -47,5 +56,24 @@ public class User {
 
     public void setVisitor(Visitor visitor) {
         this.visitor = visitor;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
+
+    public boolean isStatus() {
+        return status;
+    }
+
+    public void setStatus(boolean status) {
+        this.status = status;
+    }
+
+    public interface VisitorJsonView {
     }
 }

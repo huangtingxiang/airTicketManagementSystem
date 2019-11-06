@@ -9,5 +9,14 @@ export class User {
 
   passWord: string; // 密码
 
+  role: number;
+
   visitor: Visitor; // 旅客信息
+
+  status: boolean;
+
+  constructor(userName: string, passWord: string) {
+    this.userName = userName;
+    this.passWord = passWord;
+  }
 }

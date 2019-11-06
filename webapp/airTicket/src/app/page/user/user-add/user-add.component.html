@@ -1,0 +1,27 @@
+<div class="ui-g">
+  <form class="ui-g-8 ui-g-offset-2" [formGroup]="userForm" (ngSubmit)="save()">
+    <div class="ui-g ui-g-12 form-control">
+      <mat-form-field class="full-width">
+        <input matInput placeholder="用户名" formControlName="userName">
+      </mat-form-field>
+      <mat-error *ngIf="userForm.get('userName').errors?.required && userForm.get('userName').touched">请输入用户名</mat-error>
+    </div>
+
+    <div class="ui-g ui-g-12 form-control">
+      <mat-form-field class="full-width">
+        <input matInput placeholder="密码" type="password" formControlName="passWord">
+      </mat-form-field>
+      <mat-error *ngIf="userForm.get('passWord').errors?.required && userForm.get('passWord').touched">请输入密码</mat-error>
+    </div>
+
+    <div class="ui-g ui-g-12 form-control">
+      <div class="ui-g-2 ui-g-offset-3">
+        <button mat-stroked-button style="width: 100%;" routerLink="../" type="button">取消</button>
+      </div>
+      <div class="ui-g-2 ui-g-offset-1">
+        <button mat-stroked-button color="primary" style="width: 100%;" type="submit" [disabled]="!userForm.valid">新增
+        </button>
+      </div>
+    </div>
+  </form>
+</div>

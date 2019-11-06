@@ -1,12 +1,18 @@
 package com.xiang.airTicket.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.xiang.airTicket.Interceptor.BaseInterceptor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.session.data.redis.config.annotation.web.http.EnableRedisHttpSession;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.util.List;
@@ -15,14 +21,15 @@ import java.util.List;
 @EnableWebMvc
 public class WebConfig implements WebMvcConfigurer {
 
-    // 暂时配置允许跨域请求
+    @Autowired
+    BaseInterceptor baseInterceptor;
+
+    // 添加拦截器
     @Override
-    public void addCorsMappings(final CorsRegistry registry) {
-        registry.addMapping("/**")
-                .allowedHeaders("*")
-                .allowedOrigins("*")
-                .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS", "HEAD", "PATCH");
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(baseInterceptor).addPathPatterns("/**").excludePathPatterns("/user/login");
     }
+
 
     // 配置jsonview
     @Override
@@ -30,4 +37,5 @@ public class WebConfig implements WebMvcConfigurer {
         final ObjectMapper mapper = Jackson2ObjectMapperBuilder.json().defaultViewInclusion(true).build();
         converters.add(new MappingJackson2HttpMessageConverter(mapper));
     }
+
 }

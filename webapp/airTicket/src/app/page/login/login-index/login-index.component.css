@@ -1,0 +1,10 @@
+.form-control {
+  margin: 30px 0px;
+}
+
+.login-form {
+  position: absolute;
+  top: 25%;
+  left: 40%;
+  width: 370px;
+}

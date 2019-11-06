@@ -1,0 +1,28 @@
+<div class="ui-g">
+  <form class="ui-g-8 ui-g-offset-2">
+    <div class="ui-g ui-g-12 form-control">
+      <label>用户名:{{user?.userName}}</label>
+    </div>
+
+    <div class="ui-g ui-g-12 form-control">
+      <label>角色:{{user?.role}}</label>
+    </div>
+
+    <div class="ui-g ui-g-12 form-control">
+      <mat-form-field class="full-width">
+        <input matInput placeholder="密码" type="password" [formControl]="password">
+      </mat-form-field>
+      <mat-error *ngIf="password.errors?.required && password.touched">请输入密码</mat-error>
+    </div>
+
+    <div class="ui-g ui-g-12 form-control">
+      <div class="ui-g-2 ui-g-offset-3">
+        <button mat-stroked-button style="width: 100%;" type="button" (click)="back()">取消</button>
+      </div>
+      <div class="ui-g-2 ui-g-offset-1">
+        <button mat-stroked-button color="primary" style="width: 100%;" (click)="resetPassword()" type="button" [disabled]="password.errors">修改
+        </button>
+      </div>
+    </div>
+  </form>
+</div>

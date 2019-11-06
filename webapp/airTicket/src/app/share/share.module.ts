@@ -1,4 +1,5 @@
 import {NgModule} from '@angular/core';
+import {ChartModule} from 'primeng/chart';
 import {
   MatAutocompleteModule,
   MatButtonModule, MatCardModule,
@@ -6,7 +7,7 @@ import {
   MatFormFieldModule,
   MatGridListModule, MatIconModule,
   MatInputModule,
-  MatListModule, MatNativeDateModule, MatPaginatorModule, MatRadioModule, MatSelectModule,
+  MatListModule, MatMenuModule, MatNativeDateModule, MatPaginatorModule, MatRadioModule, MatSelectModule,
   MatTableModule,
   MatToolbarModule
 } from '@angular/material';
@@ -20,11 +21,12 @@ import {MatDialogModule} from '@angular/material/dialog';
 import {UploadImageComponent} from './component/upload-image/upload-image.component';
 import {AirlineCompanySelectComponent} from './component/airline-company-select/airline-company-select.component';
 import {PlaneSeatComponent} from './component/plane-seat/plane-seat.component';
+import {SuperRootOnlyPipe} from './pipe/super-root-only.pipe';
 
 
 @NgModule({
   declarations: [SvgIconComponent, PlaneTypePipe, CitySelectComponent, ErrorDialogComponent,
-    UploadImageComponent, AirlineCompanySelectComponent, PlaneSeatComponent],
+    UploadImageComponent, AirlineCompanySelectComponent, PlaneSeatComponent, SuperRootOnlyPipe],
   imports: [
     MatGridListModule,
     MatListModule,
@@ -47,7 +49,9 @@ import {PlaneSeatComponent} from './component/plane-seat/plane-seat.component';
     MatCardModule,
     MatDatepickerModule,
     MatNativeDateModule,
-    MatExpansionModule
+    MatExpansionModule,
+    MatMenuModule,
+    ChartModule
   ],
   exports: [
     MatGridListModule,
@@ -74,7 +78,11 @@ import {PlaneSeatComponent} from './component/plane-seat/plane-seat.component';
     AirlineCompanySelectComponent,
     MatDatepickerModule,
     MatNativeDateModule,
-    MatExpansionModule
+    MatExpansionModule,
+    MatCardModule,
+    MatMenuModule,
+    ChartModule,
+    SuperRootOnlyPipe
   ],
   entryComponents: [ErrorDialogComponent, PlaneSeatComponent]
 })
