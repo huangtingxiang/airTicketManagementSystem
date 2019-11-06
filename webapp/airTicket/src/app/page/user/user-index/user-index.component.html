@@ -55,7 +55,9 @@
         <ng-container matColumnDef="operation">
           <th mat-header-cell *matHeaderCellDef style="width: 20% !important;"> 操作</th>
           <td mat-cell *matCellDef="let element" class="operation">
-            <button mat-raised-button color="primary" routerLink="edit/{{element.id}}">编辑</button>
+            <ng-container *ngIf="! (element.role | superRootOnly)">
+              <button mat-raised-button color="primary" routerLink="edit/{{element.id}}">编辑</button>
+            </ng-container>
           </td>
         </ng-container>
 

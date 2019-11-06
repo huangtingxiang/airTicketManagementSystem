@@ -6,7 +6,7 @@ import {Pipe, PipeTransform} from '@angular/core';
 export class SuperRootOnlyPipe implements PipeTransform {
 
   transform(value: any): boolean {
-    if (value == '0') {
+    if (value && value.toString() === '0') {
       return true;
     } else {
       return false;

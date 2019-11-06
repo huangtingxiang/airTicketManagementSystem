@@ -76,6 +76,13 @@ public class UserController {
         return userService.getById(id);
     }
 
+
+    @GetMapping("/currentUser")
+    @JsonView(BaseJsonView.class)
+    public User getCurrentUser() {
+        return this.userService.getCurrentUser();
+    }
+
     private interface BaseJsonView extends User.VisitorJsonView {
     }
 

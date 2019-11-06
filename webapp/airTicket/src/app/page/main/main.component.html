@@ -4,14 +4,14 @@
       <span>航班管理系统</span>
       <span class="example-spacer"></span>
       <button mat-icon-button routerLink="/">
-        <mat-icon >home</mat-icon>
+        <mat-icon>home</mat-icon>
       </button>
       <button mat-button class="example-icon">关于</button>
       <button mat-icon-button [matMenuTriggerFor]="menu">
         <mat-icon>more_vert</mat-icon>
       </button>
       <mat-menu #menu="matMenu">
-        <button mat-menu-item>
+        <button mat-menu-item routerLink="/user-management/edit/{{loginUser.id}}">
           <mat-icon>person</mat-icon>
           <span>个人信息</span>
         </button>
@@ -32,7 +32,7 @@
       <a mat-list-item routerLink="/airline-company">航空公司</a>
       <a mat-list-item routerLink="/plane">飞机管理</a>
       <a mat-list-item routerLink="/flight-management">航班管理</a>
-      <a mat-list-item routerLink="/user-management">用户管理</a>
+      <a mat-list-item routerLink="/user-management" *ngIf="loginUser?.role | superRootOnly">用户管理</a>
     </mat-nav-list>
   </div>
   <div class="ui-g-10 ui-g-offset-2 content">

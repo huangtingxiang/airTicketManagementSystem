@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {CoreModule} from '../core.module';
 import {User} from '../../entity/User';
-import {Observable} from 'rxjs';
+import { Observable} from 'rxjs';
 import {Page} from '../../entity/norm/page';
 import {Pageable} from '../../entity/norm/pageable';
 
@@ -56,5 +56,10 @@ export class UserService {
 
   resetPassword(id: number, passWord: string): Observable<any> {
     return this.httClient.put(`${this.baseUrl}/resetPassword/${id}`, {passWord});
+  }
+
+  // 获取当前登录用户
+  currentLoginUser(): Observable<User> {
+    return this.httClient.get<User>(this.baseUrl + '/currentUser');
   }
 }
