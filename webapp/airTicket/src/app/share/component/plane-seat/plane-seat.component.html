@@ -25,9 +25,9 @@
 
     <td mat-cell *matCellDef="let element" class="seat-container">
       <button mat-icon-button type="button" [disabled]="true">
-        <app-svg-icon iconName="seat" [color]="element[i].color"></app-svg-icon>
+        <app-svg-icon iconName="seat" [color]="element[i]?.color"></app-svg-icon>
       </button>
-      <span>{{element[i].value.number}}</span>
+      <span>{{element[i]?.value.number}}</span>
     </td>
   </ng-container>
 

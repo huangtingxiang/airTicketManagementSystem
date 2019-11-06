@@ -23,6 +23,8 @@ export class Plane {
   // 总列数
   totalCol: number;
 
+  totalSeat: number;
+
   constructor(id: number, name: string, icon: string, planeType: PlaneType, airlineCompany: AirlineCompany, shipSpaces: Array<ShipSpace>) {
     this.id = id;
     this.name = name;
