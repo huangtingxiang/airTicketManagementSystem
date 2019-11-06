@@ -162,6 +162,7 @@ export class PlaneAddComponent implements OnInit {
 
   save() {
     // 将所有座位保存至舱位中
+    let totalSeat = 0;
     this.seatDataSource.data.forEach((seatData: any) => {
       seatData.forEach((seatDisplay) => {
         if (seatDisplay.value.shipSpace) {
@@ -170,9 +171,11 @@ export class PlaneAddComponent implements OnInit {
           }
           seatDisplay.value.shipSpace.seats.push(seatDisplay.value);
           seatDisplay.value.shipSpace = null;
+          totalSeat++;
         }
       });
     });
+    this.planeForm.value.totalSeat = totalSeat;
     this.planeService.save(this.planeForm.value)
       .subscribe((plane) => {
         this.router.navigateByUrl('/plane');

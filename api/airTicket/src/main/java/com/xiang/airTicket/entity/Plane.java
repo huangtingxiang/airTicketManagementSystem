@@ -26,6 +26,8 @@ public class Plane {
     // 总行数
     private Integer totalRow;
 
+    private Integer totalSeat;
+
     @ManyToOne
     private AirlineCompany airlineCompany; // 所属公司
 
@@ -98,5 +100,14 @@ public class Plane {
 
     public void setTotalRow(Integer totalRow) {
         this.totalRow = totalRow;
+    }
+
+
+    public Integer getTotalSeat() {
+        return totalSeat;
+    }
+
+    public void setTotalSeat(Integer totalSeat) {
+        this.totalSeat = totalSeat;
     }
 }
