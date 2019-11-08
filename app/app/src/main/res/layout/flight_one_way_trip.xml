@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="300dp"
+    android:orientation="vertical"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp">
+
+            <TextView
+                android:id="@+id/startPlaceLabel"
+                style="@style/titleTextStyle"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_toLeftOf="@id/button2"
+                android:gravity="center_vertical"
+                android:text="天津"
+                app:fontFamily="sans-serif-thin" />
+
+            <Button
+                android:id="@+id/button2"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:layout_centerInParent="true"
+                android:background="@null"
+                android:drawableTop="@drawable/flight_management_34dp"
+                android:paddingTop="10dp" />
+
+            <TextView
+                android:id="@+id/arrivePlaceLabel"
+                style="@style/titleTextStyle"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_toRightOf="@id/button2"
+                android:gravity="center_vertical|right"
+                android:text="上海"
+                app:fontFamily="sans-serif-thin" />
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/startDate"
+            style="@style/titleTextStyle"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="5dp"
+            android:gravity="center_vertical"
+            android:text="1月1日"
+            app:fontFamily="sans-serif-thin" />
+
+        <TextView
+            android:id="@+id/spaceLabel"
+            style="@style/titleTextStyle"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="5dp"
+            android:gravity="center_vertical"
+            android:text="经济舱"
+            app:fontFamily="sans-serif-thin" />
+
+        <Button
+            android:id="@+id/button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:background="#E8880B"
+            android:text="搜索"
+            android:textColor="#FFFFFF"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+</LinearLayout>

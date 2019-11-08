@@ -3,4 +3,5 @@
     <color name="colorPrimary">#3983e5</color>
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
+    <color name="mdtp_accent_color">#009688</color>
 </resources>
