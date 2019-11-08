@@ -8,4 +8,17 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="titleTextStyle" parent="android:Theme.Light">
+        <item name="android:textColor">#E5080808</item>
+        <item name="android:textSize">22sp</item>
+    </style>
+
+    <style name="titleLabelStyle" parent="android:Theme.Light">
+        <item name="android:textColor">#D4050505</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+    <!--    <style name="MyRedTextAppearance" parent="@android:style/TextAppearance">-->
+    <!--        <item name="android:textColor">#F00</item>-->
+    <!--        <item name="android:textStyle">bold</item>-->
+    <!--    </style>-->
 </resources>
