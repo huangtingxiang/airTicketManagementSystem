@@ -1,6 +1,7 @@
 package com.jdxiang.airTicket.ui.home;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,6 +20,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.jdxiang.airTicket.MainActivity;
 import com.jdxiang.airTicket.R;
+import com.jdxiang.airTicket.flightManagement.SearchListActivity;
 import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.ViewHolder;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
@@ -82,6 +84,15 @@ public class FlightOneWayTripFragment extends Fragment implements DatePickerDial
                 dpd.setAccentColor(getResources().getColor(R.color.mdtp_accent_color));
                 dpd.setOkText("确定");
                 dpd.setCancelText("取消");
+            }
+        });
+        // 设置搜索框点中
+        Button button = root.findViewById(R.id.one_way_search_btn);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(FlightOneWayTripFragment.this.getContext(), SearchListActivity.class);
+                startActivity(intent);
             }
         });
         return root;

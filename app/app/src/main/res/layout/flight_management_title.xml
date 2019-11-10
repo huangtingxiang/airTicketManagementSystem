@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:background="@color/white"
+    android:layout_height="wrap_content">
+
+    <Button
+        android:id="@+id/back"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:background="@null"
+        android:paddingLeft="10dp"
+        android:drawablePadding="-40dp"
+        android:drawableLeft="@drawable/ic_chevron_left_black_24dp"
+        android:text="返回" />
+
+    <TextView
+        android:id="@+id/flight_title_text"
+        style="@style/titleLabelStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:layout_weight="50"
+        android:text="标题"
+        android:textSize="24sp" />
+
+    <Button
+        android:id="@+id/button3"
+        android:background="@null"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"/>
+</LinearLayout>
