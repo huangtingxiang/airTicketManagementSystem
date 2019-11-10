@@ -13,7 +13,13 @@
     <version>0.0.1-SNAPSHOT</version>
     <name>airTicket</name>
     <description>Demo project for Spring Boot</description>
-
+    <repositories>
+        <repository>
+            <id>aliyun central</id>
+            <name>aliyun central proxy</name>
+            <url>https://maven.aliyun.com/repository/central</url>
+        </repository>
+    </repositories>
     <properties>
         <java.version>1.8</java.version>
     </properties>
