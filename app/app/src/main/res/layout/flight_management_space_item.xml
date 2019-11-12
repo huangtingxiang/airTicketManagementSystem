@@ -29,7 +29,7 @@
             android:gravity="right">
 
             <Button
-                android:id="@+id/button"
+                android:id="@+id/flightReserveBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/reserve_button"
