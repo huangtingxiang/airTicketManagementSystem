@@ -12,8 +12,7 @@
         android:background="@null"
         android:paddingLeft="10dp"
         android:drawablePadding="-40dp"
-        android:drawableLeft="@drawable/ic_chevron_left_black_24dp"
-        android:text="返回" />
+        android:drawableLeft="@drawable/ic_chevron_left_black_24dp" />
 
     <TextView
         android:id="@+id/flight_title_text"
