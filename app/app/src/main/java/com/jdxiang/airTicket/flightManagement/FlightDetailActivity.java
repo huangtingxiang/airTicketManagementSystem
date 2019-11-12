@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,7 +28,7 @@ public class FlightDetailActivity extends AppCompatActivity {
             actionBar.hide();
         }
 
-        // 设置推荐航班
+        // 设置舱位列表
         RecyclerView listView = findViewById(R.id.spaceList);
         listView.setNestedScrollingEnabled(false);
         listView.setFocusable(false);
@@ -48,7 +49,14 @@ public class FlightDetailActivity extends AppCompatActivity {
 
         @Override
         public void onBindViewHolder(@NonNull SpaceListAdapter.SpaceListHolder holder, int position) {
-
+            // 点击预定按钮时进入预定界面
+            holder.view.findViewById(R.id.flightReserveBtn).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(FlightDetailActivity.this, FlightReserveActivity.class);
+                    startActivity(intent);
+                }
+            });
         }
 
         @Override
@@ -58,8 +66,11 @@ public class FlightDetailActivity extends AppCompatActivity {
 
         class SpaceListHolder extends RecyclerView.ViewHolder {
 
+            View view;
+
             public SpaceListHolder(@NonNull View itemView) {
                 super(itemView);
+                view = itemView;
             }
         }
     }
