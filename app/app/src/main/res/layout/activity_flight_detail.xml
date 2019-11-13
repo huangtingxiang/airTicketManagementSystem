@@ -67,6 +67,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="07:40"
+                    android:textColor="#000000"
                     android:textSize="22sp" />
 
                 <TextView
