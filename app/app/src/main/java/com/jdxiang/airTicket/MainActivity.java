@@ -1,7 +1,6 @@
 package com.jdxiang.airTicket;
 
 import android.os.Bundle;
-import android.view.Window;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 

@@ -1,5 +1,6 @@
 package com.jdxiang.airTicket.ui.notifications;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +14,11 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.jdxiang.airTicket.R;
+import com.jdxiang.airTicket.flightManagement.SearchListActivity;
+import com.jdxiang.airTicket.personal.MyCountActivity;
+import com.jdxiang.airTicket.ui.home.FlightOneWayTripFragment;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class NotificationsFragment extends Fragment {
 
@@ -23,11 +29,18 @@ public class NotificationsFragment extends Fragment {
         notificationsViewModel =
                 ViewModelProviders.of(this).get(NotificationsViewModel.class);
         View root = inflater.inflate(R.layout.fragment_notifications, container, false);
-        final TextView textView = root.findViewById(R.id.text_notifications);
+        // 点击头像时进入个人编辑
+        CircleImageView circleImageView = root.findViewById(R.id.personImage);
+        circleImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(NotificationsFragment.this.getContext(), MyCountActivity.class);
+                startActivity(intent);
+            }
+        });
         notificationsViewModel.getText().observe(this, new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
-                textView.setText(s);
             }
         });
         return root;
