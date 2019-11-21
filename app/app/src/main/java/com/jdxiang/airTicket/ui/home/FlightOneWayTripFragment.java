@@ -2,6 +2,7 @@ package com.jdxiang.airTicket.ui.home;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,21 +13,23 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.jdxiang.airTicket.MainActivity;
 import com.jdxiang.airTicket.R;
+import com.jdxiang.airTicket.entity.City;
 import com.jdxiang.airTicket.flightManagement.SearchListActivity;
+import com.jdxiang.airTicket.httpService.CityService;
 import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.ViewHolder;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -34,51 +37,61 @@ public class FlightOneWayTripFragment extends Fragment implements DatePickerDial
 
     private TextView startTextLabel;
 
+    CityService cityService = new CityService(); // 城市服务
+
+    City startCity; // 起始城市
+
+    City arriveCity; // 到达城市
+
+    Date searchDate; // 搜索时间
+
+    TextView startCityTextView;
+
+    TextView arriveCityTextView;
+
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
         View root = inflater.inflate(R.layout.flight_one_way_trip, container, false);
-        // 点击出发地时
-        TextView textView = root.findViewById(R.id.startPlaceLabel);
-        textView.setOnClickListener(new View.OnClickListener() {
+
+        // 点击出发地时 设置城市弹出框
+        startCityTextView = root.findViewById(R.id.startPlaceLabel);
+        startCityTextView.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onClick(View v) {
-                // 设置城市列表dialog
-                final DialogPlus dialog = DialogPlus.newDialog(FlightOneWayTripFragment.this.getContext())
-                        .setContentHolder(new ViewHolder(R.layout.city_select_dialog))
-                        .setMargin(0, 150, 0, 0)
-                        .setExpanded(true, ViewGroup.LayoutParams.MATCH_PARENT)  // This will enable the expand feature, (similar to android L share dialog)
-                        .create();
-                View view = dialog.getHolderView();
-                RecyclerView listView = view.findViewById(R.id.list);
-                listView.setNestedScrollingEnabled(false);
-                view.findViewById(R.id.close_dialog).setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        dialog.dismiss();
-                    }
+                FlightOneWayTripFragment.this.showCityDialog((city) -> {
+                    startCity = city;
+                    startCityTextView.setText(city.getName());
                 });
-                GridLayoutManager linearLayoutManager = new GridLayoutManager(FlightOneWayTripFragment.this.getContext(), 4);
-                listView.setLayoutManager(linearLayoutManager);
-                listView.setAdapter(new CityListAdapter());
-                dialog.show();
             }
         });
+
+        // 点击到达地时 设置城市弹出框
+        arriveCityTextView = root.findViewById(R.id.arrivePlaceLabel);
+        arriveCityTextView.setOnClickListener((View v) -> {
+            FlightOneWayTripFragment.this.showCityDialog((city) -> {
+                arriveCity = city;
+                arriveCityTextView.setText(city.getName());
+            });
+        });
+
         //  点击时间选择时
+        Calendar now = Calendar.getInstance();
         startTextLabel = root.findViewById(R.id.startDate);
+        searchDate = now.getTime();
+        setDateLabel(now.get(Calendar.YEAR), now.get(Calendar.MONTH), now.get(Calendar.DAY_OF_MONTH));
         startTextLabel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Calendar now = Calendar.getInstance();
                 DatePickerDialog dpd = DatePickerDialog.newInstance(
                         FlightOneWayTripFragment.this,
                         now.get(Calendar.YEAR), // Initial year selection
                         now.get(Calendar.MONTH), // Initial month selection
                         now.get(Calendar.DAY_OF_MONTH) // Inital day selection
                 );
-// If you're calling this from a support Fragment
                 dpd.show(getFragmentManager(), "出发日期");
                 dpd.setLocale(Locale.CHINA);
                 dpd.setAccentColor(getResources().getColor(R.color.mdtp_accent_color));
@@ -86,6 +99,7 @@ public class FlightOneWayTripFragment extends Fragment implements DatePickerDial
                 dpd.setCancelText("取消");
             }
         });
+
         // 设置搜索框点中
         Button button = root.findViewById(R.id.one_way_search_btn);
         button.setOnClickListener(new View.OnClickListener() {
@@ -98,20 +112,71 @@ public class FlightOneWayTripFragment extends Fragment implements DatePickerDial
         return root;
     }
 
+    // 显示城市列表弹出框
+    private void showCityDialog(CityCallBack cityCallBack) {
+        // 请求后台数据 显示dialog
+        cityService.getAll((cities) -> {
+            // 设置城市列表dialog
+            final DialogPlus dialog = DialogPlus.newDialog(FlightOneWayTripFragment.this.getContext())
+                    .setContentHolder(new ViewHolder(R.layout.city_select_dialog))
+                    .setMargin(0, 150, 0, 0)
+                    .setExpanded(false, ViewGroup.LayoutParams.WRAP_CONTENT)  // This will enable the expand feature, (similar to android L share dialog)
+                    .create();
+            View view = dialog.getHolderView();
+            view.findViewById(R.id.close_dialog).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dialog.dismiss();
+                }
+            });
+            // 封装callback 关闭弹出框
+            CityCallBack newCityCallBack = (city) -> {
+                dialog.dismiss();
+                cityCallBack.onSelect(city);
+            };
+            // 设置所有城市
+            RecyclerView allListView = view.findViewById(R.id.all_city_list);
+            allListView.setNestedScrollingEnabled(false);
+            allListView.setLayoutManager(new GridLayoutManager(FlightOneWayTripFragment.this.getContext(), 4));
+            allListView.setAdapter(new CityListAdapter(cities, newCityCallBack));
+            // 设置热门城市
+            RecyclerView primaryListView = view.findViewById(R.id.primaried_city_list);
+            primaryListView.setNestedScrollingEnabled(false);
+            primaryListView.setLayoutManager(new GridLayoutManager(FlightOneWayTripFragment.this.getContext(), 4));
+            ArrayList<City> primaryCities = new ArrayList<City>();
+            for (City city :
+                    cities) {
+                if (city.getPrimaried()) {
+                    primaryCities.add(city);
+                }
+            }
+            primaryListView.setAdapter(new CityListAdapter((City[]) primaryCities.toArray(new City[primaryCities.size()]), newCityCallBack));
+            dialog.show();
+        });
+    }
+
     @Override
     public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
-        startTextLabel.setText(year + "年" + monthOfYear + "月" + dayOfMonth + "日");
+        setDateLabel(year, monthOfYear, dayOfMonth);
+    }
+
+    private void setDateLabel(int year, int month, int day) {
+        startTextLabel.setText(year + "年" + (month + 1) + "月" + day + "日");
+    }
+
+    interface CityCallBack {
+        void onSelect(City city);
     }
 
     //  城市列表设配器
     class CityListAdapter extends RecyclerView.Adapter<CityListAdapter.CityListHolder> {
 
-        private ArrayList<String> data = new ArrayList<>();
+        private City[] allCity = {};
+        private CityCallBack cityCallBack;
 
-        {
-            for (int i = 0; i < 100; i++) {
-                data.add("天津");
-            }
+        CityListAdapter(City[] cities, CityCallBack cityCallBack) {
+            this.allCity = cities;
+            this.cityCallBack = cityCallBack;
         }
 
         @NonNull
@@ -123,12 +188,19 @@ public class FlightOneWayTripFragment extends Fragment implements DatePickerDial
 
         @Override
         public void onBindViewHolder(@NonNull CityListHolder holder, int position) {
-            holder.button.setText(data.get(position));
+            holder.button.setText(allCity[position].getName());
+            holder.button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int position = holder.getAdapterPosition();
+                    cityCallBack.onSelect(allCity[position]);
+                }
+            });
         }
 
         @Override
         public int getItemCount() {
-            return data.size();
+            return allCity.length;
         }
 
         class CityListHolder extends RecyclerView.ViewHolder {
