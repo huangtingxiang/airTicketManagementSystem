@@ -2,7 +2,6 @@ package com.jdxiang.airTicket.login;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -36,7 +35,7 @@ public class LoginActivity extends AppCompatActivity {
 
 
     @Override
-    public void onWindowFocusChanged ( boolean hasFocus){
+    public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
         if (hasFocus && Build.VERSION.SDK_INT >= 19) {
             View decorView = getWindow().getDecorView();

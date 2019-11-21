@@ -12,13 +12,9 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import com.jdxiang.airTicket.MainActivity;
 import com.jdxiang.airTicket.R;
 import com.jdxiang.airTicket.flightManagement.SearchListActivity;
 import com.orhanobut.dialogplus.DialogPlus;
