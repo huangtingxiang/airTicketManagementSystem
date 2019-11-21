@@ -15,6 +15,8 @@ import okhttp3.Response;
  */
 public class BaseHttpService {
 
+    public static final String BASE_HOST = "http://192.168.2.234:8080/";
+
     /**
      * 用于发起get请求
      *
@@ -23,7 +25,7 @@ public class BaseHttpService {
      * @param params   请求参数
      */
     public<T> void get(String url, CallBack<T> callBack, Class<T> type,String... params) {
-        Request request = new Request.Builder().url(url).build();
+        Request request = new Request.Builder().url(BASE_HOST + url).build();
         new HttpTask<T>(callBack, type).execute(request);
     }
 
