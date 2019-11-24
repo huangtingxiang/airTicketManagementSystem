@@ -12,6 +12,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
+import java.util.List;
 
 @RestController
 @RequestMapping("flightManagement")
@@ -37,18 +38,33 @@ public class FlightManagementController {
     // 更新
     @PutMapping("/{id}")
     @JsonView(BaseJsonView.class)
-    public FlightManagement update(@PathVariable Long id,@RequestBody FlightManagement flightManagement) {
+    public FlightManagement update(@PathVariable Long id, @RequestBody FlightManagement flightManagement) {
         return flightManagementService.update(id, flightManagement);
     }
 
     @GetMapping("/page")
     @JsonView(BaseJsonView.class)
-    public Page<FlightManagement> page(@RequestParam Long startingPlaceId,
-                                       @RequestParam Long destinationId,
-                                       @RequestParam Long startTime,
+    public Page<FlightManagement> page(@RequestParam(required = false) Long startingPlaceId,
+                                       @RequestParam(required = false) Long destinationId,
+                                       @RequestParam(required = false) Long startTime,
                                        @PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
-        Date date = new Date(startTime);
+        Date date = null;
+        if (startTime != null) {
+            date = new Date(startTime);
+        }
         return flightManagementService.pageByStartingPlaceAndDestinationStartTime(startingPlaceId, destinationId, date, pageable);
+    }
+
+    @GetMapping("/searchFlight")
+    @JsonView(BaseJsonView.class)
+    public List<FlightManagement> searchFlight(@RequestParam(required = false) Long startingPlaceId,
+                                               @RequestParam(required = false) Long destinationId,
+                                               @RequestParam(required = false) Long startTime) {
+        Date date = null;
+        if (startTime != null) {
+            date = new Date(startTime);
+        }
+        return flightManagementService.searchFlight(startingPlaceId, destinationId, date);
     }
 
     @DeleteMapping("/{id}")
@@ -62,6 +78,7 @@ public class FlightManagementController {
             FlightManagement.DestinationAirPortJsonView,
             FlightManagement.PlaneJsonView,
             Plane.AirlineCompanyJsonView,
+            Plane.ShipSpaceJsonView,
             FlightManagement.StartingPlaceJsonView,
             FlightManagement.TicketPricesJsonView,
             FlightManagement.TicketOrdersJsonView {

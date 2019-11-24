@@ -106,6 +106,12 @@ public class FlightOneWayTripFragment extends Fragment implements DatePickerDial
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(FlightOneWayTripFragment.this.getContext(), SearchListActivity.class);
+                // 传递起始地点 到达地点 始发时间给航班检索活动
+                intent.putExtra("startPlaceId", startCity.getId());
+                intent.putExtra("destinationId", arriveCity.getId());
+                intent.putExtra("startTime", searchDate.getTime());
+                intent.putExtra("startPlaceName", startCity.getName());
+                intent.putExtra("destinationName", arriveCity.getName());
                 startActivity(intent);
             }
         });

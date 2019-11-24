@@ -1,25 +1,17 @@
-package com.xiang.airTicket.entity;
+package com.jdxiang.airTicket.entity;
 
-import com.fasterxml.jackson.annotation.JsonView;
-import com.xiang.airTicket.enumeration.PlaneType;
-
-import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
-// 飞机实体
-@Entity
 public class Plane {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id; // id
 
     private String name; // 名称
 
     private String icon; // 图标
 
-    private PlaneType planeType = PlaneType.SMALL; // 飞机机型
+    private String planeType; // 飞机机型
 
     // 总列数
     private Integer totalCol;
@@ -29,11 +21,8 @@ public class Plane {
 
     private Integer totalSeat;
 
-    @ManyToOne
     private AirlineCompany airlineCompany; // 所属公司
 
-    @OneToMany(cascade = CascadeType.ALL)
-    @JsonView(ShipSpaceJsonView.class)
     private List<ShipSpace> shipSpaces = new ArrayList<>(); // 舱位集合
 
     public Long getId() {
@@ -60,34 +49,12 @@ public class Plane {
         this.icon = icon;
     }
 
-    public PlaneType getPlaneType() {
+    public String  getPlaneType() {
         return planeType;
     }
 
-    public void setPlaneType(PlaneType planeType) {
+    public void setPlaneType(String planeType) {
         this.planeType = planeType;
-    }
-
-    public AirlineCompany getAirlineCompany() {
-        return airlineCompany;
-    }
-
-    public void setAirlineCompany(AirlineCompany airlineCompany) {
-        this.airlineCompany = airlineCompany;
-    }
-
-    public List<ShipSpace> getShipSpaces() {
-        return shipSpaces;
-    }
-
-    public void setShipSpaces(List<ShipSpace> shipSpaces) {
-        this.shipSpaces = shipSpaces;
-    }
-
-    public interface AirlineCompanyJsonView {
-    }
-
-    public interface ShipSpaceJsonView {
     }
 
     public Integer getTotalCol() {
@@ -106,7 +73,6 @@ public class Plane {
         this.totalRow = totalRow;
     }
 
-
     public Integer getTotalSeat() {
         return totalSeat;
     }
@@ -115,5 +81,19 @@ public class Plane {
         this.totalSeat = totalSeat;
     }
 
+    public AirlineCompany getAirlineCompany() {
+        return airlineCompany;
+    }
 
+    public void setAirlineCompany(AirlineCompany airlineCompany) {
+        this.airlineCompany = airlineCompany;
+    }
+
+    public List<ShipSpace> getShipSpaces() {
+        return shipSpaces;
+    }
+
+    public void setShipSpaces(List<ShipSpace> shipSpaces) {
+        this.shipSpaces = shipSpaces;
+    }
 }

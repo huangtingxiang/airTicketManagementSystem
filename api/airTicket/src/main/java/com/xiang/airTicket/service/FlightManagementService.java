@@ -1,11 +1,11 @@
 package com.xiang.airTicket.service;
 
-import com.xiang.airTicket.entity.City;
 import com.xiang.airTicket.entity.FlightManagement;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import java.util.Date;
+import java.util.List;
 
 public interface FlightManagementService {
 
@@ -20,11 +20,15 @@ public interface FlightManagementService {
             Pageable pageable
     );
 
+    List searchFlight(Long startingPlaceId,
+                      Long destinationId,
+                      Date startTime);
+
     // 更新
     FlightManagement update(Long id, FlightManagement flightManagement);
 
     // 通过id获取
-    FlightManagement  getById(Long id);
+    FlightManagement getById(Long id);
 
     // 删除
     void delete(Long id);

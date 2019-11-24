@@ -22,13 +22,19 @@ export class FlightManagementService {
 
   //
   pageByStartingPlaceAndDestinationStartTime(startingPlaceId: number, destinationId: number, startTime: Date, pageable: Pageable): Observable<Page<FlightManagement>> {
-    const params = {
-      startingPlaceId: startingPlaceId.toString(),
-      destinationId: destinationId.toString(),
-      startTime: startTime.getTime().toString(),
+    const params: any = {
       size: pageable.size.toString(),
-      page: pageable.page.toString()
+      page: pageable.page.toString(),
     };
+    if (startingPlaceId) {
+      params.startingPlaceId = startingPlaceId.toString();
+    }
+    if (destinationId) {
+      params.destinationId = destinationId.toString();
+    }
+    if (startTime) {
+      params.startTime = startTime.getTime().toString();
+    }
     return this.httpClient.get<Page<FlightManagement>>(this.baseUrl + '/page', {params});
   }
 
