@@ -37,17 +37,20 @@ public class FlightManagementController {
     // 更新
     @PutMapping("/{id}")
     @JsonView(BaseJsonView.class)
-    public FlightManagement update(@PathVariable Long id,@RequestBody FlightManagement flightManagement) {
+    public FlightManagement update(@PathVariable Long id, @RequestBody FlightManagement flightManagement) {
         return flightManagementService.update(id, flightManagement);
     }
 
     @GetMapping("/page")
     @JsonView(BaseJsonView.class)
-    public Page<FlightManagement> page(@RequestParam Long startingPlaceId,
-                                       @RequestParam Long destinationId,
-                                       @RequestParam Long startTime,
+    public Page<FlightManagement> page(@RequestParam(required = false) Long startingPlaceId,
+                                       @RequestParam(required = false) Long destinationId,
+                                       @RequestParam(required = false) Long startTime,
                                        @PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
-        Date date = new Date(startTime);
+        Date date = null;
+        if (startTime != null) {
+            date = new Date(startTime);
+        }
         return flightManagementService.pageByStartingPlaceAndDestinationStartTime(startingPlaceId, destinationId, date, pageable);
     }
 

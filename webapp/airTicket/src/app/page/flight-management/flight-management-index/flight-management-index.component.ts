@@ -22,7 +22,7 @@ export class FlightManagementIndexComponent implements OnInit {
 
   filterForm: FormGroup; // 过滤表单组
 
-  pageable = new Pageable(1000, PAGEABLE.page); // 分页信息
+  pageable = new Pageable(10000, PAGEABLE.page); // 分页信息
 
   dataSource: MatTableDataSource<FlightManagement> = new MatTableDataSource<FlightManagement>([]); // 数据源
 
@@ -56,6 +56,7 @@ export class FlightManagementIndexComponent implements OnInit {
     this.initSearchTime();
     this.initFilterForm();
     this.initSearchForm();
+    this.search();
   }
 
   initSearchTime() {
@@ -90,9 +91,9 @@ export class FlightManagementIndexComponent implements OnInit {
   search() {
     this.flightManagementService
       .pageByStartingPlaceAndDestinationStartTime(
-        this.searchForm.get('startingPlace').value.id,
-        this.searchForm.get('destination').value.id,
-        this.searchForm.get('startTime').value, this.pageable)
+        this.searchForm.get('startingPlace').value ? this.searchForm.get('startingPlace').value.id : null,
+        this.searchForm.get('destination').value ? this.searchForm.get('destination').value.id : null,
+        this.searchForm.get('startTime').value ? this.searchForm.get('startTime').value : null, this.pageable)
       .subscribe((data) => {
         this.dataSource.data = data.content;
         this.allManagement = data.content;
