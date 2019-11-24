@@ -17,7 +17,12 @@ public class VisitorController {
     @Autowired
     VisitorService visitorService;
 
-    @GetMapping
+    /**
+     * 获取当前登陆旅客
+     * @param request
+     * @return
+     */
+    @GetMapping("/currentVisitor")
     @JsonView(BaseVisitorJsonView.class)
     public Visitor getCurrentVisitor(HttpServletRequest request) {
         return visitorService.getCurrentLoginVisitor(request);

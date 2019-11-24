@@ -20,6 +20,12 @@ public class BaseHttpService {
 
     public static final String BASE_HOST = "http://192.168.2.234:8080/";
 
+    public static String token = "";
+
+    public static void setToken(java.lang.String token) {
+        BaseHttpService.token = token;
+    }
+
     /**
      * 用于发起get请求
      *
@@ -28,7 +34,8 @@ public class BaseHttpService {
      * @param params   请求参数
      */
     public <T> void get(String url, CallBack callBack, Class<T> type, String... params) {
-        Request request = new Request.Builder().url(BASE_HOST + url).build();
+        Request request = new Request.Builder().url(BASE_HOST + url)
+                .addHeader("Authorization", token).build();
         new HttpTask<T>(callBack, type).execute(request);
     }
 
@@ -47,7 +54,7 @@ public class BaseHttpService {
         Request request = new Request.Builder()
                 .url(BASE_HOST + url)
                 .post(body)
-                .addHeader("Authorization", "")
+                .addHeader("Authorization", token)
                 .build();
         new HttpTask<T>(callback, type).execute(request);
     }
@@ -80,7 +87,9 @@ public class BaseHttpService {
                 // 在这里将返回流转化为需要的范型数据并返回
                 HttpTask.CustomerResponse customerResponse = new HttpTask.CustomerResponse();
                 customerResponse.response = response;
-                customerResponse.data = gson.fromJson(response.body().string(), type);
+                if (response.code() >= 200 && response.code() < 300) {
+                    customerResponse.data = gson.fromJson(response.body().string(), type);
+                }
                 return customerResponse;
             } catch (IOException e) {
                 e.printStackTrace();

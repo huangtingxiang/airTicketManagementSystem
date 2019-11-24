@@ -4,16 +4,28 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.jdxiang.airTicket.MainActivity;
 import com.jdxiang.airTicket.R;
+import com.jdxiang.airTicket.entity.User;
+import com.jdxiang.airTicket.httpService.BaseHttpService;
+import com.jdxiang.airTicket.httpService.UserService;
+import com.jdxiang.airTicket.httpService.VisitorService;
+
+import cn.pedant.SweetAlert.SweetAlertDialog;
 
 public class LoginActivity extends AppCompatActivity {
+
+    VisitorService visitorService = new VisitorService();
+
+    UserService userService = new UserService();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,13 +35,37 @@ public class LoginActivity extends AppCompatActivity {
         if (actionBar != null) {
             actionBar.hide();
         }
+
         setContentView(R.layout.activity_login);
         Button loginBtn = findViewById(R.id.loginBtn);
+        // 登陆按钮点击时
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                startActivity(intent);
+                // 进行用户登陆
+                String password = ((TextView) findViewById(R.id.passwordText)).getText().toString();
+                String username = ((TextView) findViewById(R.id.userNameText)).getText().toString();
+                User user = new User(username, password, null);
+                userService.login((response) -> {
+                    // 登陆成功
+                    if (response.getResponse().code() >= 200 && response.getResponse().code() < 300) {
+                        // 存储token 用户名 密码
+                        String token = response.getResponse().header(UserService.tokenHeader);
+                        SharedPreferences.Editor edit = LoginActivity.this.getSharedPreferences("user_message", MODE_PRIVATE).edit();
+                        edit.putString("token", token);
+                        edit.putString("username", username);
+                        edit.putString("password", password);
+                        edit.apply();
+                        // 进入主页面
+                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                        startActivity(intent);
+                    } else {
+                        // 登陆失败 提示错误
+                        new SweetAlertDialog(LoginActivity.this, SweetAlertDialog.ERROR_TYPE)
+                                .setTitleText("用户名或密码错误!")
+                                .setConfirmText("确定").show();
+                    }
+                }, user);
             }
         });
         Button registerBtn = findViewById(R.id.registerBtn);
@@ -37,6 +73,27 @@ public class LoginActivity extends AppCompatActivity {
             Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
             startActivity(intent);
         });
+
+        // 读取token 设置basehttp
+        SharedPreferences pre = getSharedPreferences("user_message", MODE_PRIVATE);
+        String token = pre.getString("token", "");
+        String username = pre.getString("username", "");
+        String password = pre.getString("password", "");
+        if (token != null && !token.equals("")) {
+            BaseHttpService.setToken(token);
+            // 如果能获取到当前登陆旅客 则跳过登陆界面
+            visitorService.getCurrentVisitor((response) -> {
+                // 登陆成功 直接进入主页面
+                if (response.getResponse().code() >= 200 && response.getResponse().code() < 300) {
+                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                    startActivity(intent);
+                }
+            });
+        }
+        TextView userTextView = findViewById(R.id.userNameText);
+        TextView passwordTextView = findViewById(R.id.passwordText);
+        userTextView.setText(username);
+        passwordTextView.setText(password);
     }
 
 

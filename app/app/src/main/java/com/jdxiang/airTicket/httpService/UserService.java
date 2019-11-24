@@ -17,4 +17,14 @@ public class UserService {
     public void register(BaseHttpService.CallBack callBack, User user) {
         httpService.post("user/register", user, callBack, User.class);
     }
+
+    /**
+     * 旅客登陆
+     *
+     * @param callBack
+     * @param user
+     */
+    public void login(BaseHttpService.CallBack callBack, User user) {
+        httpService.post("user/loginByToken", user, callBack, User.class);
+    }
 }

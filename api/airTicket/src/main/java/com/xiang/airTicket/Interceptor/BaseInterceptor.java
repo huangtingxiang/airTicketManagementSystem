@@ -23,7 +23,7 @@ public class BaseInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
         // 从请求头获取token进行判断
         String token = request.getHeader("Authorization");
-        if (token != null) {
+        if (token != null && !token.equals("")) {
             // 通过token获取登陆用户
             if (visitorService.getCurrentLoginVisitor(request) == null) {
                 throw new NotAuthenticationException("请先登陆");

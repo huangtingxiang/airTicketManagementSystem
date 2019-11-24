@@ -244,7 +244,7 @@
         android:layout_marginTop="10dp">
 
         <Button
-            android:id="@+id/button"
+            android:id="@+id/logout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/text_label"

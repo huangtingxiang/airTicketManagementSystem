@@ -102,12 +102,13 @@
             android:theme="@style/EditScreenTextInputLayoutStyle">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/userNameText"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:drawableRight="@drawable/bottom_person_black_24dp"
                 android:drawablePadding="16dp"
                 android:fontFamily="@font/calibri"
                 android:hint="用户名"
-                android:drawableRight="@drawable/bottom_person_black_24dp"
                 android:inputType="textEmailAddress"
                 android:maxLines="1"
                 android:textColor="@android:color/white"
@@ -119,16 +120,18 @@
             android:layout_height="wrap_content"
             android:textColorHint="#b8b8b8"
             android:theme="@style/EditScreenTextInputLayoutStyle">
+
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/passwordText"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:drawableRight="@drawable/ic_lock_outline_black_24dp"
                 android:drawablePadding="16dp"
                 android:fontFamily="@font/calibri"
                 android:hint="密码"
                 android:inputType="textPassword"
                 android:maxLines="1"
                 android:textColor="@android:color/white"
-                android:drawableRight="@drawable/ic_lock_outline_black_24dp"
                 android:textSize="16sp" />
         </com.google.android.material.textfield.TextInputLayout>
 

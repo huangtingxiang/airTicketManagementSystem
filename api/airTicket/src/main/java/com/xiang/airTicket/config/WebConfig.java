@@ -30,7 +30,7 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addInterceptor(baseInterceptor)
                 .addPathPatterns("/**")
                 .excludePathPatterns("/user/login")
-                .excludePathPatterns("user/loginByToken")
+                .excludePathPatterns("/user/loginByToken")
                 .excludePathPatterns("/user/register");
     }
 
