@@ -11,6 +11,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
+
 @RestController
 @RequestMapping("user")
 public class UserController {
@@ -23,6 +25,12 @@ public class UserController {
     @JsonView(BaseJsonView.class)
     public User login(@RequestBody User user) {
         return userService.login(user.getUserName(), user.getPassWord());
+    }
+
+    @PostMapping("/loginByToken")
+    @JsonView(BaseJsonView.class)
+    public User loginByToken(@RequestBody User user, HttpServletResponse response) {
+        return userService.loginByToken(user.getUserName(), user.getPassWord(), response);
     }
 
     // 注销

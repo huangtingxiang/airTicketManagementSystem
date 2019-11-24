@@ -9,6 +9,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 @Service
@@ -20,24 +21,50 @@ public class UserServiceImpl implements UserService {
     @Autowired
     HttpSession httpSession;
 
+
     @Override
     public User login(String userName, String password) {
-        User user = userRepository.findAllByUserName(userName);
+        User user = assertLogin(userName, password);
+        httpSession.setAttribute("userId", user.getId());
+        return user;
+    }
+
+    @Override
+    public User loginByToken(String userName, String password, HttpServletResponse response) {
+        // 进行用户名密码验证
+        User user = assertLogin(userName, password);
+        // 判断成功 返回头加入token
+        // 生成token
+        String token = CommonService.createJwtToken(user.getId());
+        response.setHeader("Authorization", token);
+        return user;
+    }
+
+    private User assertLogin(String username, String password) {
+        User user = userRepository.findAllByUserName(username);
         if (user == null || !user.getPassWord().equals(password)) {
             NotAuthenticationException exception = new NotAuthenticationException("用户名或密码错误");
             throw exception;
-        } else if (!user.isStatus()){
+        } else if (!user.isStatus()) {
             NotAuthenticationException exception = new NotAuthenticationException("用户已冻结");
             throw exception;
         } else {
-            httpSession.setAttribute("userId", user.getId());
+            return user;
         }
-        return user;
     }
 
     @Override
     public User getCurrentUser() {
         Long userId = (Long) httpSession.getAttribute("userId");
+        if (userId == null) {
+            throw new NotAuthenticationException("请先登陆");
+        }
+        return this.userRepository.findById(userId).orElseGet(() -> null);
+    }
+
+    @Override
+    public User getCurrentUserByToken(String token) {
+        Long userId = Long.valueOf(CommonService.parseJWT(token).getId());
         if (userId == null) {
             throw new NotAuthenticationException("请先登陆");
         }

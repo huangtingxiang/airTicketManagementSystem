@@ -17,9 +17,20 @@ public class BaseInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
-        if (userService.getCurrentUser() == null) {
-            throw new NotAuthenticationException("请先登陆");
+        // 从请求头获取token进行判断
+        String token = request.getHeader("Authorization");
+        if (token != null) {
+            // 通过token获取登陆用户
+            if (userService.getCurrentUserByToken(token) == null) {
+                throw new NotAuthenticationException("请先登陆");
+            }
+        } else {
+            // 从session中判断是否登陆
+            if (userService.getCurrentUser() == null) {
+                throw new NotAuthenticationException("请先登陆");
+            }
         }
+
         return true;// 只有返回true才会继续向下执行，返回false取消当前请求
     }
 }
