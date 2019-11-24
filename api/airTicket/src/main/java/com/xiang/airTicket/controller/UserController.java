@@ -3,6 +3,7 @@ package com.xiang.airTicket.controller;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import com.xiang.airTicket.entity.User;
+import com.xiang.airTicket.repository.VisitorRepository;
 import com.xiang.airTicket.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -10,6 +11,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletResponse;
 
 @RestController
 @RequestMapping("user")
@@ -25,10 +28,27 @@ public class UserController {
         return userService.login(user.getUserName(), user.getPassWord());
     }
 
+    @PostMapping("/loginByToken")
+    @JsonView(BaseJsonView.class)
+    public User loginByToken(@RequestBody User user, HttpServletResponse response) {
+        return userService.loginByToken(user.getUserName(), user.getPassWord(), response);
+    }
+
     // 注销
     @PutMapping("/logout")
     public void logout() {
         this.userService.logout();
+    }
+
+    /**
+     * 旅客注册
+     *
+     * @return
+     */
+    @PostMapping("/register")
+    @JsonView(BaseJsonView.class)
+    public User register(@RequestBody User user, HttpServletResponse response) {
+        return userService.register(user, response);
     }
 
     //  添加管理员

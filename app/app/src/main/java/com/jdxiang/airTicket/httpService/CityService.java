@@ -11,7 +11,7 @@ public class CityService {
      * 获取所有城市
      * @param callBack
      */
-    public void getAll(BaseHttpService.CallBack<City[]> callBack) {
+    public void getAll(BaseHttpService.CallBack callBack) {
         httpService.get("city", callBack, City[].class);
     }
 

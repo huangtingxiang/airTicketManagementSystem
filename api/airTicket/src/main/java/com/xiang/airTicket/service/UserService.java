@@ -4,13 +4,24 @@ import com.xiang.airTicket.entity.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import javax.servlet.http.HttpServletResponse;
+
 public interface UserService {
 
     // 登陆
     User login(String userName, String password);
 
+    // 通过token登陆
+    User loginByToken(String userName, String password, HttpServletResponse response);
+
     // 获取当前登陆用户
     User getCurrentUser();
+
+    // 通过token获取当前登陆用户
+    User getCurrentUserByToken(String token);
+
+    // 注册旅客
+    User register(User user, HttpServletResponse response);
 
     // 注销
     void logout();

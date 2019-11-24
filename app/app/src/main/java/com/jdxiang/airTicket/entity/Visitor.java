@@ -1,16 +1,9 @@
-package com.xiang.airTicket.entity;
+package com.jdxiang.airTicket.entity;
 
-import com.fasterxml.jackson.annotation.JsonView;
-
-import javax.persistence.*;
 import java.util.ArrayList;
-import java.util.List;
 
-@Entity
 public class Visitor {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id; // id
 
     private String name; // 名字
@@ -19,14 +12,18 @@ public class Visitor {
 
     private String phoneNumber; // 手机号
 
-    @OneToMany
-    @JsonView(TicketOrderJsonView.class)
-    List<TicketOrder> ticketOrders = new ArrayList<>(); // 订单号
+//    List<TicketOrder> ticketOrders = new ArrayList<>(); // 订单号
+
+    public Visitor(String name, String idCard, String phoneNumber) {
+        this.name = name;
+        this.idCard = idCard;
+        this.phoneNumber = phoneNumber;
+    }
+
 
     public Long getId() {
         return id;
     }
-
 
     public void setId(Long id) {
         this.id = id;
@@ -54,16 +51,5 @@ public class Visitor {
 
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
-    }
-
-    public List<TicketOrder> getOrders() {
-        return ticketOrders;
-    }
-
-    public void setOrders(List<TicketOrder> orders) {
-        this.ticketOrders = orders;
-    }
-
-    public interface TicketOrderJsonView {
     }
 }

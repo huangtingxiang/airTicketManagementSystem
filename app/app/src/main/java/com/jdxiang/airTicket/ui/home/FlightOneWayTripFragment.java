@@ -115,7 +115,8 @@ public class FlightOneWayTripFragment extends Fragment implements DatePickerDial
     // 显示城市列表弹出框
     private void showCityDialog(CityCallBack cityCallBack) {
         // 请求后台数据 显示dialog
-        cityService.getAll((cities) -> {
+        cityService.getAll((response) -> {
+            City[] cities = (City[]) response.getData();
             // 设置城市列表dialog
             final DialogPlus dialog = DialogPlus.newDialog(FlightOneWayTripFragment.this.getContext())
                     .setContentHolder(new ViewHolder(R.layout.city_select_dialog))
