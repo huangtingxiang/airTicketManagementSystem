@@ -20,6 +20,9 @@ public interface UserService {
     // 通过token获取当前登陆用户
     User getCurrentUserByToken(String token);
 
+    // 注册旅客
+    User register(User user, HttpServletResponse response);
+
     // 注销
     void logout();
 

@@ -1,9 +1,11 @@
 package com.xiang.airTicket.service;
 
 import com.xiang.airTicket.entity.User;
+import com.xiang.airTicket.entity.Visitor;
 import com.xiang.airTicket.enumeration.Role;
 import com.xiang.airTicket.exception.NotAuthenticationException;
 import com.xiang.airTicket.repository.UserRepository;
+import com.xiang.airTicket.repository.VisitorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -15,11 +17,16 @@ import javax.servlet.http.HttpSession;
 @Service
 public class UserServiceImpl implements UserService {
 
+    public static String tokenHeader = "Authorization";
+
     @Autowired
     UserRepository userRepository;
 
     @Autowired
     HttpSession httpSession;
+
+    @Autowired
+    VisitorRepository visitorRepository;
 
 
     @Override
@@ -69,6 +76,20 @@ public class UserServiceImpl implements UserService {
             throw new NotAuthenticationException("请先登陆");
         }
         return this.userRepository.findById(userId).orElseGet(() -> null);
+    }
+
+    @Override
+    public User register(User user, HttpServletResponse response) {
+        // 保存旅客
+        Visitor visitor = visitorRepository.save(user.getVisitor());
+        // 保存用户
+        user.setVisitor(visitor);
+        user.setRole(Role.VISITOR);
+        user = userRepository.save(user);
+        // 生成token 返回token
+        String token = CommonService.createJwtToken(user.getId());
+        response.setHeader(tokenHeader, token);
+        return user;
     }
 
     @Override

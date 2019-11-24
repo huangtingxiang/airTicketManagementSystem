@@ -18,8 +18,8 @@ public class MyCountActivity extends AppCompatActivity {
             actionBar.hide();
         }
         setContentView(R.layout.activity_my_count);
-
         TextView textView = findViewById(R.id.flight_title_text);
         textView.setText("我的账户");
+
     }
 }

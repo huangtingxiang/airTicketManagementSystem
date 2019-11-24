@@ -2,6 +2,7 @@ package com.xiang.airTicket.Interceptor;
 
 import com.xiang.airTicket.exception.NotAuthenticationException;
 import com.xiang.airTicket.service.UserService;
+import com.xiang.airTicket.service.VisitorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -15,13 +16,16 @@ public class BaseInterceptor implements HandlerInterceptor {
     @Autowired
     UserService userService;
 
+    @Autowired
+    VisitorService visitorService;
+
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
         // 从请求头获取token进行判断
         String token = request.getHeader("Authorization");
         if (token != null) {
             // 通过token获取登陆用户
-            if (userService.getCurrentUserByToken(token) == null) {
+            if (visitorService.getCurrentLoginVisitor(request) == null) {
                 throw new NotAuthenticationException("请先登陆");
             }
         } else {

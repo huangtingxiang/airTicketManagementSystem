@@ -3,6 +3,7 @@ package com.xiang.airTicket.controller;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import com.xiang.airTicket.entity.User;
+import com.xiang.airTicket.repository.VisitorRepository;
 import com.xiang.airTicket.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -37,6 +38,17 @@ public class UserController {
     @PutMapping("/logout")
     public void logout() {
         this.userService.logout();
+    }
+
+    /**
+     * 旅客注册
+     *
+     * @return
+     */
+    @PostMapping("/register")
+    @JsonView(BaseJsonView.class)
+    public User register(@RequestBody User user, HttpServletResponse response) {
+        return userService.register(user, response);
     }
 
     //  添加管理员
