@@ -1,12 +1,21 @@
 package com.jdxiang.airTicket.httpService;
 
 import android.os.AsyncTask;
+import android.util.Pair;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonDeserializationContext;
+import com.google.gson.JsonDeserializer;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParseException;
 
 import java.io.IOException;
+import java.lang.reflect.Type;
+import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
+import okhttp3.HttpUrl;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -33,8 +42,15 @@ public class BaseHttpService {
      * @param callBack 回调函数，将在子线程中发起请求，在主线程中执行回调函数
      * @param params   请求参数
      */
-    public <T> void get(String url, CallBack callBack, Class<T> type, String... params) {
-        Request request = new Request.Builder().url(BASE_HOST + url)
+    public <T> void get(String url, CallBack callBack, Class<T> type, Pair<String, String>... params) {
+        HttpUrl.Builder httpUrlBuilder = HttpUrl.parse(BASE_HOST + url).newBuilder();
+        if (params != null) {
+            for (Pair<String, String> param :
+                    params) {
+                httpUrlBuilder.addQueryParameter(param.first, param.second);
+            }
+        }
+        Request request = new Request.Builder().url(httpUrlBuilder.build())
                 .addHeader("Authorization", token).build();
         new HttpTask<T>(callBack, type).execute(request);
     }
@@ -72,11 +88,20 @@ public class BaseHttpService {
 
         Class type; // 类型
 
-        Gson gson = new Gson();
+        Gson gson;
 
         public HttpTask(CallBack callBack, Class type) {
             this.callBack = callBack;
             this.type = type;
+            GsonBuilder builder = new GsonBuilder();
+
+            // Register an adapter to manage the date types as long values
+            builder.registerTypeAdapter(Date.class, new JsonDeserializer<Date>() {
+                public Date deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+                    return new Date(json.getAsJsonPrimitive().getAsLong());
+                }
+            });
+            gson = builder.create();
         }
 
         @Override
@@ -88,7 +113,8 @@ public class BaseHttpService {
                 HttpTask.CustomerResponse customerResponse = new HttpTask.CustomerResponse();
                 customerResponse.response = response;
                 if (response.code() >= 200 && response.code() < 300) {
-                    customerResponse.data = gson.fromJson(response.body().string(), type);
+                    String body = response.body().string();
+                    customerResponse.data = gson.fromJson(body, type);
                 }
                 return customerResponse;
             } catch (IOException e) {

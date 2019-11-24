@@ -39,7 +39,7 @@
                     android:orientation="vertical">
 
                     <TextView
-                        android:id="@+id/textView5"
+                        android:id="@+id/startTime"
                         style="@style/titleLabelStyle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -47,7 +47,7 @@
                         android:textSize="20sp" />
 
                     <TextView
-                        android:id="@+id/textView10"
+                        android:id="@+id/startAirPort"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="滨海t2"
@@ -68,7 +68,7 @@
                     android:orientation="vertical">
 
                     <TextView
-                        android:id="@+id/textView9"
+                        android:id="@+id/endTime"
                         style="@style/titleLabelStyle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -76,7 +76,7 @@
                         android:textSize="20sp" />
 
                     <TextView
-                        android:id="@+id/textView12"
+                        android:id="@+id/endAirPort"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="浦东t1"
@@ -92,7 +92,7 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/textView17"
+                    android:id="@+id/planeNameTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="上航FM9070|波音738(中)"
@@ -108,7 +108,7 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/textView8"
+                android:id="@+id/ticketPriceTextView"
                 style="@style/titleLabelStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -118,7 +118,7 @@
                 android:textSize="20sp" />
 
             <TextView
-                android:id="@+id/textView14"
+                android:id="@+id/ticketShipSpaceTextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="@color/mdtp_dark_gray"

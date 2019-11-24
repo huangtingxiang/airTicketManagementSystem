@@ -12,6 +12,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
+import java.util.List;
 
 @RestController
 @RequestMapping("flightManagement")
@@ -54,6 +55,18 @@ public class FlightManagementController {
         return flightManagementService.pageByStartingPlaceAndDestinationStartTime(startingPlaceId, destinationId, date, pageable);
     }
 
+    @GetMapping("/searchFlight")
+    @JsonView(BaseJsonView.class)
+    public List<FlightManagement> searchFlight(@RequestParam(required = false) Long startingPlaceId,
+                                               @RequestParam(required = false) Long destinationId,
+                                               @RequestParam(required = false) Long startTime) {
+        Date date = null;
+        if (startTime != null) {
+            date = new Date(startTime);
+        }
+        return flightManagementService.searchFlight(startingPlaceId, destinationId, date);
+    }
+
     @DeleteMapping("/{id}")
     public void delete(@PathVariable Long id) {
         flightManagementService.delete(id);
@@ -65,6 +78,7 @@ public class FlightManagementController {
             FlightManagement.DestinationAirPortJsonView,
             FlightManagement.PlaneJsonView,
             Plane.AirlineCompanyJsonView,
+            Plane.ShipSpaceJsonView,
             FlightManagement.StartingPlaceJsonView,
             FlightManagement.TicketPricesJsonView,
             FlightManagement.TicketOrdersJsonView {

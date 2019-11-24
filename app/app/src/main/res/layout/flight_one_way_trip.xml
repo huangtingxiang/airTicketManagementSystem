@@ -25,7 +25,7 @@
                 android:layout_height="50dp"
                 android:layout_toLeftOf="@id/button2"
                 android:gravity="center_vertical"
-                android:text="天津"
+                android:text="出发地"
                 app:fontFamily="sans-serif-thin" />
 
             <Button
@@ -44,7 +44,7 @@
                 android:layout_height="50dp"
                 android:layout_toRightOf="@id/button2"
                 android:gravity="center_vertical|right"
-                android:text="上海"
+                android:text="目的地"
                 app:fontFamily="sans-serif-thin" />
         </RelativeLayout>
 

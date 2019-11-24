@@ -1,6 +1,5 @@
 package com.xiang.airTicket.service;
 
-import com.xiang.airTicket.entity.City;
 import com.xiang.airTicket.entity.FlightManagement;
 import com.xiang.airTicket.repository.FlightManagementRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +14,7 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 @Service
 public class FlightManagementServiceImpl implements FlightManagementService {
@@ -34,6 +34,7 @@ public class FlightManagementServiceImpl implements FlightManagementService {
         todayStart.set(Calendar.HOUR_OF_DAY, 0);
         todayStart.set(Calendar.MINUTE, 0);
         todayStart.set(Calendar.SECOND, 0);
+        todayStart.set(Calendar.MILLISECOND, 0);
         return todayStart.getTime();
     }
 
@@ -47,44 +48,61 @@ public class FlightManagementServiceImpl implements FlightManagementService {
     }
 
 
+    class MySpecification implements Specification<FlightManagement> {
+        Long startingPlaceId, destinationId;
+        Date startTime;
+        Predicate predicate;
+        CriteriaBuilder criteriaBuilder;
+
+        MySpecification(Long startingPlaceId, Long destinationId, Date startTime) {
+            this.startingPlaceId = startingPlaceId;
+            this.destinationId = destinationId;
+            this.startTime = startTime;
+        }
+
+        @Override
+        public Predicate toPredicate(Root root, CriteriaQuery criteriaQuery, CriteriaBuilder criteriaBuilder) {
+            // 开始地方
+            this.criteriaBuilder = criteriaBuilder;
+            if (startingPlaceId != null) {
+                this.andPredicate(criteriaBuilder.equal(root.join("startingPlace").get("id"), startingPlaceId));
+            }
+            // 目的地
+            if (destinationId != null) {
+                this.andPredicate(criteriaBuilder.equal(root.join("destination").get("id"), destinationId));
+            }
+            // 开始时间和结束时间
+            if (startTime != null) {
+                Long time = getStartTime(startTime).getTime();
+                this.andPredicate(criteriaBuilder.greaterThanOrEqualTo(root.get("startTime").as(Long.class), getStartTime(startTime).getTime()));
+                this.andPredicate(criteriaBuilder.lessThanOrEqualTo(root.get("startTime"), getEndTime(startTime)));
+            }
+            if (predicate != null) {
+                criteriaQuery.where(predicate);
+            }
+            return criteriaQuery.getRestriction();
+        }
+
+        private void andPredicate(Predicate predicate) {
+            if (null != predicate) {
+                if (null == this.predicate) {
+                    this.predicate = predicate;
+                } else {
+                    this.predicate = this.criteriaBuilder.and(this.predicate, predicate);
+                }
+            }
+        }
+    }
+
+
     @Override
     public Page<FlightManagement> pageByStartingPlaceAndDestinationStartTime(Long startingPlaceId, Long destinationId, Date startTime, Pageable pageable) {
-        return flightManagementRepository.findAll(new Specification() {
-            Predicate predicate;
-            CriteriaBuilder criteriaBuilder;
+        return flightManagementRepository.findAll(new MySpecification(startingPlaceId, destinationId, startTime), pageable);
+    }
 
-            @Override
-            public Predicate toPredicate(Root root, CriteriaQuery criteriaQuery, CriteriaBuilder criteriaBuilder) {
-                // 开始地方
-                this.criteriaBuilder = criteriaBuilder;
-                if (startingPlaceId != null) {
-                    this.andPredicate(criteriaBuilder.equal(root.join("startingPlace").get("id"), startingPlaceId));
-                }
-                // 目的地
-                if (destinationId != null) {
-                    this.andPredicate(criteriaBuilder.equal(root.join("destination").get("id"), destinationId));
-                }
-                // 开始时间和结束时间
-                if (startTime != null) {
-                    this.andPredicate(criteriaBuilder.greaterThanOrEqualTo(root.get("startTime"), getStartTime(startTime)));
-                    this.andPredicate(criteriaBuilder.lessThanOrEqualTo(root.get("startTime"), getEndTime(startTime)));
-                }
-                if (predicate != null) {
-                    criteriaQuery.where(predicate);
-                }
-                return criteriaQuery.getRestriction();
-            }
-
-            private void andPredicate(Predicate predicate) {
-                if (null != predicate) {
-                    if (null == this.predicate) {
-                        this.predicate = predicate;
-                    } else {
-                        this.predicate = this.criteriaBuilder.and(this.predicate, predicate);
-                    }
-                }
-            }
-        }, pageable);
+    @Override
+    public List<FlightManagement> searchFlight(Long startingPlaceId, Long destinationId, Date startTime) {
+        return flightManagementRepository.findAll(new MySpecification(startingPlaceId, destinationId, startTime));
     }
 
     @Override
