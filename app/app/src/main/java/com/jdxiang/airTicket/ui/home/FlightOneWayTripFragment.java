@@ -43,7 +43,7 @@ public class FlightOneWayTripFragment extends Fragment implements DatePickerDial
 
     City arriveCity; // 到达城市
 
-    Date searchDate; // 搜索时间
+    Calendar searchDate; // 搜索时间
 
     TextView startCityTextView;
 
@@ -79,18 +79,17 @@ public class FlightOneWayTripFragment extends Fragment implements DatePickerDial
         });
 
         //  点击时间选择时
-        Calendar now = Calendar.getInstance();
         startTextLabel = root.findViewById(R.id.startDate);
-        searchDate = now.getTime();
-        setDateLabel(now.get(Calendar.YEAR), now.get(Calendar.MONTH), now.get(Calendar.DAY_OF_MONTH));
+        searchDate = Calendar.getInstance();
+        setDateLabel(searchDate.get(Calendar.YEAR), searchDate.get(Calendar.MONTH), searchDate.get(Calendar.DAY_OF_MONTH));
         startTextLabel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 DatePickerDialog dpd = DatePickerDialog.newInstance(
                         FlightOneWayTripFragment.this,
-                        now.get(Calendar.YEAR), // Initial year selection
-                        now.get(Calendar.MONTH), // Initial month selection
-                        now.get(Calendar.DAY_OF_MONTH) // Inital day selection
+                        searchDate.get(Calendar.YEAR), // Initial year selection
+                        searchDate.get(Calendar.MONTH), // Initial month selection
+                        searchDate.get(Calendar.DAY_OF_MONTH) // Inital day selection
                 );
                 dpd.show(getFragmentManager(), "出发日期");
                 dpd.setLocale(Locale.CHINA);
@@ -109,7 +108,7 @@ public class FlightOneWayTripFragment extends Fragment implements DatePickerDial
                 // 传递起始地点 到达地点 始发时间给航班检索活动
                 intent.putExtra("startPlaceId", startCity.getId());
                 intent.putExtra("destinationId", arriveCity.getId());
-                intent.putExtra("startTime", searchDate.getTime());
+                intent.putExtra("startTime", searchDate.getTime().getTime());
                 intent.putExtra("startPlaceName", startCity.getName());
                 intent.putExtra("destinationName", arriveCity.getName());
                 startActivity(intent);
@@ -168,6 +167,9 @@ public class FlightOneWayTripFragment extends Fragment implements DatePickerDial
     }
 
     private void setDateLabel(int year, int month, int day) {
+        searchDate.set(Calendar.YEAR, year);
+        searchDate.set(Calendar.MONTH, month);
+        searchDate.set(Calendar.DAY_OF_MONTH, day);
         startTextLabel.setText(year + "年" + (month + 1) + "月" + day + "日");
     }
 

@@ -1,10 +1,11 @@
 package com.jdxiang.airTicket.entity;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class FlightManagement {
+public class FlightManagement implements Serializable {
     private Long id;
 
     private Date startTime; // 起始时间

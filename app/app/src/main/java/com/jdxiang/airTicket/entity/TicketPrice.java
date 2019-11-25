@@ -1,6 +1,8 @@
 package com.jdxiang.airTicket.entity;
 
-public class TicketPrice {
+import java.io.Serializable;
+
+public class TicketPrice implements Serializable {
 
     private Long id; // id
 

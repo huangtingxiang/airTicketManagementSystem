@@ -1,5 +1,6 @@
 package com.xiang.airTicket.entity;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import com.xiang.airTicket.enumeration.OrderStatus;
 
 import javax.persistence.*;
@@ -12,15 +13,25 @@ public class TicketOrder {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id; // id
 
-    private OrderStatus orderStatus = OrderStatus.ACTIVE; // 订单状态
+    private OrderStatus orderStatus = OrderStatus.SUBSCRIBE; // 订单状态
 
     private Date createTime; // 创建时间
 
     @ManyToOne
+    @JsonView(TicketOrder.FlightManagementJsonView.class)
     FlightManagement flightManagement; // 对应航班
 
     @ManyToOne
+    @JsonView(TicketOrder.VisitorJsonView.class)
     private Visitor visitor; // 对应乘客
+
+    @ManyToOne
+    @JsonView(TicketOrder.TicketPriceJsonView.class)
+    private TicketPrice ticketPrice; // 对应舱位价钱
+
+    @ManyToOne
+    @JsonView(TicketOrder.SeatJsonView.class)
+    private Seat seat; // 订单座位
 
     public Long getId() {
         return id;
@@ -61,4 +72,33 @@ public class TicketOrder {
     public void setVisitor(Visitor visitor) {
         this.visitor = visitor;
     }
+
+    public Seat getSeat() {
+        return seat;
+    }
+
+    public void setSeat(Seat seat) {
+        this.seat = seat;
+    }
+
+    public TicketPrice getTicketPrice() {
+        return ticketPrice;
+    }
+
+    public void setTicketPrice(TicketPrice ticketPrice) {
+        this.ticketPrice = ticketPrice;
+    }
+
+    public interface FlightManagementJsonView {
+    }
+
+    public interface VisitorJsonView {
+    }
+
+    public interface SeatJsonView {
+    }
+
+    public interface TicketPriceJsonView {
+    }
+
 }

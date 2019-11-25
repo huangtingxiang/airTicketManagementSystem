@@ -19,8 +19,8 @@ public class Visitor {
 
     private String phoneNumber; // 手机号
 
-    @OneToMany
-    @JsonView(TicketOrderJsonView.class)
+    @OneToMany(mappedBy = "visitor")
+    @JsonView(Visitor.TicketOrderJsonView.class)
     List<TicketOrder> ticketOrders = new ArrayList<>(); // 订单号
 
     public Long getId() {

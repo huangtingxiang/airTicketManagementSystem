@@ -1,8 +1,15 @@
 package com.xiang.airTicket.enumeration;
 
-// 飞机机型
-public enum  PlaneType {
+import com.fasterxml.jackson.annotation.JsonValue;
 
-    LARGE, MEDIUM, SMALL // 大 中 小
+// 飞机机型
+public enum PlaneType {
+
+    LARGE, MEDIUM, SMALL; // 大 中 小
+
+    @JsonValue
+    public String getValue() {
+        return String.valueOf(this.ordinal());
+    }
 
 }
