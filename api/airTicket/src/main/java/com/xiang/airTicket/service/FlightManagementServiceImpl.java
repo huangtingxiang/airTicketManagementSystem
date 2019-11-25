@@ -73,8 +73,8 @@ public class FlightManagementServiceImpl implements FlightManagementService {
             }
             // 开始时间和结束时间
             if (startTime != null) {
-                Long time = getStartTime(startTime).getTime();
-                this.andPredicate(criteriaBuilder.greaterThanOrEqualTo(root.get("startTime").as(Long.class), getStartTime(startTime).getTime()));
+                Date start1 = getStartTime(startTime);
+                this.andPredicate(criteriaBuilder.greaterThanOrEqualTo(root.get("startTime"), getStartTime(startTime)));
                 this.andPredicate(criteriaBuilder.lessThanOrEqualTo(root.get("startTime"), getEndTime(startTime)));
             }
             if (predicate != null) {

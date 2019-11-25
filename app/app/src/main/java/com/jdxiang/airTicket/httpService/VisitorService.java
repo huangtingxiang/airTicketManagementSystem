@@ -3,6 +3,14 @@ package com.jdxiang.airTicket.httpService;
 import com.jdxiang.airTicket.entity.Visitor;
 
 public class VisitorService {
+    static VisitorService visitorService;
+
+    public static VisitorService getInstance() {
+        if (visitorService == null) {
+            visitorService = new VisitorService();
+        }
+        return visitorService;
+    }
 
     BaseHttpService httpService = new BaseHttpService();
 

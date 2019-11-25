@@ -27,6 +27,15 @@ import okhttp3.Response;
  */
 public class BaseHttpService {
 
+    public static BaseHttpService baseHttpService;
+
+    public static BaseHttpService getInstance() {
+        if (baseHttpService == null) {
+            baseHttpService = new BaseHttpService();
+        }
+        return baseHttpService;
+    }
+
     public static final String BASE_HOST = "http://192.168.2.234:8080/";
 
     public static String token = "";
@@ -148,5 +157,14 @@ public class BaseHttpService {
      */
     public interface CallBack {
         void onSuccess(HttpTask.CustomerResponse result);
+    }
+
+    /**
+     * 判断请求是否成功
+     * @param response
+     * @return
+     */
+    public static boolean assertSuccessResponse(Response response) {
+        return response.code() >= 200 && response.code() < 300;
     }
 }

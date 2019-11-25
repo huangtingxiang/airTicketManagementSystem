@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 @Component
 public abstract class DataInit implements ApplicationListener<ApplicationReadyEvent> {
 
+
     public abstract void init();
 
     @Override

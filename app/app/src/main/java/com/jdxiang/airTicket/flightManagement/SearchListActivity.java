@@ -34,6 +34,9 @@ public class SearchListActivity extends AppCompatActivity {
 
     RecyclerView listView;
 
+    String startName = "";
+    String destinationName = "";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,8 +51,8 @@ public class SearchListActivity extends AppCompatActivity {
         Long startPlaceId = intent.getLongExtra("startPlaceId", 0);
         Long destinationId = intent.getLongExtra("destinationId", 0);
         Long startTime = intent.getLongExtra("startTime", 0);
-        String startName = intent.getStringExtra("startPlaceName");
-        String destinationName = intent.getStringExtra("destinationName");
+        startName = intent.getStringExtra("startPlaceName");
+        destinationName = intent.getStringExtra("destinationName");
         TextView textView = findViewById(R.id.flight_title_text);
         textView.setText(startName + "到" + destinationName);
         // 请求后台
@@ -82,7 +85,10 @@ public class SearchListActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     int position = listView.getChildAdapterPosition(v);
+                    FlightDetailActivity.flightManagement = flightManagements[position];
                     Intent intent = new Intent(SearchListActivity.this, FlightDetailActivity.class);
+                    intent.putExtra("startPlaceName", startName);
+                    intent.putExtra("destinationName", destinationName);
                     startActivity(intent);
                 }
             });

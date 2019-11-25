@@ -64,7 +64,8 @@ public class FlightManagementController {
         if (startTime != null) {
             date = new Date(startTime);
         }
-        return flightManagementService.searchFlight(startingPlaceId, destinationId, date);
+        List data = flightManagementService.searchFlight(startingPlaceId, destinationId, date);
+        return data;
     }
 
     @DeleteMapping("/{id}")
