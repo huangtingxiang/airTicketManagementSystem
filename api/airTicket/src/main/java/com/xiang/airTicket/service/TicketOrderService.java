@@ -32,4 +32,22 @@ public interface TicketOrderService {
      */
     List<TicketOrder> getAll(Visitor visitor);
 
+    /**
+     * 取消订单
+     * @param id
+     */
+    void cancelSubscribe(Long id);
+
+    /**
+     * 退票
+     * @param id
+     */
+    void cancelPayFor(Long id, Visitor visitor);
+
+    /**
+     * 完成订单
+     * @param id
+     */
+    void finishOrder(Long id);
+
 }

@@ -97,4 +97,28 @@ public class TicketOrder {
         }
         return result;
     }
+
+    public static boolean isActive(int code) {
+        return code == getActive();
+    }
+
+    public static boolean isSubscribe(int code) {
+        return code == getSubscribe();
+    }
+
+    public static int getActive() {
+        return 1;
+    }
+
+    public static int getSubscribe() {
+        return 0;
+    }
+
+    public static int getCancel() {
+        return  3;
+    }
+
+    public static int getFinish() {
+        return 2;
+    }
 }

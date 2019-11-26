@@ -133,16 +133,49 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/orderActiveContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="right">
+            android:gravity="right"
+            android:visibility="gone">
 
             <Button
-                android:id="@+id/city_list_item"
+                android:id="@+id/cancelActiveBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
+                android:background="@drawable/city_select_button_sytle"
+                android:text="退票" />
+
+            <Button
+                android:id="@+id/finishActiveBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/city_select_button_sytle"
-                android:text="删除" />
+                android:text="已完成" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/orderSubscribeContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="right"
+            android:visibility="gone">
+
+            <Button
+                android:id="@+id/cancelSubscribeBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
+                android:background="@drawable/city_select_button_sytle"
+                android:text="取消预定" />
+
+            <Button
+                android:id="@+id/payForBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/city_select_button_sytle"
+                android:text="立即支付" />
         </LinearLayout>
 
     </LinearLayout>

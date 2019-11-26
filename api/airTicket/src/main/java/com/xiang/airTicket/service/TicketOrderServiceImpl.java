@@ -66,7 +66,7 @@ public class TicketOrderServiceImpl implements TicketOrderService {
     public void payForOrder(Long id, Visitor visitor) {
         TicketOrder ticketOrder = ticketOrderRepository.findById(id).get();
         logger.info("获取当前用户 查看余额");
-        visitor.setBalance(visitor.getBalance() -  ticketOrder.getTicketPrice().getPrice());
+        visitor.setBalance(visitor.getBalance() - ticketOrder.getTicketPrice().getPrice());
         if (visitor.getBalance() < 0) {
             throw new NotPayForAbility("用户余额不足");
         } else {
@@ -75,10 +75,10 @@ public class TicketOrderServiceImpl implements TicketOrderService {
         logger.info("从取消订单队列移除订单");
         TicketOrder findOrder = ticketQueue.findById(id);
         if (findOrder != null) {
-            findOrder.setOrderStatus(OrderStatus.FINISH);
+            findOrder.setOrderStatus(OrderStatus.ACTIVE);
         }
         logger.info("修改订单状态");
-        ticketOrder.setOrderStatus(OrderStatus.FINISH);
+        ticketOrder.setOrderStatus(OrderStatus.ACTIVE);
         ticketOrderRepository.save(ticketOrder);
         logger.info("生成消费记录");
         // 添加交易记录
@@ -87,12 +87,46 @@ public class TicketOrderServiceImpl implements TicketOrderService {
         transactionRecord.setCreateTime(Calendar.getInstance().getTime());
         transactionRecord.setRecordMessage("支付订单!");
         transactionRecord.setPrice(ticketOrder.getTicketPrice().getPrice());
-        transactionRecord.setPayFor(false);
+        transactionRecord.setPayFor(true);
         transactionRecordRepository.save(transactionRecord);
     }
 
     @Override
     public List<TicketOrder> getAll(Visitor visitor) {
         return ticketOrderRepository.findAllByVisitorOrderByIdDesc(visitor);
+    }
+
+    @Override
+    public void cancelSubscribe(Long id) {
+        TicketOrder ticketOrder = ticketOrderRepository.findById(id).get();
+        ticketOrder.setOrderStatus(OrderStatus.CANCEL);
+        ticketOrderRepository.save(ticketOrder);
+    }
+
+    @Override
+    public void cancelPayFor(Long id, Visitor visitor) {
+        logger.info("修改订单状态");
+        TicketOrder ticketOrder = ticketOrderRepository.findById(id).get();
+        ticketOrder.setOrderStatus(OrderStatus.CANCEL);
+        ticketOrderRepository.save(ticketOrder);
+        logger.info("添加消费记录");
+        // 添加交易记录
+        Double price = ticketOrder.getTicketPrice().getPrice();
+        TransactionRecord transactionRecord = new TransactionRecord();
+        transactionRecord.setVisitor(visitor);
+        transactionRecord.setCreateTime(Calendar.getInstance().getTime());
+        transactionRecord.setRecordMessage("退票");
+        transactionRecord.setPrice(price);
+        transactionRecord.setPayFor(false);
+        transactionRecordRepository.save(transactionRecord);
+        visitor.setBalance(visitor.getBalance() + price);
+        visitorRepository.save(visitor);
+    }
+
+    @Override
+    public void finishOrder(Long id) {
+        TicketOrder ticketOrder = ticketOrderRepository.findById(id).get();
+        ticketOrder.setOrderStatus(OrderStatus.FINISH);
+        ticketOrderRepository.save(ticketOrder);
     }
 }
