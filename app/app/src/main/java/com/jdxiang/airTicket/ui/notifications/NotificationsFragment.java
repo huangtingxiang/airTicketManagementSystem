@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
@@ -16,6 +17,7 @@ import androidx.lifecycle.ViewModelProviders;
 import com.jdxiang.airTicket.R;
 import com.jdxiang.airTicket.flightManagement.SearchListActivity;
 import com.jdxiang.airTicket.personal.MyCountActivity;
+import com.jdxiang.airTicket.personal.MyWalletActivity;
 import com.jdxiang.airTicket.ui.home.FlightOneWayTripFragment;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -38,6 +40,15 @@ public class NotificationsFragment extends Fragment {
                 startActivity(intent);
             }
         });
+
+        (root.findViewById(R.id.walletBtn)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(NotificationsFragment.this.getContext(), MyWalletActivity.class);
+                startActivity(intent);
+            }
+        });
+
         notificationsViewModel.getText().observe(this, new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {

@@ -73,7 +73,7 @@ public class FlightManagementController {
         flightManagementService.delete(id);
     }
 
-    private interface BaseJsonView extends
+    public interface BaseJsonView extends
             FlightManagement.DestinationJsonView,
             FlightManagement.StartingAirPortJsonView,
             FlightManagement.DestinationAirPortJsonView,

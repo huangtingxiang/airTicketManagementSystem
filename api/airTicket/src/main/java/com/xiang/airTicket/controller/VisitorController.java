@@ -4,9 +4,7 @@ import com.fasterxml.jackson.annotation.JsonView;
 import com.xiang.airTicket.entity.Visitor;
 import com.xiang.airTicket.service.VisitorService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -19,6 +17,7 @@ public class VisitorController {
 
     /**
      * 获取当前登陆旅客
+     *
      * @param request
      * @return
      */
@@ -28,6 +27,11 @@ public class VisitorController {
         return visitorService.getCurrentLoginVisitor(request);
     }
 
+
+    @PutMapping("/recharge")
+    public void recharge(HttpServletRequest request, @RequestBody Double price) {
+        visitorService.recharge(price, request);
+    }
 
     private interface BaseVisitorJsonView {
     }

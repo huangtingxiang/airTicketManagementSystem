@@ -12,6 +12,8 @@ public class Visitor {
 
     private String phoneNumber; // 手机号
 
+    private Double balance = 0.0;
+
 //    List<TicketOrder> ticketOrders = new ArrayList<>(); // 订单号
 
     public Visitor(String name, String idCard, String phoneNumber) {
@@ -20,6 +22,14 @@ public class Visitor {
         this.phoneNumber = phoneNumber;
     }
 
+
+    public Double getBalance() {
+        return balance;
+    }
+
+    public void setBalance(Double balance) {
+        this.balance = balance;
+    }
 
     public Long getId() {
         return id;

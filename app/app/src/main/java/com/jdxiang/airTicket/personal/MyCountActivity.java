@@ -14,6 +14,7 @@ import com.jdxiang.airTicket.MainActivity;
 import com.jdxiang.airTicket.R;
 import com.jdxiang.airTicket.httpService.BaseHttpService;
 import com.jdxiang.airTicket.login.LoginActivity;
+import com.jdxiang.airTicket.ui.notifications.NotificationsFragment;
 
 public class MyCountActivity extends AppCompatActivity {
 

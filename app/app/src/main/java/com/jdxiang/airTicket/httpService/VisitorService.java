@@ -23,4 +23,13 @@ public class VisitorService {
         httpService.get("visitor/currentVisitor", callBack, Visitor.class);
     }
 
+    /**
+     * 充值
+     * @param price
+     * @param callBack
+     */
+    public void recharge(Double price, BaseHttpService.CallBack callBack) {
+        httpService.put("visitor/recharge", price, callBack, null);
+    }
+
 }
