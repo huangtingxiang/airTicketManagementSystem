@@ -25,6 +25,15 @@ public class TransactionRecord {
     @JsonView(TransactionRecord.VisitorJsonView.class)
     Visitor visitor; // 对应旅客
 
+    Boolean payFor = true;
+
+    public Boolean getPayFor() {
+        return payFor;
+    }
+
+    public void setPayFor(Boolean payFor) {
+        this.payFor = payFor;
+    }
 
     public Long getId() {
         return id;

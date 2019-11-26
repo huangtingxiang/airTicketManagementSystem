@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.Calendar;
 import java.util.Comparator;
+import java.util.Iterator;
 import java.util.concurrent.PriorityBlockingQueue;
 
 
@@ -37,6 +38,16 @@ public class TicketQueue {
     public void add(TicketOrder ticketOrder) {
         logger.info("添加新订单");
         this.priorityBlockingQueue.add(ticketOrder);
+    }
+
+    public TicketOrder findById(Long id) {
+        for (Iterator<TicketOrder> it = this.priorityBlockingQueue.iterator(); it.hasNext(); ) {
+            TicketOrder ticketOrder = it.next();
+            if (ticketOrder.getId() == id) {
+                return ticketOrder;
+            }
+        }
+        return null;
     }
 
     public void pushTicketOrder() {

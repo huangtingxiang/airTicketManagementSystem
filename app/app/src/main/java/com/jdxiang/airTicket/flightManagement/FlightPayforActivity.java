@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -14,6 +15,7 @@ import android.widget.TextView;
 import com.jdxiang.airTicket.MainActivity;
 import com.jdxiang.airTicket.R;
 import com.jdxiang.airTicket.entity.FlightManagement;
+import com.jdxiang.airTicket.entity.TicketOrder;
 import com.jdxiang.airTicket.entity.TicketPrice;
 import com.jdxiang.airTicket.entity.Visitor;
 import com.jdxiang.airTicket.httpService.BaseHttpService;
@@ -33,12 +35,16 @@ public class FlightPayforActivity extends AppCompatActivity {
 
     TicketOrderService ticketOrderService = TicketOrderService.getInstance();
 
+    Long orderId;
+
 
     VisitorService visitorService = VisitorService.getInstance();
 
     Button flightReserveBtn;
 
     Calendar now;
+
+    SweetAlertDialog pDialog;
 
     public static FlightManagement flightManagement = new FlightManagement();
 
@@ -64,12 +70,11 @@ public class FlightPayforActivity extends AppCompatActivity {
 
         // 发起预定航班请求
         // 展示loading  请求返回后关闭
-        SweetAlertDialog pDialog = new SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE);
-        pDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
-        pDialog.setTitleText("请求中......");
-        pDialog.setCancelable(false);
+        pDialog = getLoadingDialog();
         pDialog.show();
         ticketOrderService.subscribeOrder(flightId, ticketPriceId, (response) -> {
+            TicketOrder ticketOrder = (TicketOrder) response.getData();
+            orderId = ticketOrder.getId();
             pDialog.cancel();
             if (!BaseHttpService.assertSuccessResponse(response.getResponse())) {
                 new SweetAlertDialog(FlightPayforActivity.this, SweetAlertDialog.ERROR_TYPE)
@@ -83,12 +88,40 @@ public class FlightPayforActivity extends AppCompatActivity {
                 new SweetAlertDialog(FlightPayforActivity.this, SweetAlertDialog.SUCCESS_TYPE)
                         .setTitleText("预定成功!")
                         .setConfirmText("确定").show();
-                int totalTime = 300;
                 new CountDownTimer(1000 * 60 * 5, 1000) {
                     public void onTick(long millisUntilFinished) {
                         String time = new SimpleDateFormat("mm:ss", Locale.CHINA).format(now.getTime());
                         flightReserveBtn.setText("去支付: " + time);
                         now.add(Calendar.SECOND, -1);
+                        // 发送支付请求
+                        flightReserveBtn.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                pDialog = getLoadingDialog();
+                                pDialog.show();
+                                ticketOrderService.payForOrder(orderId, (response1) -> {
+                                    pDialog.cancel();
+                                    if (BaseHttpService.assertSuccessResponse(response1.getResponse())) {
+                                        new SweetAlertDialog(FlightPayforActivity.this, SweetAlertDialog.SUCCESS_TYPE)
+                                                .setTitleText("支付成功!")
+                                                .setConfirmText("确定").setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                            @Override
+                                            public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                                // 跳转回主页面
+                                                Intent intentToMain = new Intent(FlightPayforActivity.this, MainActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                                                startActivity(intentToMain);
+                                            }
+                                        }).show();
+                                    } else {
+                                        if (response1.getResponse().code() == 403) {
+                                            new SweetAlertDialog(FlightPayforActivity.this, SweetAlertDialog.ERROR_TYPE)
+                                                    .setTitleText("余额不足!")
+                                                    .setConfirmText("确定").show();
+                                        }
+                                    }
+                                });
+                            }
+                        });
                     }
 
                     public void onFinish() {
@@ -124,5 +157,13 @@ public class FlightPayforActivity extends AppCompatActivity {
 
         LinearLayout linearLayout = findViewById(R.id.flightManagementTitleContainer);
         linearLayout.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+    }
+
+    private SweetAlertDialog getLoadingDialog() {
+        SweetAlertDialog pDialog = new SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE);
+        pDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
+        pDialog.setTitleText("请求中......");
+        pDialog.setCancelable(false);
+        return pDialog;
     }
 }

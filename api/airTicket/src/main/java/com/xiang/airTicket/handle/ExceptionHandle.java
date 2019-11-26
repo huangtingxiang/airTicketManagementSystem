@@ -2,6 +2,7 @@ package com.xiang.airTicket.handle;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.xiang.airTicket.exception.NotAuthenticationException;
+import com.xiang.airTicket.exception.NotPayForAbility;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +21,11 @@ public class ExceptionHandle {
     @ExceptionHandler(value = {NotAuthenticationException.class})
     public ResponseEntity<JsonErrorResult> notAuthenticationExceptionHandler(final HttpServletRequest httpServletRequest, final Exception exception) {
         return new ResponseEntity<>(new JsonErrorResult(exception.getMessage()), HttpStatus.UNAUTHORIZED);
+    }
+
+    @ExceptionHandler(value = {NotPayForAbility.class})
+    public ResponseEntity<JsonErrorResult> notPayForAbilityExceptionHandler(final HttpServletRequest httpServletRequest, final Exception exception) {
+        return new ResponseEntity<>(new JsonErrorResult(exception.getMessage()), HttpStatus.FORBIDDEN);
     }
 }
 

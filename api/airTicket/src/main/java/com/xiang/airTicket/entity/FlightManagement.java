@@ -44,7 +44,7 @@ public class FlightManagement {
     List<TicketPrice> ticketPrices; // 订单价钱
 
     @OneToMany(mappedBy = "flightManagement")
-    @JsonView(TicketOrdersJsonView.class)
+    @JsonView(FlightManagement.TicketOrdersJsonView.class)
     private List<TicketOrder> ticketOrders = new ArrayList<>(); // 订单集合
 
     public Long getId() {
