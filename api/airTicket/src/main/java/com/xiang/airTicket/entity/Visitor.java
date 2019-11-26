@@ -19,9 +19,15 @@ public class Visitor {
 
     private String phoneNumber; // 手机号
 
+    private Double balance = 0.0; // 余额
+
     @OneToMany(mappedBy = "visitor")
     @JsonView(Visitor.TicketOrderJsonView.class)
     List<TicketOrder> ticketOrders = new ArrayList<>(); // 订单号
+
+    @OneToMany(mappedBy = "visitor")
+    @JsonView(TransactionRecordsJsonView.class)
+    List<TransactionRecord> transactionRecords = new ArrayList<>(); // 交易记录
 
     public Long getId() {
         return id;
@@ -64,6 +70,34 @@ public class Visitor {
         this.ticketOrders = orders;
     }
 
+
+    public Double getBalance() {
+        return balance;
+    }
+
+    public void setBalance(Double balance) {
+        this.balance = balance;
+    }
+
+    public List<TicketOrder> getTicketOrders() {
+        return ticketOrders;
+    }
+
+    public void setTicketOrders(List<TicketOrder> ticketOrders) {
+        this.ticketOrders = ticketOrders;
+    }
+
     public interface TicketOrderJsonView {
+    }
+
+    public interface TransactionRecordsJsonView {
+    }
+
+    public List<TransactionRecord> getTransactionRecords() {
+        return transactionRecords;
+    }
+
+    public void setTransactionRecords(List<TransactionRecord> transactionRecords) {
+        this.transactionRecords = transactionRecords;
     }
 }

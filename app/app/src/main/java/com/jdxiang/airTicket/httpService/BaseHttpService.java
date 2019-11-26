@@ -85,6 +85,26 @@ public class BaseHttpService {
     }
 
     /**
+     * 发送put请求
+     *
+     * @param url
+     * @param data
+     * @param callback
+     * @param type
+     * @param <T>
+     */
+    public <T> void put(String url, Object data, BaseHttpService.CallBack callback, Class<T> type) {
+        Gson gson = new Gson();
+        RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), gson.toJson(data));
+        Request request = new Request.Builder()
+                .url(BASE_HOST + url)
+                .put(body)
+                .addHeader("Authorization", token)
+                .build();
+        new HttpTask<T>(callback, type).execute(request);
+    }
+
+    /**
      * 自定义异步任务 用于发送http请求
      * 在子线程中执行请求操作
      * 在主线程中调用回调函数 以便修改ui
@@ -121,7 +141,7 @@ public class BaseHttpService {
                 // 在这里将返回流转化为需要的范型数据并返回
                 HttpTask.CustomerResponse customerResponse = new HttpTask.CustomerResponse();
                 customerResponse.response = response;
-                if (response.code() >= 200 && response.code() < 300) {
+                if (response.code() >= 200 && response.code() < 300 && type != null) {
                     String body = response.body().string();
                     customerResponse.data = gson.fromJson(body, type);
                 }
@@ -161,6 +181,7 @@ public class BaseHttpService {
 
     /**
      * 判断请求是否成功
+     *
      * @param response
      * @return
      */
