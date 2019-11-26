@@ -32,6 +32,7 @@ public class TicketOrderService {
 
     /**
      * 支付订单
+     *
      * @param orderId
      * @param callBack
      */
@@ -41,10 +42,39 @@ public class TicketOrderService {
 
     /**
      * 获取所有订单
+     *
      * @param callBack
      */
-    public void  getAll(BaseHttpService.CallBack callBack) {
+    public void getAll(BaseHttpService.CallBack callBack) {
         httpService.get("ticketOrder/getAll", callBack, TicketOrder[].class);
 
+    }
+
+    /**
+     * 取消订单
+     *
+     * @param id
+     * @param callBack
+     */
+    public void cancelSubscribe(Long id, BaseHttpService.CallBack callBack) {
+        httpService.put("ticketOrder/cancelSubscribe/" + id, new Object(), callBack, null);
+    }
+
+    /**
+     * 退票
+     *
+     * @param id
+     */
+    public void cancelPayFor(Long id, BaseHttpService.CallBack callBack) {
+        httpService.put("ticketOrder/cancelPayFor/" + id, new Object(), callBack, null);
+    }
+
+    /**
+     * 完成订单
+     * @param id
+     * @param callBack
+     */
+    public void finishOrder(Long id, BaseHttpService.CallBack callBack) {
+        httpService.put("ticketOrder/finish/" + id, new Object(), callBack, null);
     }
 }

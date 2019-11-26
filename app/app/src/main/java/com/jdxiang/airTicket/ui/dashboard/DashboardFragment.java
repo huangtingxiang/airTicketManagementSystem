@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
@@ -15,17 +16,25 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.jdxiang.airTicket.MainActivity;
 import com.jdxiang.airTicket.R;
 import com.jdxiang.airTicket.entity.TicketOrder;
 import com.jdxiang.airTicket.entity.TicketPrice;
 import com.jdxiang.airTicket.flightManagement.FlightDetailActivity;
+import com.jdxiang.airTicket.flightManagement.FlightPayforActivity;
 import com.jdxiang.airTicket.flightManagement.FlightReserveActivity;
 import com.jdxiang.airTicket.httpService.BaseHttpService;
 import com.jdxiang.airTicket.httpService.TicketOrderService;
 
+import cn.pedant.SweetAlert.SweetAlertDialog;
+
 public class DashboardFragment extends Fragment {
 
     private DashboardViewModel dashboardViewModel;
+    SweetAlertDialog pDialog;
+
+    RecyclerView orderList;
+
 
     TicketOrderService ticketOrderService = TicketOrderService.getInstance();
 
@@ -44,13 +53,14 @@ public class DashboardFragment extends Fragment {
         // 设置订单列表
         ticketOrderService.getAll((response) -> {
             TicketOrder[] ticketOrders = (TicketOrder[]) response.getData();
-            RecyclerView orderList = root.findViewById(R.id.orderList);
+            orderList = root.findViewById(R.id.orderList);
             orderList.setNestedScrollingEnabled(false);
             orderList.setFocusable(false);
             LinearLayoutManager linearLayoutManager = new LinearLayoutManager(DashboardFragment.this.getContext());
             orderList.setLayoutManager(linearLayoutManager);
             orderList.setAdapter(new OrderListAdapter(ticketOrders));
         });
+
 
         return root;
     }
@@ -85,6 +95,89 @@ public class DashboardFragment extends Fragment {
             // 订单状态
             holder.orderStatusTextView.setText(TicketOrder.orderStatusToString(order.getOrderStatus()));
             holder.startAriPortTextView.setText(order.getFlightManagement().getStartingAirPort().getName());
+
+            // 显示按钮
+            if (TicketOrder.isActive(order.getOrderStatus())) {
+                holder.showActiveContainer();
+                // 退票
+                holder.view.findViewById(R.id.cancelActiveBtn).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        ticketOrderService.cancelPayFor(order.getId(), (result -> {
+                            if (BaseHttpService.assertSuccessResponse(result.getResponse())) {
+                                new SweetAlertDialog(DashboardFragment.this.getContext(), SweetAlertDialog.SUCCESS_TYPE)
+                                        .setTitleText("成功退票!")
+                                        .setConfirmText("确定").show();
+                                order.setOrderStatus(TicketOrder.getCancel());
+                                holder.hideAll();
+                                OrderListAdapter.this.notifyDataSetChanged();
+                            }
+                        }));
+                    }
+                });
+
+                // 结束行程
+                holder.view.findViewById(R.id.finishActiveBtn).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        ticketOrderService.finishOrder(order.getId(), (result -> {
+                            if (BaseHttpService.assertSuccessResponse(result.getResponse())) {
+                                new SweetAlertDialog(DashboardFragment.this.getContext(), SweetAlertDialog.SUCCESS_TYPE)
+                                        .setTitleText("完成订单!")
+                                        .setConfirmText("确定").show();
+                                holder.hideAll();
+                                order.setOrderStatus(TicketOrder.getFinish());
+                                OrderListAdapter.this.notifyDataSetChanged();
+                            }
+                        }));
+                    }
+                });
+
+            } else if (TicketOrder.isSubscribe(order.getOrderStatus())) {
+                holder.showSubscribeContainer();
+                // 取消预定
+                holder.view.findViewById(R.id.cancelSubscribeBtn).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        pDialog = FlightPayforActivity.getLoadingDialog(DashboardFragment.this.getContext());
+                        pDialog.show();
+                        ticketOrderService.cancelSubscribe(order.getId(), (response) -> {
+                            pDialog.cancel();
+                            if (BaseHttpService.assertSuccessResponse(response.getResponse())) {
+                                new SweetAlertDialog(DashboardFragment.this.getContext(), SweetAlertDialog.WARNING_TYPE)
+                                        .setTitleText("已取消预约!")
+                                        .setConfirmText("确定").show();
+                                holder.hideAll();
+                                order.setOrderStatus(TicketOrder.getCancel());
+                                OrderListAdapter.this.notifyDataSetChanged();
+                            }
+                        });
+                    }
+                });
+
+                // 支付订单
+                holder.view.findViewById(R.id.payForBtn).setOnClickListener((View v) -> {
+                    pDialog = FlightPayforActivity.getLoadingDialog(DashboardFragment.this.getContext());
+                    pDialog.show();
+                    ticketOrderService.payForOrder(order.getId(), (response1) -> {
+                        pDialog.cancel();
+                        if (BaseHttpService.assertSuccessResponse(response1.getResponse())) {
+                            new SweetAlertDialog(DashboardFragment.this.getContext(), SweetAlertDialog.SUCCESS_TYPE)
+                                    .setTitleText("支付成功!")
+                                    .setConfirmText("确定").show();
+                            order.setOrderStatus(TicketOrder.getActive());
+                            holder.showActiveContainer();
+                            OrderListAdapter.this.notifyDataSetChanged();
+                        } else {
+                            if (response1.getResponse().code() == 403) {
+                                new SweetAlertDialog(DashboardFragment.this.getContext(), SweetAlertDialog.ERROR_TYPE)
+                                        .setTitleText("余额不足!")
+                                        .setConfirmText("确定").show();
+                            }
+                        }
+                    });
+                });
+            }
         }
 
         @Override
@@ -112,6 +205,10 @@ public class DashboardFragment extends Fragment {
 
             TextView startAriPortTextView;
 
+            LinearLayout orderActiveContainer;
+
+            LinearLayout orderSubscribeContainer;
+
             public OrderListHolder(@NonNull View itemView) {
                 super(itemView);
                 view = itemView;
@@ -123,7 +220,26 @@ public class DashboardFragment extends Fragment {
                 destinationTextView = itemView.findViewById(R.id.destinationTextView);
                 orderStatusTextView = itemView.findViewById(R.id.orderStatusTextView);
                 startAriPortTextView = itemView.findViewById(R.id.startAriPortTextView);
+
+                orderActiveContainer = view.findViewById(R.id.orderActiveContainer);
+                orderSubscribeContainer = view.findViewById(R.id.orderSubscribeContainer);
+            }
+
+            public void showSubscribeContainer() {
+                orderActiveContainer.setVisibility(LinearLayout.GONE);
+                orderSubscribeContainer.setVisibility(LinearLayout.VISIBLE);
+            }
+
+            public void showActiveContainer() {
+                orderActiveContainer.setVisibility(LinearLayout.VISIBLE);
+                orderSubscribeContainer.setVisibility(LinearLayout.GONE);
+            }
+
+            public void hideAll() {
+                orderActiveContainer.setVisibility(LinearLayout.GONE);
+                orderSubscribeContainer.setVisibility(LinearLayout.GONE);
             }
         }
     }
+
 }

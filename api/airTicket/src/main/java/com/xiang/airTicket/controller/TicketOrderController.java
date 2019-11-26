@@ -50,6 +50,36 @@ public class TicketOrderController {
     }
 
     /**
+     * 手动取消订单
+     *
+     * @param id
+     */
+    @PutMapping("/cancelSubscribe/{id}")
+    public void cancelSubscribe(@PathVariable Long id) {
+        ticketOrderService.cancelSubscribe(id);
+    }
+
+    /**
+     * 退票
+     *
+     * @param id
+     */
+    @PutMapping("/cancelPayFor/{id}")
+    public void cancelPayFor(@PathVariable Long id, HttpServletRequest request) {
+        Visitor visitor = visitorService.getCurrentLoginVisitor(request);
+        ticketOrderService.cancelPayFor(id, visitor);
+    }
+
+    /**
+     * 完成订单
+     * @param id
+     */
+    @PutMapping("/finish/{id}")
+    public void finishOrder(@PathVariable Long id) {
+        ticketOrderService.finishOrder(id);
+    }
+
+    /**
      * 支付订单
      *
      * @param id

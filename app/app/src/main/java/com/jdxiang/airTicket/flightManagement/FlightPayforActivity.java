@@ -3,6 +3,7 @@ package com.jdxiang.airTicket.flightManagement;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -70,7 +71,7 @@ public class FlightPayforActivity extends AppCompatActivity {
 
         // 发起预定航班请求
         // 展示loading  请求返回后关闭
-        pDialog = getLoadingDialog();
+        pDialog = getLoadingDialog(FlightPayforActivity.this);
         pDialog.show();
         ticketOrderService.subscribeOrder(flightId, ticketPriceId, (response) -> {
             TicketOrder ticketOrder = (TicketOrder) response.getData();
@@ -97,7 +98,7 @@ public class FlightPayforActivity extends AppCompatActivity {
                         flightReserveBtn.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                pDialog = getLoadingDialog();
+                                pDialog = getLoadingDialog(FlightPayforActivity.this);
                                 pDialog.show();
                                 ticketOrderService.payForOrder(orderId, (response1) -> {
                                     pDialog.cancel();
@@ -159,8 +160,8 @@ public class FlightPayforActivity extends AppCompatActivity {
         linearLayout.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
     }
 
-    private SweetAlertDialog getLoadingDialog() {
-        SweetAlertDialog pDialog = new SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE);
+    public static SweetAlertDialog getLoadingDialog(Context context) {
+        SweetAlertDialog pDialog = new SweetAlertDialog(context, SweetAlertDialog.PROGRESS_TYPE);
         pDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
         pDialog.setTitleText("请求中......");
         pDialog.setCancelable(false);

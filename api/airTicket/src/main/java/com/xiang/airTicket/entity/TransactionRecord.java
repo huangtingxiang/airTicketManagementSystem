@@ -25,7 +25,7 @@ public class TransactionRecord {
     @JsonView(TransactionRecord.VisitorJsonView.class)
     Visitor visitor; // 对应旅客
 
-    Boolean payFor = true;
+    Boolean payFor = false; // 为支付
 
     public Boolean getPayFor() {
         return payFor;

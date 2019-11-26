@@ -38,7 +38,7 @@ public class BaseHttpService {
         return baseHttpService;
     }
 
-    public static final String BASE_HOST = "http://192.168.2.234:8080/";
+    public static final String BASE_HOST = "http://192.168.43.181:8080/";
 
     public static String token = "";
 
