@@ -1,5 +1,6 @@
 package com.xiang.airTicket.service;
 
+import com.xiang.airTicket.entity.Seat;
 import com.xiang.airTicket.entity.TicketOrder;
 import com.xiang.airTicket.entity.Visitor;
 
@@ -49,5 +50,25 @@ public interface TicketOrderService {
      * @param id
      */
     void finishOrder(Long id);
+
+    /**
+     * 通过id获取订单
+     * @param id
+     */
+    TicketOrder getById(Long id);
+
+    /**
+     * 值机 选择座位
+     * @param id
+     * @param seat
+     */
+    void selectSeat(Long id, Seat seat);
+
+    /**
+     * 获取已经选座完毕的订单
+     * @param flightId
+     * @return
+     */
+    List<TicketOrder> getFinishByFlightId(Long flightId);
 
 }

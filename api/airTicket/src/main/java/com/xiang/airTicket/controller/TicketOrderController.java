@@ -1,10 +1,7 @@
 package com.xiang.airTicket.controller;
 
 import com.fasterxml.jackson.annotation.JsonView;
-import com.xiang.airTicket.entity.FlightManagement;
-import com.xiang.airTicket.entity.Plane;
-import com.xiang.airTicket.entity.TicketOrder;
-import com.xiang.airTicket.entity.Visitor;
+import com.xiang.airTicket.entity.*;
 import com.xiang.airTicket.service.TicketOrderService;
 import com.xiang.airTicket.service.VisitorService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +28,7 @@ public class TicketOrderController {
         List<TicketOrder> ticketOrders = ticketOrderService.getAll(visitor);
         for (TicketOrder ticketOrder :
                 ticketOrders) {
-            ticketOrder.getFlightManagement().setOrders(null);
+            ticketOrder.getFlightManagement().setTicketOrders(null);
         }
         return ticketOrders;
     }
@@ -72,6 +69,7 @@ public class TicketOrderController {
 
     /**
      * 完成订单
+     *
      * @param id
      */
     @PutMapping("/finish/{id}")
@@ -90,13 +88,42 @@ public class TicketOrderController {
         ticketOrderService.payForOrder(id, visitorService.getCurrentLoginVisitor(request));
     }
 
+    /**
+     * 值机 选择座位
+     * @param id
+     * @param seat
+     */
+    @PutMapping("/selectSeat/{id}")
+    public void selectSeat(@PathVariable Long id, @RequestBody Seat seat) {
+        ticketOrderService.selectSeat(id, seat);
+    }
+
+    @GetMapping("/{id}")
+    @JsonView(GetJsonView.class)
+    public TicketOrder getById(@PathVariable Long id) {
+        return ticketOrderService.getById(id);
+    }
+
+    /**
+     * 获取已经值机的订单
+     * @param flightId
+     * @return
+     */
+    @GetMapping("/getFinishByFlightId/{flightId}")
+    @JsonView(BaseJsonView.class)
+    public List<TicketOrder> getFinishByFlightId(@PathVariable Long flightId) {
+        return ticketOrderService.getFinishByFlightId(flightId);
+    }
+
     private interface BaseJsonView extends TicketOrder.SeatJsonView {
     }
 
     private interface GetJsonView extends BaseJsonView,
             TicketOrder.FlightManagementJsonView,
             TicketOrder.SeatJsonView,
-            TicketOrder.TicketPriceJsonView, FlightManagement.DestinationJsonView,
+            TicketOrder.VisitorJsonView,
+            TicketOrder.TicketPriceJsonView,
+            FlightManagement.DestinationJsonView,
             FlightManagement.StartingAirPortJsonView,
             FlightManagement.DestinationAirPortJsonView,
             FlightManagement.PlaneJsonView,

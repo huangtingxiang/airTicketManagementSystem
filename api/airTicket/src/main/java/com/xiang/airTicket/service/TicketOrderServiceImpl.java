@@ -129,4 +129,26 @@ public class TicketOrderServiceImpl implements TicketOrderService {
         ticketOrder.setOrderStatus(OrderStatus.FINISH);
         ticketOrderRepository.save(ticketOrder);
     }
+
+    @Override
+    public TicketOrder getById(Long id) {
+        return ticketOrderRepository.findById(id).get();
+    }
+
+    @Override
+    public void selectSeat(Long id, Seat seat) {
+        logger.info("修改订单状态为完成");
+        TicketOrder ticketOrder = ticketOrderRepository.findById(id).get();
+        ticketOrder.setOrderStatus(OrderStatus.FINISH);
+        ticketOrder.setSeat(seat);
+        logger.info("设置订单座位");
+        ticketOrderRepository.save(ticketOrder);
+    }
+
+    @Override
+    public List<TicketOrder> getFinishByFlightId(Long flightId) {
+        FlightManagement flightManagement = new FlightManagement();
+        flightManagement.setId(flightId);
+        return ticketOrderRepository.findAllByFlightManagementAndAndOrderStatus(flightManagement, OrderStatus.FINISH);
+    }
 }

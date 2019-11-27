@@ -1,5 +1,6 @@
 package com.xiang.airTicket.repository;
 
+import com.xiang.airTicket.entity.FlightManagement;
 import com.xiang.airTicket.entity.TicketOrder;
 import com.xiang.airTicket.entity.Visitor;
 import com.xiang.airTicket.enumeration.OrderStatus;
@@ -11,4 +12,6 @@ public interface TicketOrderRepository extends PagingAndSortingRepository<Ticket
     List<TicketOrder> findAllByOrderStatus(OrderStatus orderStatus);
 
     List<TicketOrder> findAllByVisitorOrderByIdDesc(Visitor visitor);
+
+    List<TicketOrder> findAllByFlightManagementAndAndOrderStatus(FlightManagement flightManagement,OrderStatus status);
 }
