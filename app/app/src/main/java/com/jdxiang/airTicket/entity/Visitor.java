@@ -14,6 +14,8 @@ public class Visitor {
 
     private Double balance = 0.0;
 
+    User user;
+
 //    List<TicketOrder> ticketOrders = new ArrayList<>(); // 订单号
 
     public Visitor(String name, String idCard, String phoneNumber) {
@@ -61,5 +63,13 @@ public class Visitor {
 
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }

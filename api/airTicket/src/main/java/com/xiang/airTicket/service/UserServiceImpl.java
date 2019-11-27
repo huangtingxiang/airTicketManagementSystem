@@ -138,4 +138,11 @@ public class UserServiceImpl implements UserService {
     public User getById(Long id) {
         return userRepository.findById(id).get();
     }
+
+    @Override
+    public void resetUserName(Long id, String username) {
+        User user = userRepository.findById(id).get();
+        user.setUserName(username);
+        userRepository.save(user);
+    }
 }

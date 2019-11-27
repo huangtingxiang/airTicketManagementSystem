@@ -67,16 +67,17 @@
                 android:text="姓名" />
 
             <LinearLayout
+                android:id="@+id/nameContainer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="right">
 
                 <TextView
+                    android:id="@+id/nameTextView"
                     style="@style/personalMyCountTextStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:gravity="center_vertical"
-                    android:text="黄河" />
+                    android:gravity="center_vertical" />
 
                 <Button
                     android:layout_width="24dp"
@@ -104,16 +105,17 @@
                 android:text="手机号码" />
 
             <LinearLayout
+                android:id="@+id/phoneContainer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="right">
 
                 <TextView
+                    android:id="@+id/phoneTextView"
                     style="@style/personalMyCountTextStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:gravity="center_vertical"
-                    android:text="17302212273" />
+                    android:gravity="center_vertical" />
 
                 <Button
                     android:layout_width="24dp"
@@ -141,16 +143,17 @@
                 android:text="身份证号码" />
 
             <LinearLayout
+                android:id="@+id/idCardContainer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="right">
 
                 <TextView
+                    android:id="@+id/idCardTextView"
                     style="@style/personalMyCountTextStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:gravity="center_vertical"
-                    android:text="452624199907111432" />
+                    android:gravity="center_vertical" />
 
                 <Button
                     android:layout_width="24dp"
@@ -177,16 +180,17 @@
                 android:text="电子邮箱" />
 
             <LinearLayout
+                android:id="@+id/userNameContainer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="right">
 
                 <TextView
+                    android:id="@+id/userNameTextView"
                     style="@style/personalMyCountTextStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:gravity="center_vertical"
-                    android:text="2228672279@qq.com" />
+                    android:gravity="center_vertical"/>
 
                 <Button
                     android:layout_width="24dp"
@@ -221,6 +225,7 @@
                 android:text="修改密码" />
 
             <LinearLayout
+                android:id="@+id/passwordContainer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="right">

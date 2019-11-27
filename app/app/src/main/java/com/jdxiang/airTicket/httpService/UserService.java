@@ -27,4 +27,14 @@ public class UserService {
     public void login(BaseHttpService.CallBack callBack, User user) {
         httpService.post("user/loginByToken", user, callBack, User.class);
     }
+
+    public void resetPassWord(Long id, String password, BaseHttpService.CallBack callBack) {
+        User user = new User();
+        user.setPassWord(password);
+        httpService.put("user/resetPassword/" + id, user, callBack, null);
+    }
+
+    public void resetUserName(Long id, String username, BaseHttpService.CallBack callBack) {
+        httpService.put("user/resetUserName/" + id, username, callBack, null);
+    }
 }

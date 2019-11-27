@@ -64,6 +64,12 @@ public class UserController {
         userService.resetPassWord(id, user.getPassWord());
     }
 
+    // 修改密码
+    @PutMapping("/resetUserName/{id}")
+    public void resetPassword(@PathVariable Long id, @RequestBody String username) {
+        userService.resetUserName(id, username);
+    }
+
     // 删除用户
     @DeleteMapping("/{id}")
     public void delete(@PathVariable Long id) {

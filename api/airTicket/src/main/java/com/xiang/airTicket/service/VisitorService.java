@@ -21,4 +21,10 @@ public interface VisitorService {
      */
     void recharge(Double price, HttpServletRequest request);
 
+    void changeName(Long id, String name);
+
+    void changeIdCard(Long id, String idCard);
+
+    void changePhoneNumber(Long id, String phoneNumber);
+
 }

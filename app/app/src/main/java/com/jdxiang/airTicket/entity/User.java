@@ -19,6 +19,8 @@ public class User {
         this.visitor = visitor;
     }
 
+    public User() {}
+
     public Long getId() {
         return id;
     }
