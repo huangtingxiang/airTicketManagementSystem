@@ -1,5 +1,6 @@
 package com.jdxiang.airTicket.httpService;
 
+import com.jdxiang.airTicket.entity.Seat;
 import com.jdxiang.airTicket.entity.TicketOrder;
 
 /**
@@ -71,10 +72,41 @@ public class TicketOrderService {
 
     /**
      * 完成订单
+     *
      * @param id
      * @param callBack
      */
     public void finishOrder(Long id, BaseHttpService.CallBack callBack) {
         httpService.put("ticketOrder/finish/" + id, new Object(), callBack, null);
+    }
+
+    /**
+     * 通过id获取订单
+     *
+     * @param id
+     * @param callBack
+     */
+    public void getById(Long id, BaseHttpService.CallBack callBack) {
+        httpService.get("ticketOrder/" + id, callBack, TicketOrder.class);
+    }
+
+    /**
+     * 选择座位 值机
+     *
+     * @param id
+     * @param seat
+     * @param callBack
+     */
+    public void selectSeat(Long id, Seat seat, BaseHttpService.CallBack callBack) {
+        httpService.put("ticketOrder/selectSeat/" + id, seat, callBack, null);
+    }
+
+    /**
+     * 获取值机完毕的订单
+     * @param flightId
+     * @param callBack
+     */
+    public void getFinishByFlightId(Long flightId, BaseHttpService.CallBack callBack) {
+        httpService.get("ticketOrder/getFinishByFlightId/" + flightId, callBack, TicketOrder[].class);
     }
 }

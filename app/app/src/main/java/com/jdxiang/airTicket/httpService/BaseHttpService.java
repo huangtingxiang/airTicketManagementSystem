@@ -191,6 +191,13 @@ public class BaseHttpService {
         return response.code() >= 200 && response.code() < 300;
     }
 
+    /**
+     * 格式化日期输出
+     * MM/dd/yyyy HH:mm:ss
+     * @param date
+     * @param format
+     * @return
+     */
     public static String dateFormat(Date date, String format) {
         return new SimpleDateFormat(format, Locale.CHINA).format(date);
     }

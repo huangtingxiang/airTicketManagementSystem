@@ -96,6 +96,16 @@ public class DashboardFragment extends Fragment {
             holder.orderStatusTextView.setText(TicketOrder.orderStatusToString(order.getOrderStatus()));
             holder.startAriPortTextView.setText(order.getFlightManagement().getStartingAirPort().getName());
 
+            holder.container.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(DashboardFragment.this.getContext(), OrderDetailActivity.class);
+                    intent.putExtra("id", order.getId());
+
+                    startActivity(intent);
+                }
+            });
+
             // 显示按钮
             if (TicketOrder.isActive(order.getOrderStatus())) {
                 holder.showActiveContainer();
@@ -110,23 +120,6 @@ public class DashboardFragment extends Fragment {
                                         .setConfirmText("确定").show();
                                 order.setOrderStatus(TicketOrder.getCancel());
                                 holder.hideAll();
-                                OrderListAdapter.this.notifyDataSetChanged();
-                            }
-                        }));
-                    }
-                });
-
-                // 结束行程
-                holder.view.findViewById(R.id.finishActiveBtn).setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        ticketOrderService.finishOrder(order.getId(), (result -> {
-                            if (BaseHttpService.assertSuccessResponse(result.getResponse())) {
-                                new SweetAlertDialog(DashboardFragment.this.getContext(), SweetAlertDialog.SUCCESS_TYPE)
-                                        .setTitleText("完成订单!")
-                                        .setConfirmText("确定").show();
-                                holder.hideAll();
-                                order.setOrderStatus(TicketOrder.getFinish());
                                 OrderListAdapter.this.notifyDataSetChanged();
                             }
                         }));
@@ -209,6 +202,8 @@ public class DashboardFragment extends Fragment {
 
             LinearLayout orderSubscribeContainer;
 
+            LinearLayout container;
+
             public OrderListHolder(@NonNull View itemView) {
                 super(itemView);
                 view = itemView;
@@ -223,6 +218,7 @@ public class DashboardFragment extends Fragment {
 
                 orderActiveContainer = view.findViewById(R.id.orderActiveContainer);
                 orderSubscribeContainer = view.findViewById(R.id.orderSubscribeContainer);
+                container = view.findViewById(R.id.container);
             }
 
             public void showSubscribeContainer() {

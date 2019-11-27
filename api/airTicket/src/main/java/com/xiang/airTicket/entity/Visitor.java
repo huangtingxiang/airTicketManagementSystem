@@ -27,7 +27,7 @@ public class Visitor {
     User user;
 
     @OneToMany(mappedBy = "visitor")
-    @JsonView({Visitor.TicketOrderJsonView.class})
+    @JsonView({Visitor.TicketOrderJsonView.class,NoneJsonView.class})
     List<TicketOrder> ticketOrders = new ArrayList<>(); // 订单号
 
     @OneToMany(mappedBy = "visitor")
@@ -73,15 +73,6 @@ public class Visitor {
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
-
-    public List<TicketOrder> getOrders() {
-        return ticketOrders;
-    }
-
-    public void setOrders(List<TicketOrder> orders) {
-        this.ticketOrders = orders;
-    }
-
 
     public Double getBalance() {
         return balance;
