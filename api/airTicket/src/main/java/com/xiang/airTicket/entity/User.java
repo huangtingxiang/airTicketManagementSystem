@@ -1,6 +1,7 @@
 package com.xiang.airTicket.entity;
 
 import com.fasterxml.jackson.annotation.JsonView;
+import com.xiang.airTicket.config.NoneJsonView;
 import com.xiang.airTicket.enumeration.Role;
 
 import javax.persistence.*;
@@ -23,7 +24,7 @@ public class User {
     private boolean status = true;
 
     @OneToOne
-    @JsonView(VisitorJsonView.class)
+    @JsonView({VisitorJsonView.class, NoneJsonView.class})
     private Visitor visitor; // 旅客信息
 
     public Long getId() {

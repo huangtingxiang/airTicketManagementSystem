@@ -45,4 +45,6 @@ public interface UserService {
 
     User getById(Long id);
 
+    void resetUserName(Long id, String username);
+
 }

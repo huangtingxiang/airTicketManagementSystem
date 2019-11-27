@@ -53,4 +53,25 @@ public class VisitorServiceImpl implements VisitorService {
 
         visitorRepository.save(visitor);
     }
+
+    @Override
+    public void changeName(Long id,String name) {
+        Visitor visitor = visitorRepository.findById(id).get();
+        visitor.setName(name);
+        visitorRepository.save(visitor);
+    }
+
+    @Override
+    public void changeIdCard(Long id, String idCard) {
+        Visitor visitor = visitorRepository.findById(id).get();
+        visitor.setIdCard(idCard);
+        visitorRepository.save(visitor);
+    }
+
+    @Override
+    public void changePhoneNumber(Long id, String phoneNumber) {
+        Visitor visitor = visitorRepository.findById(id).get();
+        visitor.setPhoneNumber(phoneNumber);
+        visitorRepository.save(visitor);
+    }
 }

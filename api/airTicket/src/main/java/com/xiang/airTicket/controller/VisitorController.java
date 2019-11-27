@@ -33,7 +33,22 @@ public class VisitorController {
         visitorService.recharge(price, request);
     }
 
-    private interface BaseVisitorJsonView {
+    @PutMapping("/changeName/{id}")
+    public void changeName(@PathVariable Long id, @RequestBody String name) {
+        visitorService.changeName(id, name);
+    }
+
+    @PutMapping("/changeIdCard/{id}")
+    public void changeIdCard(@PathVariable Long id, @RequestBody String idCard) {
+        visitorService.changeIdCard(id, idCard);
+    }
+
+    @PutMapping("/changePhone/{id}")
+    public void changePhone(@PathVariable Long id, @RequestBody String phoneNumber) {
+        visitorService.changePhoneNumber(id, phoneNumber);
+    }
+
+    private interface BaseVisitorJsonView extends Visitor.UserJsonView {
     }
 
 }

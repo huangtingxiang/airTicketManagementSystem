@@ -21,7 +21,8 @@ import com.jdxiang.airTicket.httpService.VisitorService;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
-public class LoginActivity extends AppCompatActivity {
+public class
+LoginActivity extends AppCompatActivity {
 
     VisitorService visitorService = new VisitorService();
 
@@ -52,6 +53,7 @@ public class LoginActivity extends AppCompatActivity {
                         // 存储token 用户名 密码
                         String token = response.getResponse().header(UserService.tokenHeader);
                         SharedPreferences.Editor edit = LoginActivity.this.getSharedPreferences("user_message", MODE_PRIVATE).edit();
+                        BaseHttpService.setToken(token);
                         edit.putString("token", token);
                         edit.putString("username", username);
                         edit.putString("password", password);

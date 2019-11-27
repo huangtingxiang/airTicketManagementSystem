@@ -1,6 +1,7 @@
 package com.xiang.airTicket.entity;
 
 import com.fasterxml.jackson.annotation.JsonView;
+import com.xiang.airTicket.config.NoneJsonView;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -21,8 +22,12 @@ public class Visitor {
 
     private Double balance = 0.0; // 余额
 
+    @OneToOne(mappedBy = "visitor")
+    @JsonView({NoneJsonView.class, UserJsonView.class})
+    User user;
+
     @OneToMany(mappedBy = "visitor")
-    @JsonView(Visitor.TicketOrderJsonView.class)
+    @JsonView({Visitor.TicketOrderJsonView.class})
     List<TicketOrder> ticketOrders = new ArrayList<>(); // 订单号
 
     @OneToMany(mappedBy = "visitor")
@@ -33,6 +38,13 @@ public class Visitor {
         return id;
     }
 
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 
     public void setId(Long id) {
         this.id = id;
@@ -99,5 +111,8 @@ public class Visitor {
 
     public void setTransactionRecords(List<TransactionRecord> transactionRecords) {
         this.transactionRecords = transactionRecords;
+    }
+
+    public interface UserJsonView {
     }
 }

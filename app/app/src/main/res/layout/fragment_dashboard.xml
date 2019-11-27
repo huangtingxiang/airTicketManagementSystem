@@ -6,9 +6,26 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <com.jdxiang.airTicket.flightManagement.FlightManagementLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:orientation="horizontal">
+
+
+        <TextView
+            android:padding="10dp"
+            android:id="@+id/flight_title_text"
+            style="@style/titleLabelStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="50"
+            android:gravity="center"
+            android:text="我的订单"
+            android:textSize="20sp" />
+
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
