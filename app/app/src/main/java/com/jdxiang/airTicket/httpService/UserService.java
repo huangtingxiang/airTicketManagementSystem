@@ -6,6 +6,8 @@ public class UserService {
 
     public static final String tokenHeader = "Authorization";
 
+    public static User loginUser = null;
+
     BaseHttpService httpService = new BaseHttpService();
 
     /**

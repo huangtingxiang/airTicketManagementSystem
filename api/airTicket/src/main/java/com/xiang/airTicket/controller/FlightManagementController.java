@@ -55,6 +55,19 @@ public class FlightManagementController {
         return flightManagementService.pageByStartingPlaceAndDestinationStartTime(startingPlaceId, destinationId, date, pageable);
     }
 
+    @GetMapping("/pageContent")
+    @JsonView(BaseJsonView.class)
+    public List<FlightManagement> pageContent(@RequestParam(required = false) Long startingPlaceId,
+                                              @RequestParam(required = false) Long destinationId,
+                                              @RequestParam(required = false) Long startTime,
+                                              @PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
+        Date date = null;
+        if (startTime != null) {
+            date = new Date(startTime);
+        }
+        return flightManagementService.pageByStartingPlaceAndDestinationStartTimeGetContent(startingPlaceId, destinationId, date, pageable).getContent();
+    }
+
     @GetMapping("/searchFlight")
     @JsonView(BaseJsonView.class)
     public List<FlightManagement> searchFlight(@RequestParam(required = false) Long startingPlaceId,

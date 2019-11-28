@@ -53,6 +53,7 @@ public class FlightManagementServiceImpl implements FlightManagementService {
         Date startTime;
         Predicate predicate;
         CriteriaBuilder criteriaBuilder;
+        boolean range = true;
 
         MySpecification(Long startingPlaceId, Long destinationId, Date startTime) {
             this.startingPlaceId = startingPlaceId;
@@ -75,7 +76,9 @@ public class FlightManagementServiceImpl implements FlightManagementService {
             if (startTime != null) {
                 Date start1 = getStartTime(startTime);
                 this.andPredicate(criteriaBuilder.greaterThanOrEqualTo(root.get("startTime"), getStartTime(startTime)));
-                this.andPredicate(criteriaBuilder.lessThanOrEqualTo(root.get("startTime"), getEndTime(startTime)));
+                if (range) {
+                    this.andPredicate(criteriaBuilder.lessThanOrEqualTo(root.get("startTime"), getEndTime(startTime)));
+                }
             }
             if (predicate != null) {
                 criteriaQuery.where(predicate);
@@ -98,6 +101,13 @@ public class FlightManagementServiceImpl implements FlightManagementService {
     @Override
     public Page<FlightManagement> pageByStartingPlaceAndDestinationStartTime(Long startingPlaceId, Long destinationId, Date startTime, Pageable pageable) {
         return flightManagementRepository.findAll(new MySpecification(startingPlaceId, destinationId, startTime), pageable);
+    }
+
+    @Override
+    public Page<FlightManagement> pageByStartingPlaceAndDestinationStartTimeGetContent(Long startingPlaceId, Long destinationId, Date startTime, Pageable pageable) {
+        MySpecification mySpecification = new MySpecification(startingPlaceId, destinationId, startTime);
+        mySpecification.range = false;
+        return flightManagementRepository.findAll(mySpecification, pageable);
     }
 
     @Override
