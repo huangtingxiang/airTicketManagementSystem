@@ -18,6 +18,7 @@ import com.jdxiang.airTicket.R;
 import com.jdxiang.airTicket.flightManagement.SearchListActivity;
 import com.jdxiang.airTicket.personal.MyCountActivity;
 import com.jdxiang.airTicket.personal.MyWalletActivity;
+import com.jdxiang.airTicket.personal.TransactionRecordActivity;
 import com.jdxiang.airTicket.ui.home.FlightOneWayTripFragment;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -37,6 +38,15 @@ public class NotificationsFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(NotificationsFragment.this.getContext(), MyCountActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        // 点击消费记录时进入 消费记录
+        root.findViewById(R.id.recordBtn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(NotificationsFragment.this.getContext(), TransactionRecordActivity.class);
                 startActivity(intent);
             }
         });
