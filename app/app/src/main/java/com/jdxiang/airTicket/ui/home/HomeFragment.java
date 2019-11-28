@@ -1,11 +1,17 @@
 package com.jdxiang.airTicket.ui.home;
 
+import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.NonNull;
@@ -19,18 +25,38 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.tabs.TabLayout;
 import com.jdxiang.airTicket.R;
+import com.jdxiang.airTicket.entity.FlightManagement;
+import com.jdxiang.airTicket.entity.TicketPrice;
+import com.jdxiang.airTicket.entity.Visitor;
+import com.jdxiang.airTicket.httpService.BaseHttpService;
+import com.jdxiang.airTicket.httpService.DownloadImageTask;
+import com.jdxiang.airTicket.httpService.FlightManagementService;
+import com.jdxiang.airTicket.httpService.UserService;
 import com.synnapps.carouselview.CarouselView;
 import com.synnapps.carouselview.ImageListener;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
+import java.util.Calendar;
+
+import static android.content.Context.MODE_PRIVATE;
 
 public class HomeFragment extends Fragment {
+
+    Visitor visitor;
+
+    SharedPreferences sharedPreferences;
 
     private HomeViewModel homeViewModel;
 
     private HomeSectionPagesAdapter homeSectionPagesAdapter; // tab配置器
 
     private CarouselView carouselView; // 轮滑图
+
+    FlightManagementService flightManagementService = FlightManagementService.getInstance();
 
     FlightOneWayTripFragment flightOneWayTripFragment = new FlightOneWayTripFragment();
     FlightGoAndBackFragment flightGoAndBackFragment = new FlightGoAndBackFragment();
@@ -53,19 +79,33 @@ public class HomeFragment extends Fragment {
 
             }
         });
+        sharedPreferences = HomeFragment.this.getContext().getSharedPreferences(FlightOneWayTripFragment.FlightMessage, MODE_PRIVATE);
         initCarousel();
         initTab();
-        // 设置推荐航班
-        RecyclerView listView = root.findViewById(R.id.recommendFlight);
-        listView.setNestedScrollingEnabled(false);
-        listView.setFocusable(false);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
-        listView.setLayoutManager(linearLayoutManager);
-        listView.setAdapter(new RecommendFlightListAdapter());
         return root;
     }
 
-    private void initCarousel () {
+    @Override
+    public void onResume() {
+        super.onResume();
+        // 设置推荐航班
+        // 获取上次查询的航班
+        Long lastFlightId = sharedPreferences.getLong("startPlaceId" + UserService.loginUser.getId(), -1);
+        flightManagementService.searchFlightByPage(lastFlightId == -1 ? null : lastFlightId,
+                null,
+                Calendar.getInstance().getTime().getTime(),
+                (response) -> {
+                    FlightManagement[] flightManagements = (FlightManagement[]) response.getData();
+                    RecyclerView listView = root.findViewById(R.id.recommendFlight);
+                    listView.setNestedScrollingEnabled(false);
+                    listView.setFocusable(false);
+                    LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
+                    listView.setLayoutManager(linearLayoutManager);
+                    listView.setAdapter(new RecommendFlightListAdapter(flightManagements));
+                });
+    }
+
+    private void initCarousel() {
         // 设置轮滑图
         carouselView = (CarouselView) root.findViewById(R.id.carouselView);
         carouselView.setPageCount(images.length);
@@ -82,8 +122,8 @@ public class HomeFragment extends Fragment {
         // 设置tab
         homeSectionPagesAdapter = new HomeSectionPagesAdapter(getChildFragmentManager());
         homeSectionPagesAdapter.addFragment(this.flightOneWayTripFragment, "单程");
-        homeSectionPagesAdapter.addFragment(this.flightGoAndBackFragment, "往返");
-        homeSectionPagesAdapter.addFragment(this.flightMultiPathTripFragment, "多程");
+//        homeSectionPagesAdapter.addFragment(this.flightGoAndBackFragment, "往返");
+//        homeSectionPagesAdapter.addFragment(this.flightMultiPathTripFragment, "多程");
 
         TabLayout tabLayout = root.findViewById(R.id.tabs);
         ViewPager viewPager = root.findViewById(R.id.container);
@@ -94,12 +134,10 @@ public class HomeFragment extends Fragment {
     //
     class RecommendFlightListAdapter extends RecyclerView.Adapter<RecommendFlightListAdapter.RecommendFlightListHolder> {
 
-        private ArrayList<String> data = new ArrayList<>();
+        FlightManagement[] flightManagements;
 
-        {
-            for (int i = 0; i < 5; i++) {
-                data.add("测试");
-            }
+        RecommendFlightListAdapter(FlightManagement[] flightManagements) {
+            this.flightManagements = flightManagements;
         }
 
         @NonNull
@@ -111,19 +149,52 @@ public class HomeFragment extends Fragment {
 
         @Override
         public void onBindViewHolder(@NonNull RecommendFlightListAdapter.RecommendFlightListHolder holder, int position) {
-
+            FlightManagement flightManagement = flightManagements[position];
+            holder.startAndArrivePlace.setText(flightManagement.getStartingPlace().getName() + "至" + flightManagement.getDestination().getName());
+            Double price = 0.0;
+            for (TicketPrice ticketPrice : flightManagement.getTicketPrices()) {
+                if (price == 0.0 || price > ticketPrice.getPrice()) {
+                    price = ticketPrice.getPrice();
+                }
+            }
+            holder.flightPrice.setText("¥" + price.toString() + "起");
+            holder.flightStartDate.setText(BaseHttpService.dateFormat(flightManagement.getStartTime(), "yyyy-MM-dd"));
+            holder.flightStartTime.setText(BaseHttpService.dateFormat(flightManagement.getStartTime(), "HH:mm:ss"));
+            holder.flightPlaneMessage.setText(flightManagement.getPlane().getName());
+            String urlString = BaseHttpService.BASE_HOST + flightManagement.getPlane().getAirlineCompany().getIcon();
+            new DownloadImageTask(holder.companyImage)
+                    .execute(urlString);
         }
 
         @Override
         public int getItemCount() {
-            return 5;
+            return flightManagements.length;
         }
 
         class RecommendFlightListHolder extends RecyclerView.ViewHolder {
 
+            TextView startAndArrivePlace;
+
+            TextView flightPrice;
+
+            TextView flightStartDate;
+
+            TextView flightPlaneMessage;
+
+            TextView flightStartTime;
+
+            ImageView companyImage;
+
             public RecommendFlightListHolder(@NonNull View itemView) {
                 super(itemView);
+                startAndArrivePlace = itemView.findViewById(R.id.startAndArrivePlace);
+                flightPrice = itemView.findViewById(R.id.flightPrice);
+                flightStartDate = itemView.findViewById(R.id.flightStartDate);
+                flightPlaneMessage = itemView.findViewById(R.id.flightPlaneMessage);
+                flightStartTime = itemView.findViewById(R.id.flightStartTime);
+                companyImage = itemView.findViewById(R.id.companyImage);
             }
         }
     }
+
 }

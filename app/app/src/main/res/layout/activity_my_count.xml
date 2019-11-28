@@ -32,7 +32,7 @@
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:layout_centerInParent="true"
-                android:src="@drawable/hugh"
+                android:src="@drawable/person_default"
                 app:civ_border_color="@color/light"
                 app:civ_border_width="2dp" />
 

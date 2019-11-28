@@ -16,7 +16,7 @@
             android:layout_width="match_parent"
             android:layout_height="300dp"
             android:layout_alignParentTop="true"
-            android:background="@color/dark"
+            android:background="@color/white"
             android:gravity="center">
 
             <de.hdodenhof.circleimageview.CircleImageView
@@ -24,7 +24,7 @@
                 android:layout_width="300dp"
                 android:layout_height="300dp"
                 android:layout_centerInParent="true"
-                android:src="@drawable/hugh"
+                android:src="@drawable/person_default"
                 app:civ_border_color="@color/light"
                 app:civ_border_width="2dp" />
         </LinearLayout>

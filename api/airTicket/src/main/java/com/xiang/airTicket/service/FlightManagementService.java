@@ -20,6 +20,14 @@ public interface FlightManagementService {
             Pageable pageable
     );
 
+    //  通过始发地 目的地 起飞日期获取分页数据 没有结束日期限制
+    Page<FlightManagement> pageByStartingPlaceAndDestinationStartTimeGetContent(
+            Long startingPlaceId,
+            Long destinationId,
+            Date startTime,
+            Pageable pageable
+    );
+
     List searchFlight(Long startingPlaceId,
                       Long destinationId,
                       Date startTime);

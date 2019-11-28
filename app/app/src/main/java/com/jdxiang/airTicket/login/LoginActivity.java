@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.jdxiang.airTicket.MainActivity;
 import com.jdxiang.airTicket.R;
 import com.jdxiang.airTicket.entity.User;
+import com.jdxiang.airTicket.entity.Visitor;
 import com.jdxiang.airTicket.httpService.BaseHttpService;
 import com.jdxiang.airTicket.httpService.UserService;
 import com.jdxiang.airTicket.httpService.VisitorService;
@@ -48,6 +49,8 @@ LoginActivity extends AppCompatActivity {
                 String username = ((TextView) findViewById(R.id.userNameText)).getText().toString();
                 User user = new User(username, password, null);
                 userService.login((response) -> {
+                    User user1 = (User) response.getData();
+                    UserService.loginUser = user1;
                     // 登陆成功
                     if (response.getResponse().code() >= 200 && response.getResponse().code() < 300) {
                         // 存储token 用户名 密码
@@ -85,6 +88,9 @@ LoginActivity extends AppCompatActivity {
             BaseHttpService.setToken(token);
             // 如果能获取到当前登陆旅客 则跳过登陆界面
             visitorService.getCurrentVisitor((response) -> {
+                // 设置当前登陆用户
+                Visitor visitor = (Visitor) response.getData();
+                UserService.loginUser = visitor.getUser();
                 // 登陆成功 直接进入主页面
                 if (response.getResponse().code() >= 200 && response.getResponse().code() < 300) {
                     Intent intent = new Intent(LoginActivity.this, MainActivity.class);

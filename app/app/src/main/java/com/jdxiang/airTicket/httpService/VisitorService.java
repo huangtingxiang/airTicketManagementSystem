@@ -3,6 +3,8 @@ package com.jdxiang.airTicket.httpService;
 import com.jdxiang.airTicket.entity.Visitor;
 
 public class VisitorService {
+
+
     static VisitorService visitorService;
 
     public static VisitorService getInstance() {
@@ -34,7 +36,8 @@ public class VisitorService {
     }
 
     /**
-     *  修改姓名
+     * 修改姓名
+     *
      * @param id
      * @param name
      * @param callBack
@@ -44,7 +47,8 @@ public class VisitorService {
     }
 
     /**
-     *  修改身份证
+     * 修改身份证
+     *
      * @param id
      * @param idCard
      * @param callBack
@@ -55,6 +59,7 @@ public class VisitorService {
 
     /**
      * 修改手机号
+     *
      * @param id
      * @param phoneNumber
      * @param callBack

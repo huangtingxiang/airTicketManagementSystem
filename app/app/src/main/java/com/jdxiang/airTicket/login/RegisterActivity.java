@@ -63,6 +63,8 @@ public class RegisterActivity extends AppCompatActivity {
                     }
                     if (result.getResponse().code() >= 200 && result.getResponse().code() < 300) {
                         String token = result.getResponse().header(UserService.tokenHeader);
+                        Visitor visitor = (Visitor) result.getData();
+                        UserService.loginUser = visitor.getUser();
                         // 将token存储到文件中 并修改basehttp 中的token值
                         SharedPreferences.Editor edit = RegisterActivity.this.getSharedPreferences("user_message", MODE_PRIVATE).edit();
                         edit.putString("token", token);

@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
@@ -20,6 +21,8 @@ import com.jdxiang.airTicket.entity.FlightManagement;
 import com.jdxiang.airTicket.entity.Page;
 import com.jdxiang.airTicket.entity.ShipSpace;
 import com.jdxiang.airTicket.entity.TicketPrice;
+import com.jdxiang.airTicket.httpService.BaseHttpService;
+import com.jdxiang.airTicket.httpService.DownloadImageTask;
 import com.jdxiang.airTicket.httpService.FlightManagementService;
 import com.jdxiang.airTicket.ui.home.FlightOneWayTripFragment;
 import com.jdxiang.airTicket.ui.home.HomeFragment;
@@ -55,6 +58,7 @@ public class SearchListActivity extends AppCompatActivity {
         destinationName = intent.getStringExtra("destinationName");
         TextView textView = findViewById(R.id.flight_title_text);
         textView.setText(startName + "到" + destinationName);
+
         // 请求后台
         flightManagementService.searchFlight(startPlaceId, destinationId, startTime, (response) -> {
             FlightManagement[] flightManagements = (FlightManagement[]) response.getData();
@@ -103,6 +107,9 @@ public class SearchListActivity extends AppCompatActivity {
             holder.endAirPort.setText(flightManagement.getDestinationAirPort().getName());
             holder.endTextView.setText(new SimpleDateFormat("HH:mm", Locale.ENGLISH).format(flightManagement.getArrivalTime()));
             holder.planeNameTextView.setText(flightManagement.getPlane().getName());
+            String urlString = BaseHttpService.BASE_HOST + flightManagement.getPlane().getAirlineCompany().getIcon();
+            new DownloadImageTask(holder.companyImage)
+                    .execute(urlString);
             // 查找主舱位
             TicketPrice primaryTicketPrice = null;
             for (TicketPrice ticketPrice :
@@ -139,6 +146,8 @@ public class SearchListActivity extends AppCompatActivity {
 
             TextView ticketPriceTextView;
 
+            ImageView companyImage;
+
             public FlightSearchListHolder(@NonNull View itemView) {
                 super(itemView);
                 startTextView = itemView.findViewById(R.id.startTime);
@@ -148,6 +157,7 @@ public class SearchListActivity extends AppCompatActivity {
                 planeNameTextView = itemView.findViewById(R.id.planeNameTextView);
                 ticketShipSpaceTextView = itemView.findViewById(R.id.ticketShipSpaceTextView);
                 ticketPriceTextView = itemView.findViewById(R.id.ticketPriceTextView);
+                companyImage = itemView.findViewById(R.id.companyImage);
             }
         }
     }
