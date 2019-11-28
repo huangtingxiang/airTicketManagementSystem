@@ -114,13 +114,14 @@
                     android:paddingRight="5dp">
 
                     <Button
+                        android:id="@+id/recordBtn"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:background="@color/white"
                         android:drawableTop="@drawable/ic_payment"
                         android:drawablePadding="10dp"
                         android:minHeight="40dp"
-                        android:text="待付款"
+                        android:text="消费记录"
                         android:textColor="@color/gray" />
                 </LinearLayout>
             </LinearLayout>
