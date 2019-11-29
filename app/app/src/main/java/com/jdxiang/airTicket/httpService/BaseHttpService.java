@@ -14,7 +14,7 @@ import java.io.IOException;
 import java.lang.reflect.Type;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Locale;
+import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.HttpUrl;
@@ -38,7 +38,7 @@ public class BaseHttpService {
         return baseHttpService;
     }
 
-    public static final String BASE_HOST = "http://192.168.2.234:9001/";
+    public static final String BASE_HOST = "http://192.168.43.17:9001/";
 
     public static final String API = BASE_HOST + "api/";
 
@@ -202,6 +202,8 @@ public class BaseHttpService {
      * @return
      */
     public static String dateFormat(Date date, String format) {
-        return new SimpleDateFormat(format, Locale.CHINA).format(date);
+        SimpleDateFormat bjSdf = new SimpleDateFormat(format);     // 北京
+        bjSdf.setTimeZone(TimeZone.getTimeZone("Asia/Shanghai"));
+        return bjSdf.format(date);
     }
 }
