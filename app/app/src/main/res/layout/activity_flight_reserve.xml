@@ -137,18 +137,6 @@
                         android:text="45262419990711452"
                         android:textColor="@color/mdtp_ampm_text_color"
                         android:textSize="16sp" />
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:gravity="right">
-
-                        <Button
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
-                            android:background="@null"
-                            android:drawableTop="@drawable/ic_edit_black_24dp" />
-                    </LinearLayout>
                 </LinearLayout>
 
                 <LinearLayout

@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import com.xiang.airTicket.schedule.TicketQueue;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -150,5 +151,48 @@ public class TicketOrderServiceImpl implements TicketOrderService {
         FlightManagement flightManagement = new FlightManagement();
         flightManagement.setId(flightId);
         return ticketOrderRepository.findAllByFlightManagementAndAndOrderStatus(flightManagement, OrderStatus.FINISH);
+    }
+
+    @Override
+    public TicketOrder changeOrder(Long id, TicketOrder ticketOrder, Visitor visitor) {
+        TransactionRecord transactionRecord = new TransactionRecord();
+        transactionRecord.setVisitor(visitor);
+        transactionRecord.setCreateTime(Calendar.getInstance().getTime());
+
+        logger.info("查看原订单和要改签的订单");
+        TicketOrder oldOrder = ticketOrderRepository.findById(id).get();
+
+        Double disparity = oldOrder.getTicketPrice().getPrice() - ticketOrder.getTicketPrice().getPrice();
+        if (disparity < 0) {
+            logger.info("若原订单价钱小于改签订单 补差价");
+            visitor.setBalance(visitor.getBalance() + disparity);
+            if (visitor.getBalance() < 0) {
+                throw new NotPayForAbility("用户余额不足");
+            }
+            transactionRecord.setRecordMessage("支付差价");
+            transactionRecord.setPrice(Math.abs(disparity));
+            transactionRecord.setPayFor(true);
+        } else  {
+            logger.info("否则 退款");
+            visitor.setBalance(visitor.getBalance() + disparity);
+            transactionRecord.setRecordMessage("退款");
+            transactionRecord.setPrice(disparity);
+            transactionRecord.setPayFor(false);
+        }
+        visitorRepository.save(visitor);
+        if (disparity != 0) {
+            transactionRecordRepository.save(transactionRecord);
+        }
+
+        logger.info("修改原订单为取消 创建新订单保存");
+        oldOrder.setOrderStatus(OrderStatus.CANCEL);
+        ticketOrder.setVisitor(visitor);
+        ticketOrder.setCreateTime(Calendar.getInstance().getTime());
+        ticketOrder.setOrderStatus(OrderStatus.ACTIVE);
+        List<TicketOrder> orders = new ArrayList<>();
+        orders.add(oldOrder);
+        orders.add(ticketOrder);
+        ticketOrderRepository.saveAll(orders);
+        return ticketOrder;
     }
 }

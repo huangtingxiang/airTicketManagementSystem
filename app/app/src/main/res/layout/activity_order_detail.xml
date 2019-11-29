@@ -319,6 +319,16 @@
             android:paddingRight="15dp"
             android:orientation="horizontal">
             <Button
+                android:id="@+id/changeFlight"
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/text_label"
+                android:text="改签航班"
+                android:textColor="@color/white"
+                android:textSize="16sp" />
+            <Button
+                android:layout_weight="1"
                 android:id="@+id/checkInFlight"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

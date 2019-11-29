@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.jdxiang.airTicket.R;
+import com.jdxiang.airTicket.adapter.FlightListAdapter;
 import com.jdxiang.airTicket.entity.FlightManagement;
 import com.jdxiang.airTicket.entity.Page;
 import com.jdxiang.airTicket.entity.ShipSpace;
@@ -67,25 +68,7 @@ public class SearchListActivity extends AppCompatActivity {
             listView = findViewById(R.id.flight_search_list);
             LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
             listView.setLayoutManager(linearLayoutManager);
-            listView.setAdapter(new FlightSearchListAdapter(flightManagements));
-        });
-
-    }
-
-    class FlightSearchListAdapter extends RecyclerView.Adapter<SearchListActivity.FlightSearchListAdapter.FlightSearchListHolder> {
-
-        FlightManagement[] flightManagements;
-
-        FlightSearchListAdapter(FlightManagement[] flightManagements) {
-            this.flightManagements = flightManagements;
-        }
-
-        @NonNull
-        @Override
-        public SearchListActivity.FlightSearchListAdapter.FlightSearchListHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.flight_management_search_list_item, parent, false);
-            // 点击搜索的航班列表时显示航班详情
-            view.setOnClickListener(new View.OnClickListener() {
+            listView.setAdapter(new FlightListAdapter(flightManagements, new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     int position = listView.getChildAdapterPosition(v);
@@ -95,70 +78,8 @@ public class SearchListActivity extends AppCompatActivity {
                     intent.putExtra("destinationName", destinationName);
                     startActivity(intent);
                 }
-            });
-            return new SearchListActivity.FlightSearchListAdapter.FlightSearchListHolder(view);
-        }
+            }));
+        });
 
-        @Override
-        public void onBindViewHolder(@NonNull SearchListActivity.FlightSearchListAdapter.FlightSearchListHolder holder, int position) {
-            FlightManagement flightManagement = flightManagements[position];
-            holder.startAirPort.setText(flightManagement.getStartingAirPort().getName());
-            holder.startTextView.setText(new SimpleDateFormat("HH:mm", Locale.ENGLISH).format(flightManagement.getStartTime()));
-            holder.endAirPort.setText(flightManagement.getDestinationAirPort().getName());
-            holder.endTextView.setText(new SimpleDateFormat("HH:mm", Locale.ENGLISH).format(flightManagement.getArrivalTime()));
-            holder.planeNameTextView.setText(flightManagement.getPlane().getName());
-            String urlString = BaseHttpService.BASE_HOST + flightManagement.getPlane().getAirlineCompany().getIcon();
-            new DownloadImageTask(holder.companyImage)
-                    .execute(urlString);
-            // 查找主舱位
-            TicketPrice primaryTicketPrice = null;
-            for (TicketPrice ticketPrice :
-                    flightManagement.getTicketPrices()) {
-                if (ticketPrice.getShipSpace().getPrimaried()) {
-                    primaryTicketPrice = ticketPrice;
-                    break;
-                }
-            }
-            if (primaryTicketPrice != null) {
-                holder.ticketShipSpaceTextView.setText(primaryTicketPrice.getShipSpace().getDescribed());
-                holder.ticketPriceTextView.setText(primaryTicketPrice.getPrice().toString());
-            }
-        }
-
-        @Override
-        public int getItemCount() {
-            return this.flightManagements.length;
-        }
-
-        class FlightSearchListHolder extends RecyclerView.ViewHolder {
-
-            TextView startTextView;
-
-            TextView endTextView;
-
-            TextView startAirPort;
-
-            TextView endAirPort;
-
-            TextView planeNameTextView;
-
-            TextView ticketShipSpaceTextView;
-
-            TextView ticketPriceTextView;
-
-            ImageView companyImage;
-
-            public FlightSearchListHolder(@NonNull View itemView) {
-                super(itemView);
-                startTextView = itemView.findViewById(R.id.startTime);
-                endTextView = itemView.findViewById(R.id.endTime);
-                startAirPort = itemView.findViewById(R.id.startAirPort);
-                endAirPort = itemView.findViewById(R.id.endAirPort);
-                planeNameTextView = itemView.findViewById(R.id.planeNameTextView);
-                ticketShipSpaceTextView = itemView.findViewById(R.id.ticketShipSpaceTextView);
-                ticketPriceTextView = itemView.findViewById(R.id.ticketPriceTextView);
-                companyImage = itemView.findViewById(R.id.companyImage);
-            }
-        }
     }
 }

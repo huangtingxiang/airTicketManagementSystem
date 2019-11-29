@@ -18,6 +18,7 @@ import com.jdxiang.airTicket.entity.SelectSeat;
 import com.jdxiang.airTicket.entity.ShipSpace;
 import com.jdxiang.airTicket.entity.TicketOrder;
 import com.jdxiang.airTicket.entity.Visitor;
+import com.jdxiang.airTicket.flightManagement.ChangeFlightActivity;
 import com.jdxiang.airTicket.httpService.BaseHttpService;
 import com.jdxiang.airTicket.httpService.TicketOrderService;
 
@@ -89,6 +90,22 @@ public class OrderDetailActivity extends AppCompatActivity {
                 intent.putExtra("orderId", orderId);
                 intent.putExtra("flightId", flightManagement.getId());
                 startActivity(intent);
+            }
+        });
+
+        // 进入改签界面
+        findViewById(R.id.changeFlight).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intentToChangeFlight = new Intent(OrderDetailActivity.this, ChangeFlightActivity.class);
+                intentToChangeFlight.putExtra("startPlaceId", flightManagement.getStartingPlace().getId());
+                intentToChangeFlight.putExtra("destinationId", flightManagement.getDestination().getId());
+                intentToChangeFlight.putExtra("startTime", flightManagement.getStartTime().getTime());
+                intentToChangeFlight.putExtra("startPlaceName", flightManagement.getStartingPlace().getName());
+                intentToChangeFlight.putExtra("destinationName", flightManagement.getDestination().getName());
+                intentToChangeFlight.putExtra("orderId", orderId);
+                intentToChangeFlight.putExtra("originPrice", ticketOrder.getTicketPrice().getPrice());
+                startActivity(intentToChangeFlight);
             }
         });
     }

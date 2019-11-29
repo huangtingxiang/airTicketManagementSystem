@@ -90,6 +90,7 @@ public class TicketOrderController {
 
     /**
      * 值机 选择座位
+     *
      * @param id
      * @param seat
      */
@@ -106,6 +107,7 @@ public class TicketOrderController {
 
     /**
      * 获取已经值机的订单
+     *
      * @param flightId
      * @return
      */
@@ -113,6 +115,20 @@ public class TicketOrderController {
     @JsonView(BaseJsonView.class)
     public List<TicketOrder> getFinishByFlightId(@PathVariable Long flightId) {
         return ticketOrderService.getFinishByFlightId(flightId);
+    }
+
+    /**
+     * 改签
+     *
+     * @param id
+     * @param ticketOrder
+     * @return
+     */
+    @PutMapping("/changeOrder/{id}")
+    @JsonView(GetJsonView.class)
+    public TicketOrder changeOrder(@PathVariable Long id, @RequestBody TicketOrder ticketOrder, HttpServletRequest request) {
+
+        return ticketOrderService.changeOrder(id, ticketOrder, visitorService.getCurrentLoginVisitor(request));
     }
 
     private interface BaseJsonView extends TicketOrder.SeatJsonView {
