@@ -1,5 +1,6 @@
 package com.jdxiang.airTicket.ui.home;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -28,18 +29,14 @@ import com.jdxiang.airTicket.R;
 import com.jdxiang.airTicket.entity.FlightManagement;
 import com.jdxiang.airTicket.entity.TicketPrice;
 import com.jdxiang.airTicket.entity.Visitor;
+import com.jdxiang.airTicket.flightManagement.FlightDetailActivity;
+import com.jdxiang.airTicket.flightManagement.SearchListActivity;
 import com.jdxiang.airTicket.httpService.BaseHttpService;
 import com.jdxiang.airTicket.httpService.DownloadImageTask;
 import com.jdxiang.airTicket.httpService.FlightManagementService;
 import com.jdxiang.airTicket.httpService.UserService;
 import com.synnapps.carouselview.CarouselView;
 import com.synnapps.carouselview.ImageListener;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.ArrayList;
 import java.util.Calendar;
 
 import static android.content.Context.MODE_PRIVATE;
@@ -161,6 +158,16 @@ public class HomeFragment extends Fragment {
             holder.flightStartDate.setText(BaseHttpService.dateFormat(flightManagement.getStartTime(), "yyyy-MM-dd"));
             holder.flightStartTime.setText(BaseHttpService.dateFormat(flightManagement.getStartTime(), "HH:mm:ss"));
             holder.flightPlaneMessage.setText(flightManagement.getPlane().getName());
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    FlightDetailActivity.flightManagement = flightManagement;
+                    Intent intent = new Intent(HomeFragment.this.getContext(), FlightDetailActivity.class);
+                    intent.putExtra("startPlaceName", flightManagement.getStartingPlace().getName());
+                    intent.putExtra("destinationName", flightManagement.getDestination().getName());
+                    startActivity(intent);
+                }
+            });
             String urlString = BaseHttpService.BASE_HOST + flightManagement.getPlane().getAirlineCompany().getIcon();
             new DownloadImageTask(holder.companyImage)
                     .execute(urlString);

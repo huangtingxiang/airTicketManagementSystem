@@ -16,6 +16,7 @@ import android.widget.TextView;
 import com.jdxiang.airTicket.R;
 import com.jdxiang.airTicket.entity.FlightManagement;
 import com.jdxiang.airTicket.entity.TicketPrice;
+import com.jdxiang.airTicket.httpService.BaseHttpService;
 import com.jdxiang.airTicket.ui.home.HomeFragment;
 
 import java.text.SimpleDateFormat;
@@ -45,8 +46,8 @@ public class FlightDetailActivity extends AppCompatActivity {
 
         // 设置航班信息
         ((TextView) findViewById(R.id.companyNameTextView)).setText(flightManagement.getPlane().getAirlineCompany().getName());
-        ((TextView) findViewById(R.id.startTimeTextView)).setText(new SimpleDateFormat("HH:mm", Locale.CHINA).format(flightManagement.getStartTime()));
-        ((TextView) findViewById(R.id.arrivalTimeTextView)).setText(new SimpleDateFormat("HH:mm", Locale.CHINA).format(flightManagement.getArrivalTime()));
+        ((TextView) findViewById(R.id.startTimeTextView)).setText(BaseHttpService.dateFormat(flightManagement.getStartTime(), "HH:mm"));
+        ((TextView) findViewById(R.id.arrivalTimeTextView)).setText(BaseHttpService.dateFormat(flightManagement.getArrivalTime(), "HH:mm"));
         ((TextView) findViewById(R.id.startAirPortTextView)).setText(flightManagement.getStartingAirPort().getName());
         ((TextView) findViewById(R.id.arrivalAirPortTextView)).setText(flightManagement.getDestinationAirPort().getName());
         ((TextView) findViewById(R.id.planeNameTextView)).setText(flightManagement.getPlane().getName());

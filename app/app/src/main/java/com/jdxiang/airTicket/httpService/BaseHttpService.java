@@ -14,7 +14,7 @@ import java.io.IOException;
 import java.lang.reflect.Type;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Locale;
+import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.HttpUrl;
@@ -202,6 +202,8 @@ public class BaseHttpService {
      * @return
      */
     public static String dateFormat(Date date, String format) {
-        return new SimpleDateFormat(format, Locale.CHINA).format(date);
+        SimpleDateFormat bjSdf = new SimpleDateFormat(format);     // 北京
+        bjSdf.setTimeZone(TimeZone.getTimeZone("Asia/Shanghai"));
+        return bjSdf.format(date);
     }
 }
