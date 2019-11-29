@@ -103,10 +103,21 @@ public class TicketOrderService {
 
     /**
      * 获取值机完毕的订单
+     *
      * @param flightId
      * @param callBack
      */
     public void getFinishByFlightId(Long flightId, BaseHttpService.CallBack callBack) {
         httpService.get("ticketOrder/getFinishByFlightId/" + flightId, callBack, TicketOrder[].class);
+    }
+
+    /**
+     * 改签航班
+     * @param orderId
+     * @param order
+     * @param callBack
+     */
+    public void changeOrder(Long orderId, TicketOrder order, BaseHttpService.CallBack callBack) {
+        httpService.put("ticketOrder/changeOrder/" + orderId, order, callBack, null);
     }
 }

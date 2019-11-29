@@ -11,7 +11,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".personal.TransactionRecordActivity"></activity>
+        <activity android:name=".flightManagement.ChangeFlightDetailActivity"></activity>
+        <activity android:name=".flightManagement.ChangeFlightActivity" />
+        <activity android:name=".personal.TransactionRecordActivity" />
         <activity android:name=".ui.dashboard.SeatSelectActivity" />
         <activity android:name=".ui.dashboard.OrderDetailActivity" />
         <activity android:name=".ui.SimpleActivity" />

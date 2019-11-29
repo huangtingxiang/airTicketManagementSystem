@@ -38,7 +38,7 @@ public class BaseHttpService {
         return baseHttpService;
     }
 
-    public static final String BASE_HOST = "http://192.168.43.17:9001/";
+    public static final String BASE_HOST = "http://192.168.2.234:9001/";
 
     public static final String API = BASE_HOST + "api/";
 

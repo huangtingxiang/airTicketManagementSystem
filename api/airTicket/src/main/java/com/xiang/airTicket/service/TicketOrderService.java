@@ -71,4 +71,12 @@ public interface TicketOrderService {
      */
     List<TicketOrder> getFinishByFlightId(Long flightId);
 
+    /**
+     * 改签
+     * @param id
+     * @param ticketOrder
+     * @return
+     */
+    TicketOrder changeOrder(Long id, TicketOrder ticketOrder, Visitor visitor);
+
 }
