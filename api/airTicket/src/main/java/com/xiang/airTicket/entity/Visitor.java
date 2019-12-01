@@ -22,12 +22,14 @@ public class Visitor {
 
     private Double balance = 0.0; // 余额
 
+    private String imageUrl;
+
     @OneToOne(mappedBy = "visitor")
     @JsonView({NoneJsonView.class, UserJsonView.class})
     User user;
 
     @OneToMany(mappedBy = "visitor")
-    @JsonView({Visitor.TicketOrderJsonView.class,NoneJsonView.class})
+    @JsonView({Visitor.TicketOrderJsonView.class, NoneJsonView.class})
     List<TicketOrder> ticketOrders = new ArrayList<>(); // 订单号
 
     @OneToMany(mappedBy = "visitor")
@@ -88,6 +90,14 @@ public class Visitor {
 
     public void setTicketOrders(List<TicketOrder> ticketOrders) {
         this.ticketOrders = ticketOrders;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 
     public interface TicketOrderJsonView {

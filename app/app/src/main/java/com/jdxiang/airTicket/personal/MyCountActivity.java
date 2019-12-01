@@ -2,26 +2,46 @@ package com.jdxiang.airTicket.personal;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
+import android.Manifest;
+import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.jdxiang.airTicket.MainActivity;
 import com.jdxiang.airTicket.R;
 import com.jdxiang.airTicket.entity.Visitor;
 import com.jdxiang.airTicket.flightManagement.FlightPayforActivity;
 import com.jdxiang.airTicket.httpService.BaseHttpService;
+import com.jdxiang.airTicket.httpService.CommonService;
+import com.jdxiang.airTicket.httpService.DownloadImageTask;
 import com.jdxiang.airTicket.httpService.UserService;
 import com.jdxiang.airTicket.httpService.VisitorService;
 import com.jdxiang.airTicket.login.LoginActivity;
 import com.jdxiang.airTicket.ui.SimpleActivity;
 import com.jdxiang.airTicket.ui.notifications.NotificationsFragment;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+
 import cn.pedant.SweetAlert.SweetAlertDialog;
+import de.hdodenhof.circleimageview.CircleImageView;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 
 public class MyCountActivity extends AppCompatActivity {
 
@@ -33,6 +53,10 @@ public class MyCountActivity extends AppCompatActivity {
 
     TextView idCardTextView; // 身份证
 
+    CircleImageView circleImageView; // 头像
+
+    CommonService commonService = CommonService.getInstance();
+
     VisitorService visitorService = VisitorService.getInstance();
     UserService userService = new UserService();
 
@@ -43,6 +67,8 @@ public class MyCountActivity extends AppCompatActivity {
     private static final int IdCard = 2;
     private static final int UserName = 3;
     private static final int PassWord = 4;
+    private static final int ImageCode = 5;
+    private static final int WRITE_EXTERNAL_STORAGE_CODE = 0;
 
 
     @Override
@@ -61,6 +87,7 @@ public class MyCountActivity extends AppCompatActivity {
         phoneTextView = findViewById(R.id.phoneTextView);
         userNameTextView = findViewById(R.id.userNameTextView);
         idCardTextView = findViewById(R.id.idCardTextView);
+        circleImageView = findViewById(R.id.personImage);
 
         visitorService.getCurrentVisitor((result -> {
             visitor = (Visitor) result.getData();
@@ -68,6 +95,11 @@ public class MyCountActivity extends AppCompatActivity {
             phoneTextView.setText(visitor.getPhoneNumber());
             userNameTextView.setText(visitor.getUser().getUserName());
             idCardTextView.setText(visitor.getIdCard());
+            if (visitor.getImageUrl() != null && !visitor.getImageUrl().equals("")) {
+                String urlString = BaseHttpService.BASE_HOST + visitor.getImageUrl();
+                new DownloadImageTask(circleImageView)
+                        .execute(urlString);
+            }
         }));
 
         // 修改姓名
@@ -129,6 +161,22 @@ public class MyCountActivity extends AppCompatActivity {
             }
         });
 
+        // 修改头像
+        findViewById(R.id.visitorImageContainer).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // 判断是否有相册权限
+                if (ContextCompat.checkSelfPermission(MyCountActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                        != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(MyCountActivity.this,
+                            new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, WRITE_EXTERNAL_STORAGE_CODE);
+                } else {
+                    openCamera();
+                }
+
+            }
+        });
+
 
         Button button = (Button) findViewById(R.id.logout);
         button.setOnClickListener(new View.OnClickListener() {
@@ -141,6 +189,32 @@ public class MyCountActivity extends AppCompatActivity {
                 startActivity(intentToLogin);
             }
         });
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String[] permissions, int[] grantResults) {
+        switch (requestCode) {
+            case WRITE_EXTERNAL_STORAGE_CODE: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    openCamera();
+                } else {
+                    Toast.makeText(MyCountActivity.this, "请允许打开相册权限", Toast.LENGTH_SHORT).show();
+                }
+                return;
+            }
+
+            // other 'case' lines to check for other
+            // permissions this app might request.
+        }
+    }
+
+    private void openCamera() {
+        Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
+        photoPickerIntent.setType("image/*");
+        startActivityForResult(photoPickerIntent, ImageCode);
     }
 
     /**
@@ -206,10 +280,48 @@ public class MyCountActivity extends AppCompatActivity {
                     });
                 }
                 break;
+            case ImageCode:
+                if (resultCode == Activity.RESULT_OK) {
+                    Uri selectedImage = intent.getData();
+
+                    String filePath = getPath(selectedImage);
+                    String file_extn = filePath.substring(filePath.lastIndexOf(".") + 1);
+                    if (file_extn.equals("img") || file_extn.equals("jpg") || file_extn.equals("jpeg") || file_extn.equals("gif") || file_extn.equals("png")) {
+                        MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
+                        if (filePath != null) {
+                            File file = new File(filePath);
+                            MediaType MEDIA_TYPE_PNG = MediaType.parse("image/*");
+                            RequestBody req = new MultipartBody.Builder().setType(MultipartBody.FORM).addFormDataPart("file", file.getName(), RequestBody.create(MEDIA_TYPE_PNG, file))
+                                    .build();
+                            visitorService.upload(req, (response) -> {
+                                String urlString = BaseHttpService.BASE_HOST + response.getData();
+                                new DownloadImageTask(circleImageView)
+                                        .execute(urlString);
+                                System.out.println(urlString);
+                            });
+
+
+                        }
+                    }
+                }
+                break;
             default:
                 break;
         }
     }
+
+
+    public String getPath(Uri uri) {
+        String[] projection = {MediaStore.MediaColumns.DATA};
+        Cursor cursor = managedQuery(uri, projection, null, null, null);
+        int column_index = cursor
+                .getColumnIndexOrThrow(MediaStore.MediaColumns.DATA);
+        cursor.moveToFirst();
+        String imagePath = cursor.getString(column_index);
+
+        return imagePath;
+    }
+
 
     private void logout() {
         // 退出登陆 修改basehttp token信息 并修改数据库中token

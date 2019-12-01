@@ -5,6 +5,7 @@ import com.xiang.airTicket.entity.Visitor;
 import com.xiang.airTicket.service.VisitorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -46,6 +47,12 @@ public class VisitorController {
     @PutMapping("/changePhone/{id}")
     public void changePhone(@PathVariable Long id, @RequestBody String phoneNumber) {
         visitorService.changePhoneNumber(id, phoneNumber);
+    }
+
+    @PutMapping("/changeImage")
+    public String changeImage(@RequestParam("file") MultipartFile file, HttpServletRequest request) {
+        Visitor visitor = visitorService.getCurrentLoginVisitor(request);
+        return visitorService.changeImage(file, visitor);
     }
 
     private interface BaseVisitorJsonView extends Visitor.UserJsonView {

@@ -1,6 +1,7 @@
 package com.xiang.airTicket.service;
 
 import com.xiang.airTicket.entity.Visitor;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -26,5 +27,7 @@ public interface VisitorService {
     void changeIdCard(Long id, String idCard);
 
     void changePhoneNumber(Long id, String phoneNumber);
+
+    String changeImage(MultipartFile file, Visitor visitor);
 
 }

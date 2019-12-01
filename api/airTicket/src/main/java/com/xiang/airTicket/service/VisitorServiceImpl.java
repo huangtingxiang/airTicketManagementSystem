@@ -9,6 +9,7 @@ import com.xiang.airTicket.repository.UserRepository;
 import com.xiang.airTicket.repository.VisitorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Calendar;
@@ -18,6 +19,8 @@ public class VisitorServiceImpl implements VisitorService {
 
     @Autowired
     UserRepository userRepository;
+
+    @Autowired CommonService commonService;
 
     @Autowired
     TransactionRecordRepository transactionRecordRepository;
@@ -73,5 +76,13 @@ public class VisitorServiceImpl implements VisitorService {
         Visitor visitor = visitorRepository.findById(id).get();
         visitor.setPhoneNumber(phoneNumber);
         visitorRepository.save(visitor);
+    }
+
+    @Override
+    public String changeImage(MultipartFile file, Visitor visitor) {
+        String imageUrl = commonService.uploadImage(file);
+        visitor.setImageUrl(imageUrl);
+        visitorRepository.save(visitor);
+        return imageUrl;
     }
 }

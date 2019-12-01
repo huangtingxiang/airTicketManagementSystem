@@ -2,6 +2,8 @@ package com.jdxiang.airTicket.httpService;
 
 import com.jdxiang.airTicket.entity.Visitor;
 
+import okhttp3.RequestBody;
+
 public class VisitorService {
 
 
@@ -66,6 +68,10 @@ public class VisitorService {
      */
     public void changePhoneNumber(Long id, String phoneNumber, BaseHttpService.CallBack callBack) {
         httpService.put("visitor/changePhone/" + id, phoneNumber, callBack, null);
+    }
+
+    public void upload(RequestBody data, BaseHttpService.CallBack callBack) {
+        httpService.putByForm("visitor/changeImage", data, callBack, String.class);
     }
 
 }
