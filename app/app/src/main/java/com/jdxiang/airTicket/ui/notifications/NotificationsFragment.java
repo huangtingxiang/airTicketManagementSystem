@@ -15,7 +15,11 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.jdxiang.airTicket.R;
+import com.jdxiang.airTicket.entity.Visitor;
 import com.jdxiang.airTicket.flightManagement.SearchListActivity;
+import com.jdxiang.airTicket.httpService.BaseHttpService;
+import com.jdxiang.airTicket.httpService.DownloadImageTask;
+import com.jdxiang.airTicket.httpService.VisitorService;
 import com.jdxiang.airTicket.personal.MyCountActivity;
 import com.jdxiang.airTicket.personal.MyWalletActivity;
 import com.jdxiang.airTicket.personal.TransactionRecordActivity;
@@ -25,6 +29,8 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class NotificationsFragment extends Fragment {
 
+    VisitorService visitorService = VisitorService.getInstance();
+    CircleImageView circleImageView;
     private NotificationsViewModel notificationsViewModel;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -32,6 +38,19 @@ public class NotificationsFragment extends Fragment {
         notificationsViewModel =
                 ViewModelProviders.of(this).get(NotificationsViewModel.class);
         View root = inflater.inflate(R.layout.fragment_notifications, container, false);
+
+        circleImageView = root.findViewById(R.id.personImage);
+
+        visitorService.getCurrentVisitor((result -> {
+            Visitor visitor = (Visitor) result.getData();
+
+            if (visitor.getImageUrl() != null && !visitor.getImageUrl().equals("")) {
+                String urlString = BaseHttpService.BASE_HOST + visitor.getImageUrl();
+                new DownloadImageTask(circleImageView)
+                        .execute(urlString);
+            }
+        }));
+
         // 点击头像时进入个人编辑
         CircleImageView circleImageView = root.findViewById(R.id.personImage);
         circleImageView.setOnClickListener(new View.OnClickListener() {

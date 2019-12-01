@@ -19,6 +19,7 @@ import java.util.concurrent.TimeUnit;
 
 import okhttp3.HttpUrl;
 import okhttp3.MediaType;
+import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
@@ -83,6 +84,15 @@ public class BaseHttpService {
         Request request = new Request.Builder()
                 .url(API + url)
                 .post(body)
+                .addHeader("Authorization", token)
+                .build();
+        new HttpTask<T>(callback, type).execute(request);
+    }
+
+    public <T> void putByForm(String url, RequestBody body, BaseHttpService.CallBack callback, Class<T> type) {
+        Request request = new Request.Builder()
+                .url(API + url)
+                .put(body)
                 .addHeader("Authorization", token)
                 .build();
         new HttpTask<T>(callback, type).execute(request);
@@ -206,4 +216,5 @@ public class BaseHttpService {
         bjSdf.setTimeZone(TimeZone.getTimeZone("Asia/Shanghai"));
         return bjSdf.format(date);
     }
+
 }

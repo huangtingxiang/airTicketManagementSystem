@@ -14,6 +14,8 @@ public class Visitor {
 
     private Double balance = 0.0;
 
+    private String imageUrl;
+
     User user;
 
 //    List<TicketOrder> ticketOrders = new ArrayList<>(); // 订单号
@@ -71,5 +73,13 @@ public class Visitor {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 }
