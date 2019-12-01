@@ -78,6 +78,15 @@ public class NotificationsFragment extends Fragment {
             }
         });
 
+        // 进入如何乘机
+        root.findViewById(R.id.helpBtn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(NotificationsFragment.this.getContext(), HelpActivity.class);
+                startActivity(intent);
+            }
+        });
+
         notificationsViewModel.getText().observe(this, new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
